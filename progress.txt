@@ -1,0 +1,27 @@
+kroz_test.py progress
+NOTE: this can be converted into a markdown (.md) file, I am just not comfortable with the format as of now.
+
+Current features:
+
+- Game window (remains open until closed by player)
+- Player icon (yellow circle)
+- Movable player
+
+Features to add soon:
+
+- Diagonal movement (In actual Kroz game, diagonal movements are binded to separate keys)
+- Collecting gems (at this point it can just be another shape of a different color)
+- Gem and score tracking (10 points for collecting one gem)
+
+
+Bugs:
+
+- In lines 59 and 63 (in Game Loop section), there is a conditional to prevent player from moving off the 
+screen, but it currently doesn't work
+
+
+Features to add in the future:
+
+- "Creatures" that attack the player
+- Breakable and unbreakable walls
+- Text message that describes objects like gems and walls
