@@ -13,7 +13,7 @@ describes it
 
 slow, medium, and fast speed monsters (speed determines dmg / how many gems they take from you)
 
-You can save the game with space, then A, B, or C
+You can save the game with S, then A, B, or C
 
 There is a UI on the right, showing your Score, Level #, Gems, Whips, etc.
 

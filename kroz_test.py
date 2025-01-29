@@ -1,8 +1,8 @@
 import pygame, sys
 
 
-# Window sizes
-screen_width = 720
+# Window sizes (4:3)
+screen_width = 620
 screen_height = 480
 
 
@@ -59,6 +59,7 @@ class Object:
 class Player(Object):
     def __init__(self, position, size, color):
         super().__init__(position, size, color)
+        # self.rect = pygame.Rect(position[0], position[1], size[0], size[1])
     
     def draw(self, screen):
         for pos in self.position:
@@ -72,11 +73,14 @@ class Wall(Object):
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, self.rect)
         
-
-
+        
+        
 # damage, speed, graphics, 2 states of behavior (idle and chase)
 # class Enemy(Object):
-    
+    # class Enemy_fast(Enemy)
+    # class Enemy_medium(Enemy)
+    # class Enemy_slow(Enemy)
+
 # class Gem(Object):
     
 # class Whip(Object):
@@ -89,6 +93,9 @@ wall_size = [20,50]
 wall_color = BROWN
     
 wall_1 = Wall(wall_position, wall_size, wall_color)
+
+# collide = pygame.Rect.colliderect(player, 
+#                                       wall_1)
 
 
 # Game loop
@@ -110,6 +117,8 @@ while True:
                 game_state["player_position"][0] -= player_step
             elif event.key == pygame.K_RIGHT and game_state["player_position"][0] - player_step <= screen_width:
                 game_state["player_position"][0] += player_step
+        # if collide:
+        #     print("Collision!")
                 
     
 
