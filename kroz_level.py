@@ -79,12 +79,11 @@ wall_position = [screen_width - 16, screen_height // 2 ]
 wall_size = [8, 20]
 wall_color = BROWN
 
-wall = Wall(wall_position, wall_size, wall_color)
+walls = []
+
+#wall = Wall(wall_position, wall_size, wall_color)
 
 
-
-        
-        
 
 # Game loop
 while True:
@@ -96,9 +95,14 @@ while True:
         # Controls and Update player position
         # >= 0 to avoid negative position values
         # <= screen_height/width to prevent player from moving off the screen
+        x, y = pygame.mouse.get_pos()
+        wall_cursor = Wall((x - 8, y - 20), wall_size, wall_color) # -8, -20 so mouse isn't in the way
+        
         if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
-            x, y = pygame.mouse.get_pos()
+            wall_place = Wall((x - 8, y - 20), wall_size, wall_color)
+            walls.append(wall_place)
             print(f' Left Mouse clicked at {x}, {y}')
+            
         elif event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[2]:
             x, y = pygame.mouse.get_pos()
             print(f' Right Mouse clicked at {x}, {y}')
@@ -115,17 +119,23 @@ while True:
     #player.draw(screen)
     
     # Draw Wall
-    wall.draw(screen)  
+    
+    wall_cursor.draw(screen)
+    for wall in walls:
+        wall_place.draw(screen)
     
     # Draw Grid
-    grid_x = 0
-    grid_y = 0
-    for x in range (24):
-        pygame.draw.line(screen, WHITE, (0,grid_y), (screen_width, grid_y))
-        grid_y += 20
-    for y in range (80):
-        pygame.draw.line(screen, WHITE, (grid_x, 0), (grid_x, screen_height))
-        grid_x += 8
+    def draw_grid():
+        grid_x = 0
+        grid_y = 0
+        for x in range (24):
+            pygame.draw.line(screen, WHITE, (0,grid_y), (screen_width, grid_y))
+            grid_y += 20
+        for y in range (80):
+            pygame.draw.line(screen, WHITE, (grid_x, 0), (grid_x, screen_height))
+            grid_x += 8
+    # draw_grid()
+    
         
     
             
