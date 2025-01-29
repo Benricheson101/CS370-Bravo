@@ -8,7 +8,7 @@ import pygame, sys
 
 
 # Window sizes (4:3)
-screen_width = 620
+screen_width = 640
 screen_height = 480
 
 
@@ -28,7 +28,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 
 # Define colors using RGB values
 BLACK = pygame.Color(0, 0, 0)
-# white = pygame.Color(255, 255, 255)
+WHITE = pygame.Color(255, 255, 255)
 # red = pygame.Color(255, 0, 0)
 # green = pygame.Color(0, 255, 0)
 # blue = pygame.Color(0, 0, 255)
@@ -72,6 +72,18 @@ class Wall(Object):
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, self.rect)
         
+
+            
+# Instance of Wall class   
+wall_position = [screen_width - 16, screen_height // 2 ]
+wall_size = [8, 20]
+wall_color = BROWN
+
+wall = Wall(wall_position, wall_size, wall_color)
+
+
+
+        
         
 
 # Game loop
@@ -84,8 +96,12 @@ while True:
         # Controls and Update player position
         # >= 0 to avoid negative position values
         # <= screen_height/width to prevent player from moving off the screen
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            print("Mouse working")
+        if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
+            x, y = pygame.mouse.get_pos()
+            print(f' Left Mouse clicked at {x}, {y}')
+        elif event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[2]:
+            x, y = pygame.mouse.get_pos()
+            print(f' Right Mouse clicked at {x}, {y}')
         
                 
     
@@ -99,7 +115,20 @@ while True:
     #player.draw(screen)
     
     # Draw Wall
-    #wall_1.draw(screen)  
+    wall.draw(screen)  
+    
+    # Draw Grid
+    grid_x = 0
+    grid_y = 0
+    for x in range (24):
+        pygame.draw.line(screen, WHITE, (0,grid_y), (screen_width, grid_y))
+        grid_y += 20
+    for y in range (80):
+        pygame.draw.line(screen, WHITE, (grid_x, 0), (grid_x, screen_height))
+        grid_x += 8
+        
+    
+            
     
     # Update the display
     pygame.display.flip()

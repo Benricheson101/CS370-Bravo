@@ -24,3 +24,9 @@ You lose Score by bumping into breakable walls
 The creatures seem to bunch together, and they move laterally
 
 Going down the stairs leads to a room full of monsters, it was chaotic
+
+The game window has a colored border, which encapsulates the playable area
+
+Creatures can steal gems on the map by walking into them
+
+The grid for the game is not a square, it's a rectangle (80 x 25??? or 8 x 16)
