@@ -105,7 +105,8 @@ while True:
             
         elif event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[2]:
             x, y = pygame.mouse.get_pos()
-            walls.pop(-1)
+            if len(walls) != 0:
+                walls.pop(-1)
             
             # print(f' Right Mouse clicked at {x}, {y}')
         

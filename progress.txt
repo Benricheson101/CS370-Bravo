@@ -1,3 +1,5 @@
+
+1/26
 kroz_test.py progress
 NOTE: this can be converted into a markdown (.md) file, I am just not comfortable with the format as of now.
 
@@ -25,3 +27,22 @@ Features to add in the future:
 - "Creatures" that attack the player
 - Breakable and unbreakable walls
 - Text message that describes objects like gems and walls
+
+
+
+1/29
+kroz_level.py progress
+
+Current features:
+
+- Left and right click mouse detection and coordinates
+- Grid view function to easily visualize chunks
+- Creating walls and other shapes with left click
+- Undoing previous creations with right click (unless there is nothing on screen)
+- The wall is drawn in real-time and moves with the cursor
+
+Features to add soon:
+
+- Created objects (like walls) should snap to the nearest grid chunk
+- The list variable that stores the objects should transfer over to kroz_test.py and be playable
+- Multiple objects should not be able to be created in the same grid chunk
