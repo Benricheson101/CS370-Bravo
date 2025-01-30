@@ -99,6 +99,10 @@ def nearest_factor_y(yCoord):
         yCoord = yCoord - 1
     return yCoord
 
+#def cursor_grid(x):
+    
+    
+
 # Game loop
 while True:
     # Event handling
@@ -112,13 +116,13 @@ while True:
         # >= 0 to avoid negative position values
         # <= screen_height/width to prevent player from moving off the screen
         x, y = pygame.mouse.get_pos()
-        wall_cursor = Wall((x - 8, y - 20), wall_size, wall_color) # -8, -20 so mouse isn't in the way
+        # wall_cursor = Wall((x, y), wall_size, YELLOW) # -8, -20 so mouse isn't in the way
         
         if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
-            wall_placed = Wall((nearest_factor_x(x) - 8, nearest_factor_y(y) - 20), wall_size, wall_color)
+            wall_placed = Wall((grid_placed.topleft[0], grid_placed.topleft[1]), wall_size, wall_color)
             walls.append(wall_placed)
             print(f' Left Mouse clicked at {x}, {y}')
-            print(f'Wall placed at {nearest_factor_x(x) - 8}, {nearest_factor_y(y) - 20}')
+            print(f'Wall placed at {x - 8}, {y - 20}')
            
         elif event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[2]:
             x, y = pygame.mouse.get_pos()
@@ -140,41 +144,31 @@ while True:
     
     # Draw Wall
     
-    wall_cursor.draw(screen)
+    # wall_cursor.draw(screen)
     
     for wall in range(len(walls)):
         walls[wall].draw(screen)
         # print(walls)
     
     # Draw Grid
-    def draw_grid():
+    # def draw_grid():
+    grid_x = 0
+    grid_y = 0
+    grids = []
+    for y in range (screen_height // wall_size[1]):
+        for x in range (screen_width // wall_size[0]):
+                # pygame.Rect(coordinates (x,y), size (width, height), border thickness)
+            grid = pygame.draw.rect(screen, WHITE, pygame.Rect((grid_x, grid_y), (8, 20)), 1)
+            if grid.collidepoint(pygame.mouse.get_pos()):
+                grid_placed = pygame.draw.rect(screen, YELLOW, pygame.Rect((grid_x, grid_y), (8, 20)))
+                
+                
+            # print(grid)
+            grid_x += 8
         grid_x = 0
-        grid_y = 0
-        for y in range (screen_height // wall_size[1]):
-            for x in range (screen_width // wall_size[0]):
-                 # pygame.Rect(coordinates (x,y), size (width, height), border thickness)
-                pygame.draw.rect(screen, WHITE, pygame.Rect((grid_x, grid_y), (8, 20)), 1)
-                grid_x += 8
-            grid_x = 0
-            grid_y += 20
-        
-            
-            
-           
-                
-                
-                
-                
-            
-        # for x in range (screen_height // wall_size[1]):
-        #     # pygame.Rect(coordinates (x,y), size (width, height), border style)
-        #     pygame.draw.rect(screen, WHITE, pygame.Rect((0, grid_y), (8, 20)), 1)
-        #     grid_y += 20
-        # for y in range (screen_width // wall_size[0]):
-        #     pygame.draw.rect(screen, WHITE, pygame.Rect((grid_x, 0), (8, 20)), 1)
-        #     grid_x += 8
-            
-    draw_grid()
+        grid_y += 20
+        # grids.append(grid)    
+    # draw_grid()
     
     
             
@@ -182,3 +176,4 @@ while True:
     # Update the display
     pygame.display.flip()
 
+    
