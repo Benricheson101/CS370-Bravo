@@ -100,12 +100,13 @@ while True:
         
         if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
             wall_place = Wall((x - 8, y - 20), wall_size, wall_color)
-            
             walls.append(wall_place)
             # print(f' Left Mouse clicked at {x}, {y}')
             
         elif event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[2]:
             x, y = pygame.mouse.get_pos()
+            walls.pop(-1)
+            
             # print(f' Right Mouse clicked at {x}, {y}')
         
                 
