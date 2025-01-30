@@ -83,7 +83,7 @@ walls = []
 
 #wall = Wall(wall_position, wall_size, wall_color)
 
-
+# player = Player((screen_width // 2, screen_height // 2), 6, YELLOW)
 
 # Game loop
 while True:
@@ -100,12 +100,13 @@ while True:
         
         if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
             wall_place = Wall((x - 8, y - 20), wall_size, wall_color)
+            
             walls.append(wall_place)
-            print(f' Left Mouse clicked at {x}, {y}')
+            # print(f' Left Mouse clicked at {x}, {y}')
             
         elif event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[2]:
             x, y = pygame.mouse.get_pos()
-            print(f' Right Mouse clicked at {x}, {y}')
+            # print(f' Right Mouse clicked at {x}, {y}')
         
                 
     
@@ -116,13 +117,15 @@ while True:
     screen.fill(BLACK)
     
     # Draw Player
-    #player.draw(screen)
+    # player.draw(screen)
     
     # Draw Wall
     
     wall_cursor.draw(screen)
-    for wall in walls:
-        wall_place.draw(screen)
+    
+    for wall in range(len(walls)):
+        walls[wall].draw(screen)
+        # print(walls)
     
     # Draw Grid
     def draw_grid():
@@ -142,3 +145,4 @@ while True:
     
     # Update the display
     pygame.display.flip()
+
