@@ -46,3 +46,4 @@ Features to add soon:
 - Created objects (like walls) should snap to the nearest grid chunk
 - The list variable that stores the objects should transfer over to kroz_test.py and be playable
 - Multiple objects should not be able to be created in the same grid chunk
+- Cursor should not be able to go off screen and select a negative coordinate

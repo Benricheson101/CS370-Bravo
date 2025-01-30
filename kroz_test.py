@@ -1,10 +1,8 @@
 import pygame, sys
 
-
 # Window sizes (4:3)
-screen_width = 620
+screen_width = 640
 screen_height = 480
-
 
 # Initialize Pygame and check for errors
 check_errors = pygame.init()
