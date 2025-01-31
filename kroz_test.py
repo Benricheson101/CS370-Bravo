@@ -83,6 +83,16 @@ class Wall(Object):
     
     def draw(self, screen):
         return pygame.draw.rect(screen, self.color, self.rect)
+    
+    def move(self, direction): 
+        if direction == "UP":
+            self.rect.y -= 20 #  # moves player up by 20 pixels
+        if direction == "DOWN":
+            self.rect.y += 20
+        if direction == "LEFT":
+            self.rect.x -= 8
+        if direction == "RIGHT":
+            self.rect.x += 8
         
         
         
@@ -99,15 +109,22 @@ class Wall(Object):
         
 
 wall_position = [screen_width // 4, screen_height // 4]
-wall_size = [20,60]
+wall_size = [8,20]
 wall_color = BROWN
     
 wall_1 = Wall(wall_position, wall_size, wall_color)
+
+wall2_position = [screen_width // 8, screen_height // 8]
+wall2_size = [8,20]
+wall2_color = YELLOW
+    
+wall_2 = Wall(wall2_position, wall2_size, wall2_color)
 
 
 
 player = Player(game_state["player_position"], game_state["player_size"], game_state["player_color"])       
 
+wall_2_hitbox = Wall((wall2_position[0] + 2, wall2_position[1] + 2), wall2_size, wall2_color)
 
 # Game loop
 while True:
@@ -119,23 +136,35 @@ while True:
             sys.exit()
             
         # Player movement controls
+        # elif event.type == pygame.KEYDOWN:
+        #     if event.key == pygame.K_UP and collide==False:
+        #         player.move("UP") # moves player up by 20 pixels
+        #     elif event.key == pygame.K_DOWN and collide==False:
+        #         player.move("DOWN")
+        #     elif event.key == pygame.K_LEFT and collide==False:
+        #         player.move("LEFT")
+        #     elif event.key == pygame.K_RIGHT and collide==False:
+        #         player.move("RIGHT")
+        
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP and collide==False:
-                player.move("UP") # moves player up by 20 pixels
-            elif event.key == pygame.K_DOWN and collide==False:
-                player.move("DOWN")
-            elif event.key == pygame.K_LEFT and collide==False:
-                player.move("LEFT")
-            elif event.key == pygame.K_RIGHT and collide==False:
-                player.move("RIGHT")
+            print (wall_1.rect.x, wall_2.rect.x)
+            print ("Distance:", distance)
+
+            if event.key == pygame.K_UP and distance != [0, -20]:
+                wall_2.move("UP") # moves player up by 20 pixels
+            elif event.key == pygame.K_DOWN and distance != [0, 20]:
+                wall_2.move("DOWN")
+            elif event.key == pygame.K_LEFT and distance != [-8, 0]:
+                wall_2.move("LEFT")
+            elif event.key == pygame.K_RIGHT and distance != [8,0]:
+                wall_2.move("RIGHT")
     
     
             
          
     
-    
-
-    collide = player.rect.colliderect(wall_1.rect)
+    distance = [wall_1.rect.x - wall_2.rect.x, wall_1.rect.y - wall_2.rect.y]    
+    collide = pygame.Rect.colliderect(wall_1.rect, wall_2.rect)
     # if collide:
     #     print("Collision!")    
                 
@@ -151,6 +180,8 @@ while True:
     
     # Draw Wall
     wall_1.draw(screen)  
+    
+    wall_2.draw(screen)
         
     # Update the display
     pygame.display.flip()
