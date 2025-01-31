@@ -47,11 +47,12 @@ game_state = init_vars()
 # this class will also need a score and message hint attributes
 class Object:
     def __init__(self, position, size, color):
-        self.position = position
-        self.size = size
+        
         self.color = color
+        print(f"size received: {size}, type: {type(size)}")
+        self.rect = pygame.Rect(position[0], position[1], size[0], size[1])
 
-    
+        
     def draw(self, screen):
         pass # because it will be overwritten by children classes
     
@@ -83,7 +84,7 @@ class Wall(Object):
     
 # class Whip(Object):
         
-player = Player(game_state["player_position"], game_state["player_size"], game_state["player_color"])
+# player = Player(game_state["player_position"], game_state["player_size"], game_state["player_color"])
         
 
 wall_position = [screen_width // 4, screen_height // 4]
@@ -128,7 +129,7 @@ while True:
     screen.fill(BLACK)
     
     # Draw Player
-    player.draw(screen)
+    # player.draw(screen)
     
     # Draw Wall
     wall_1.draw(screen)  
