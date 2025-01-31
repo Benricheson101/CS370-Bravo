@@ -46,7 +46,7 @@ game_state = init_vars()
 
 # this class will also need a score and message hint attributes
 class Object:
-    def __init__(self, position, size, color):
+    def __init__(self, position, size, color): # "position" is not an attribute of Object, just for creating Rect
         self.rect = pygame.Rect(position[0], position[1], size[0], size[1])
         self.color = color        
 
@@ -60,11 +60,21 @@ class Player(Object):
     
     def draw(self, screen):
             return pygame.draw.circle(screen, self.color, self.rect.center, self.radius)
+            
             # draw.circle expects center coordinate
     
-    # def move(self, direction):
-    #     if event.key == pygame.K_UP:
-    #             game_state["player_position"][1] -= player_step # moves player up by 20 pixels
+    def move(self, direction): 
+        if direction == "UP":
+            self.rect.y -= 20 #  # moves player up by 20 pixels
+        if direction == "DOWN":
+            self.rect.y += 20
+        if direction == "LEFT":
+            self.rect.x -= 8
+        if direction == "RIGHT":
+            self.rect.x += 8
+        # print(f"Moved {direction}: New Position - {self.rect.x}, {self.rect.y}")
+
+        
         
 
 class Wall(Object):
@@ -96,29 +106,34 @@ wall_1 = Wall(wall_position, wall_size, wall_color)
 
 
 
+player = Player(game_state["player_position"], game_state["player_size"], game_state["player_color"])       
 
 
 # Game loop
 while True:
+
     # Event handling
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        # Controls and Update player position
-        # >= 0 to avoid negative position values
-        # <= screen_height/width to prevent player from moving off the screen
+            
+        # Player movement controls
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                game_state["player_position"][1] -= player_step # moves player up by 20 pixels
+                player.move("UP") # moves player up by 20 pixels
             elif event.key == pygame.K_DOWN:
-                game_state["player_position"][1] += player_step
+                player.move("DOWN")
             elif event.key == pygame.K_LEFT:
-                game_state["player_position"][0] -= player_step
+                player.move("LEFT")
             elif event.key == pygame.K_RIGHT:
-                game_state["player_position"][0] += player_step
+                player.move("RIGHT")
     
-    player = Player(game_state["player_position"], game_state["player_size"], game_state["player_color"])
+    
+            
+         
+    
+    
 
     collide = player.rect.colliderect(wall_1.rect)
     if collide:
