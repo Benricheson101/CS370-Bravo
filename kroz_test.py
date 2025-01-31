@@ -47,27 +47,24 @@ game_state = init_vars()
 # this class will also need a score and message hint attributes
 class Object:
     def __init__(self, position, size, color):
-        
-        self.color = color
-        print(f"size received: {size}, type: {type(size)}")
         self.rect = pygame.Rect(position[0], position[1], size[0], size[1])
+        self.color = color        
 
-        
     def draw(self, screen):
         pass # because it will be overwritten by children classes
     
 class Player(Object):
-    def __init__(self, position, size, color):
-        super().__init__(position, size, color)
-        # self.rect = pygame.Rect(position[0], position[1], size[0], size[1])
+    def __init__(self, position, radius, color):
+        super().__init__(position, (radius * 2, radius * 2), color) # The bounding box is radius * 2
+        self.radius = radius
     
     def draw(self, screen):
-            return pygame.draw.circle(screen, self.color, self.position, self.size)
+            return pygame.draw.circle(screen, self.color, self.rect.center, self.radius)
+            # draw.circle expects center coordinate
 
 class Wall(Object):
     def __init__(self, position, size, color):
         super().__init__(position, size, color)
-        self.rect = pygame.Rect(position[0], position[1], size[0], size[1])
     
     def draw(self, screen):
         return pygame.draw.rect(screen, self.color, self.rect)
@@ -84,7 +81,6 @@ class Wall(Object):
     
 # class Whip(Object):
         
-# player = Player(game_state["player_position"], game_state["player_size"], game_state["player_color"])
         
 
 wall_position = [screen_width // 4, screen_height // 4]
@@ -93,7 +89,6 @@ wall_color = BROWN
     
 wall_1 = Wall(wall_position, wall_size, wall_color)
 
-wall_2 = Wall(wall_position, wall_size, wall_color)
 
 
 
@@ -117,9 +112,12 @@ while True:
                 game_state["player_position"][0] -= player_step
             elif event.key == pygame.K_RIGHT and game_state["player_position"][0] - player_step <= screen_width:
                 game_state["player_position"][0] += player_step
-    # collide = wall_2.rect.colliderect(wall_1.rect)
-    # if collide:
-    #     print("Collision!")    
+    
+    player = Player(game_state["player_position"], game_state["player_size"], game_state["player_color"])
+
+    collide = player.rect.colliderect(wall_1.rect)
+    if collide:
+        print("Collision!")    
                 
     
 
@@ -129,12 +127,10 @@ while True:
     screen.fill(BLACK)
     
     # Draw Player
-    # player.draw(screen)
+    player.draw(screen)
     
     # Draw Wall
     wall_1.draw(screen)  
-    
-    wall_2.draw(screen)
-    
+        
     # Update the display
     pygame.display.flip()
