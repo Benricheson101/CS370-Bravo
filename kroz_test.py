@@ -61,6 +61,11 @@ class Player(Object):
     def draw(self, screen):
             return pygame.draw.circle(screen, self.color, self.rect.center, self.radius)
             # draw.circle expects center coordinate
+    
+    # def move(self, direction):
+    #     if event.key == pygame.K_UP:
+    #             game_state["player_position"][1] -= player_step # moves player up by 20 pixels
+        
 
 class Wall(Object):
     def __init__(self, position, size, color):
@@ -104,13 +109,13 @@ while True:
         # >= 0 to avoid negative position values
         # <= screen_height/width to prevent player from moving off the screen
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP and game_state["player_position"][1] - player_step >= 0:
+            if event.key == pygame.K_UP:
                 game_state["player_position"][1] -= player_step # moves player up by 20 pixels
-            elif event.key == pygame.K_DOWN and game_state["player_position"][1] - player_step <= screen_height:
+            elif event.key == pygame.K_DOWN:
                 game_state["player_position"][1] += player_step
-            elif event.key == pygame.K_LEFT and game_state["player_position"][0] - player_step >= 0:
+            elif event.key == pygame.K_LEFT:
                 game_state["player_position"][0] -= player_step
-            elif event.key == pygame.K_RIGHT and game_state["player_position"][0] - player_step <= screen_width:
+            elif event.key == pygame.K_RIGHT:
                 game_state["player_position"][0] += player_step
     
     player = Player(game_state["player_position"], game_state["player_size"], game_state["player_color"])
