@@ -116,19 +116,18 @@ while True:
         # >= 0 to avoid negative position values
         # <= screen_height/width to prevent player from moving off the screen
         x, y = pygame.mouse.get_pos()
-        # wall_cursor = Wall((x, y), wall_size, YELLOW) # -8, -20 so mouse isn't in the way
+        
         
         if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
             wall_placed = Wall((grid_placed.topleft[0], grid_placed.topleft[1]), wall_size, wall_color)
             walls.append(wall_placed)
-            print(f' Left Mouse clicked at {x}, {y}')
-            print(f'Wall placed at {x - 8}, {y - 20}')
+            # print(f' Left Mouse clicked at {x}, {y}')
+            # print(f'Wall placed at {x - 8}, {y - 20}')
            
         elif event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[2]:
             x, y = pygame.mouse.get_pos()
             if len(walls) != 0:
                 walls.pop(-1)
-            
             # print(f' Right Mouse clicked at {x}, {y}')
         
                 
@@ -144,7 +143,7 @@ while True:
     
     # Draw Wall
     
-    # wall_cursor.draw(screen)
+    
     
     for wall in range(len(walls)):
         walls[wall].draw(screen)

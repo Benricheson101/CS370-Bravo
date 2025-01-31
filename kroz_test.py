@@ -50,6 +50,7 @@ class Object:
         self.position = position
         self.size = size
         self.color = color
+
     
     def draw(self, screen):
         pass # because it will be overwritten by children classes
@@ -60,8 +61,7 @@ class Player(Object):
         # self.rect = pygame.Rect(position[0], position[1], size[0], size[1])
     
     def draw(self, screen):
-        for pos in self.position:
-            pygame.draw.circle(screen, self.color, self.position, self.size)
+            return pygame.draw.circle(screen, self.color, self.position, self.size)
 
 class Wall(Object):
     def __init__(self, position, size, color):
@@ -69,7 +69,7 @@ class Wall(Object):
         self.rect = pygame.Rect(position[0], position[1], size[0], size[1])
     
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
+        return pygame.draw.rect(screen, self.color, self.rect)
         
         
         
@@ -92,8 +92,9 @@ wall_color = BROWN
     
 wall_1 = Wall(wall_position, wall_size, wall_color)
 
-# collide = pygame.Rect.colliderect(player, 
-#                                       wall_1)
+wall_2 = Wall(wall_position, wall_size, wall_color)
+
+
 
 
 # Game loop
@@ -115,8 +116,9 @@ while True:
                 game_state["player_position"][0] -= player_step
             elif event.key == pygame.K_RIGHT and game_state["player_position"][0] - player_step <= screen_width:
                 game_state["player_position"][0] += player_step
-        # if collide:
-        #     print("Collision!")
+    # collide = wall_2.rect.colliderect(wall_1.rect)
+    # if collide:
+    #     print("Collision!")    
                 
     
 
@@ -130,6 +132,8 @@ while True:
     
     # Draw Wall
     wall_1.draw(screen)  
+    
+    wall_2.draw(screen)
     
     # Update the display
     pygame.display.flip()
