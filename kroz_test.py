@@ -120,13 +120,13 @@ while True:
             
         # Player movement controls
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
+            if event.key == pygame.K_UP and collide==False:
                 player.move("UP") # moves player up by 20 pixels
-            elif event.key == pygame.K_DOWN:
+            elif event.key == pygame.K_DOWN and collide==False:
                 player.move("DOWN")
-            elif event.key == pygame.K_LEFT:
+            elif event.key == pygame.K_LEFT and collide==False:
                 player.move("LEFT")
-            elif event.key == pygame.K_RIGHT:
+            elif event.key == pygame.K_RIGHT and collide==False:
                 player.move("RIGHT")
     
     
@@ -136,8 +136,8 @@ while True:
     
 
     collide = player.rect.colliderect(wall_1.rect)
-    if collide:
-        print("Collision!")    
+    # if collide:
+    #     print("Collision!")    
                 
     
 
