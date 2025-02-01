@@ -5,7 +5,7 @@ from kroz_level import Wall  # Import Wall so unpickling works
 with open("walls.pkl", "rb") as f:
     walls = pickle.load(f)
 
-print(walls)
+
 
 # Window sizes (4:3)
 screen_width = 640
@@ -101,7 +101,11 @@ class Wall(Object):
         if direction == "RIGHT":
             self.rect.x += 8
         
-        
+
+walls = [Wall((wall.rect.x, wall.rect.y), (wall.rect.width, wall.rect.height), BROWN) for wall in walls]
+# <__main__.Wall object at 0x00000268748EA960>
+    
+print(walls)        
         
 # damage, speed, graphics, 2 states of behavior (idle and chase)
 # class Enemy(Object):

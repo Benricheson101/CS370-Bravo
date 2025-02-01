@@ -53,8 +53,8 @@ Bugs:
     FIXED:
     - Cursor can go outside of grid and select negative coordinates
     - If nothing is drawn on the screen, and rmb is selected, the program crashes
-    
-    - 
+    - Importing walls list returns an empty list, or the Object "is not importable"
+    - Importing walls list returns a kroz_level.Wall object instead of a __main__.Wall object
 
     WIP:
     - Multiple objects should not be able to be created in the same grid chunk
