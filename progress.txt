@@ -1,36 +1,33 @@
 
-1/26
 kroz_test.py progress
-NOTE: this can be converted into a markdown (.md) file, I am just not comfortable with the format as of now.
 
 Current features:
 
 - Game window (remains open until closed by player)
 - Player icon (yellow circle)
 - Movable player
+- Walls
+- Collision detection between objects (like player and enemy)
+- Collision detection between player and walls
 
-Features to add soon:
+Features to add:
 
 - Diagonal movement (In actual Kroz game, diagonal movements are binded to separate keys)
 - Collecting gems (at this point it can just be another shape of a different color)
 - Gem and score tracking (10 points for collecting one gem)
-
-
-Bugs:
-
-- In lines 59 and 63 (in Game Loop section), there is a conditional to prevent player from moving off the 
-screen, but it currently doesn't work
-
-
-Features to add in the future:
-
 - "Creatures" that attack the player
 - Breakable and unbreakable walls
 - Text message that describes objects like gems and walls
 
 
+Bugs:
 
-1/29
+- In lines 59 and 63 (in Game Loop section), there is a conditional to prevent player from moving off the 
+screen, but it currently doesn't work - FIXED
+
+
+
+
 kroz_level.py progress
 
 Current features:
@@ -40,10 +37,16 @@ Current features:
 - Creating walls and other shapes with left click
 - Undoing previous creations with right click (unless there is nothing on screen)
 - The wall is drawn in real-time and moves with the cursor
+- Created objects (like walls) snap to the nearest grid chunk
+- Grid drawing is modular, so only 3 variables need to be edited
 
-Features to add soon:
+Features to add:
 
-- Created objects (like walls) should snap to the nearest grid chunk
 - The list variable that stores the objects should transfer over to kroz_test.py and be playable
+
+Bugs:
+- Cursor can go outside of grid and select negative coordinates - FIXED
+- If nothing is drawn on the screen, and rmb is selected, the program crashes - FIXED
 - Multiple objects should not be able to be created in the same grid chunk
-- Cursor should not be able to go off screen and select a negative coordinate
+
+
