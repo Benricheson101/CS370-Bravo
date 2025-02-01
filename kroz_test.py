@@ -3,7 +3,7 @@ import pickle # for importing placed walls from kroz_level.py
 from kroz_level import Wall  # Import Wall so unpickling works
 
 with open("walls.pkl", "rb") as f:
-    walls = pickle.load(f)
+    walls = pickle.load(f) # load placed wall data
 
 
 
@@ -35,16 +35,13 @@ YELLOW = pygame.Color(255, 255, 0)
 BROWN = pygame.Color(125, 50, 0)
 
 
-# Player properties
-global player_step
-player_step = 20 # player moves x pixels for each step
 
 # Function to initialize game variables
 def init_vars(): 
     return {
-        "player_position": [screen_width // 2, screen_height // 2],
+        "player_position": [50, 125],
         "player_color": YELLOW,
-        "player_size": 8, # radius of circle
+        "player_size": [10, 25], # radius of circle
         "direction": "UP"
     }
 
@@ -61,37 +58,6 @@ class Object:
     def draw(self, screen):
         pass # because it will be overwritten by children classes
     
-class Player(Object):
-    def __init__(self, position, radius, color):
-        super().__init__(position, (radius * 2, radius * 2), color) # The bounding box is radius * 2
-        self.radius = radius
-    
-    def draw(self, screen):
-            return pygame.draw.circle(screen, self.color, self.rect.center, self.radius)
-            
-            # draw.circle expects center coordinate
-    
-    def move(self, direction): 
-        if direction == "UP":
-            self.rect.y -= 20 #  # moves player up by 20 pixels
-        if direction == "DOWN":
-            self.rect.y += 20
-        if direction == "LEFT":
-            self.rect.x -= 8
-        if direction == "RIGHT":
-            self.rect.x += 8
-        # print(f"Moved {direction}: New Position - {self.rect.x}, {self.rect.y}")
-
-        
-        
-
-class Wall(Object):
-    def __init__(self, position, size, color):
-        super().__init__(position, size, color)
-    
-    def draw(self, screen):
-        return pygame.draw.rect(screen, self.color, self.rect)
-    
     def move(self, direction): 
         if direction == "UP":
             self.rect.y -= self.size[1] #  # moves player up by 20 pixels
@@ -101,13 +67,34 @@ class Wall(Object):
             self.rect.x -= self.size[0]
         if direction == "RIGHT":
             self.rect.x += self.size[0]
-        
-
-walls = [Wall((wall.rect.x, wall.rect.y), (wall.rect.width, wall.rect.height), BROWN) for wall in walls]
-# <__main__.Wall object at 0x00000268748EA960>
     
-# print(walls)        
-        
+class Player(Object):
+    def __init__(self, position, size, color):
+        super().__init__(position, size, color)
+    
+    def draw(self, screen):
+        return pygame.draw.rect(screen, self.color, self.rect)
+    
+    
+    # def __init__(self, position, radius, color):
+    #     super().__init__(position, (radius * 2, radius * 2), color) # The bounding box is radius * 2
+    #     self.radius = radius
+    
+    # def draw(self, screen):
+    #         return pygame.draw.circle(screen, self.color, self.rect.center, self.radius)
+    #         # draw.circle expects center coordinate
+    
+    
+    
+
+class Wall(Object):
+    def __init__(self, position, size, color):
+        super().__init__(position, size, color)
+    
+    def draw(self, screen):
+        return pygame.draw.rect(screen, self.color, self.rect)
+
+    
 # damage, speed, graphics, 2 states of behavior (idle and chase)
 # class Enemy(Object):
     # class Enemy_fast(Enemy)
@@ -116,29 +103,19 @@ walls = [Wall((wall.rect.x, wall.rect.y), (wall.rect.width, wall.rect.height), B
 
 # class Gem(Object):
     
-# class Whip(Object):
+# class Whip(Object):   
         
+
+walls = [Wall((wall.rect.x, wall.rect.y), (wall.rect.width, wall.rect.height), BROWN) for wall in walls]
+# <__main__.Wall object at 0x00000268748EA960>
+# print(walls)        
         
-
-wall_position = [screen_width // 4, screen_height // 4]
-wall_size = [8,20]
-wall_color = BROWN
-    
-wall_1 = Wall(wall_position, wall_size, wall_color)
-
-wall2_position = [50, 125]
-wall2_size = [10,25]
-wall2_color = YELLOW
-    
-wall_2 = Wall(wall2_position, wall2_size, wall2_color)
-
-
-
 player = Player(game_state["player_position"], game_state["player_size"], game_state["player_color"])       
 
 distances = []
 for i in range(len(walls)):
     distances.append(0) # fill distances with 0 so it's not empty
+
 
 # Game loop
 while True:
@@ -149,42 +126,35 @@ while True:
             pygame.quit()
             sys.exit()
             
-        # Player movement controls
-        # elif event.type == pygame.KEYDOWN:
-        #     if event.key == pygame.K_UP and collide==False:
-        #         player.move("UP") # moves player up by 20 pixels
-        #     elif event.key == pygame.K_DOWN and collide==False:
-        #         player.move("DOWN")
-        #     elif event.key == pygame.K_LEFT and collide==False:
-        #         player.move("LEFT")
-        #     elif event.key == pygame.K_RIGHT and collide==False:
-        #         player.move("RIGHT")
         
         elif event.type == pygame.KEYDOWN:
             # print (walls[0].rect.x, wall_2.rect.x)
-            # print ("Distance:", distances)
+            print ("Distance:", distances)
             
-
-            if event.key == pygame.K_UP and [0, - wall2_size[1]] not in distances: # 25
-                wall_2.move("UP") # moves player up by 20 pixels
-            elif event.key == pygame.K_DOWN and [0, wall2_size[1]] not in distances:
-                wall_2.move("DOWN")
-            elif event.key == pygame.K_LEFT and [-wall2_size[0], 0] not in distances: # 10
-                wall_2.move("LEFT")
-            elif event.key == pygame.K_RIGHT and [wall2_size[0],0] not in distances:
-                wall_2.move("RIGHT")
+            
+            if event.key == pygame.K_UP and [0, - game_state["player_size"][1]] not in distances: # 25
+                player.move("UP") # moves player up by 20 pixels
+            elif event.key == pygame.K_DOWN and [0, game_state["player_size"][1]] not in distances:
+                player.move("DOWN")
+            elif event.key == pygame.K_LEFT and [- game_state["player_size"][0], 0] not in distances: # 10
+                player.move("LEFT")
+            elif event.key == pygame.K_RIGHT and [game_state["player_size"][0], 0] not in distances:
+                player.move("RIGHT")
             else:
                 print("This is a wall")
             
     for i in range(len(walls)):
-        distances[i] = [walls[i].rect.x - wall_2.rect.x, walls[i].rect.y - wall_2.rect.y] 
-    # distance = [walls[0].rect.x - wall_2.rect.x, walls[0].rect.y - wall_2.rect.y]    
-    collide = pygame.Rect.colliderect(wall_1.rect, wall_2.rect)
-    # if collide:
-    #     print("Collision!")    
-                
+        distances[i] = [walls[i].rect.x - player.rect.x, walls[i].rect.y - player.rect.y] 
     
+    
+    
+    # Collision code (this can be used for Player and Enemy)           
+    # collide = pygame.Rect.colliderect(wall_1.rect, wall_2.rect)
+    # if collide:
+    #     print("Collision!") 
+    # if event.key == pygame.K_UP and collide==False:      
 
+    
     # Graphics
     
     # Draw background
@@ -194,9 +164,6 @@ while True:
     player.draw(screen)
     
     # Draw Wall
-    wall_1.draw(screen)  
-    
-    wall_2.draw(screen)
     
     for wall in walls:
         wall.draw(screen)

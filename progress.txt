@@ -32,6 +32,8 @@ Bugs:
 
 
     WIP:
+    - The collision code between the player and wall doesn't work becaues of the differences in the size 
+    attribute between pygame.draw.rect and pygame.draw.circle.
 
 
 
