@@ -80,99 +80,91 @@ class Wall(Object):
             
 # Instance of Wall class   
 wall_position = [screen_width - 16, screen_height // 2 ]
-wall_size = [8, 20]
+# 2:5
+wall_size = [10, 25]
 wall_color = BROWN
 
 walls = []
 
-#wall = Wall(wall_position, wall_size, wall_color)
 
-# player = Player((screen_width // 2, screen_height // 2), 6, YELLOW)
-
-def nearest_factor_x(xCoord):
-    if xCoord % 8 != 0:
-        xCoord = xCoord - 1
-    return xCoord
-
-def nearest_factor_y(yCoord):
-    if yCoord % 20 != 0:
-        yCoord = yCoord - 1
-    return yCoord
-
-#def cursor_grid(x):
     
     
 
 # Game loop
-while True:
-    # Event handling
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            # save_level()
-            pygame.quit()
-            sys.exit()
-            
-        # Controls and Update player position
-        # >= 0 to avoid negative position values
-        # <= screen_height/width to prevent player from moving off the screen
-        x, y = pygame.mouse.get_pos()
-        
-        
-        if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
-            wall_placed = Wall((grid_placed.topleft[0], grid_placed.topleft[1]), wall_size, wall_color)
-            walls.append(wall_placed)
-            # print(f' Left Mouse clicked at {x}, {y}')
-            # print(f'Wall placed at {x - 8}, {y - 20}')
-           
-        elif event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[2]:
+if __name__ == "__main__":
+    while True:
+        # Event handling
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                # save_level()
+                pygame.quit()
+                sys.exit()
+                
+            # Controls and Update player position
+            # >= 0 to avoid negative position values
+            # <= screen_height/width to prevent player from moving off the screen
             x, y = pygame.mouse.get_pos()
-            if len(walls) != 0:
-                walls.pop(-1)
-            # print(f' Right Mouse clicked at {x}, {y}')
+            
+            
+            if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
+                wall_placed = Wall((grid_placed.topleft[0], grid_placed.topleft[1]), wall_size, wall_color)
+                walls.append(wall_placed)
+                print(walls)
+                # print(f' Left Mouse clicked at {x}, {y}')
+                print(f'Wall placed at {grid_placed.topleft[0]}, {grid_placed.topleft[1]}')
+            
+            # If rmb pressed and there's nothing placed, nothing will happen
+            elif event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[2]:
+                x, y = pygame.mouse.get_pos()
+                if len(walls) != 0:
+                    walls.pop(-1)
+                # print(f' Right Mouse clicked at {x}, {y}')
+            
+                    
+        
+
+        # Graphics
+        
+        # Draw background
+        screen.fill(BLACK)
+        
+        # Draw Player
+        # player.draw(screen)
+        
+        # Draw Wall
+        
+        
+        
+        for wall in range(len(walls)):
+            walls[wall].draw(screen)
+            # print(walls)
+        
+        # Draw Grid
+        # def draw_grid():
+        grid_x = 0
+        grid_y = 0
+        grids = []
+        for y in range (screen_height // wall_size[1]):
+            for x in range (screen_width // wall_size[0]):
+                    # pygame.Rect(coordinates (x,y), size (width, height), border thickness)
+                grid = pygame.draw.rect(screen, WHITE, pygame.Rect((grid_x, grid_y), 
+                                                                   (wall_size[0], wall_size[1])), 1)
+                if grid.collidepoint(pygame.mouse.get_pos()):
+                    grid_placed = pygame.draw.rect(screen, YELLOW, pygame.Rect((grid_x, grid_y), 
+                                                                               (wall_size[0], wall_size[1])))
+                    
+                    
+                # print(grid)
+                grid_x += wall_size[0]
+            grid_x = 0
+            grid_y += wall_size[1]
+            # grids.append(grid)    
+        # draw_grid()
+        
         
                 
-    
-
-    # Graphics
-    
-    # Draw background
-    screen.fill(BLACK)
-    
-    # Draw Player
-    # player.draw(screen)
-    
-    # Draw Wall
-    
-    
-    
-    for wall in range(len(walls)):
-        walls[wall].draw(screen)
-        # print(walls)
-    
-    # Draw Grid
-    # def draw_grid():
-    grid_x = 0
-    grid_y = 0
-    grids = []
-    for y in range (screen_height // wall_size[1]):
-        for x in range (screen_width // wall_size[0]):
-                # pygame.Rect(coordinates (x,y), size (width, height), border thickness)
-            grid = pygame.draw.rect(screen, WHITE, pygame.Rect((grid_x, grid_y), (8, 20)), 1)
-            if grid.collidepoint(pygame.mouse.get_pos()):
-                grid_placed = pygame.draw.rect(screen, YELLOW, pygame.Rect((grid_x, grid_y), (8, 20)))
-                
-                
-            # print(grid)
-            grid_x += 8
-        grid_x = 0
-        grid_y += 20
-        # grids.append(grid)    
-    # draw_grid()
-    
-    
-            
-    
-    # Update the display
-    pygame.display.flip()
+        
+        # Update the display
+        pygame.display.flip()
 
     

@@ -1,4 +1,7 @@
 import pygame, sys
+from kroz_level import walls
+
+print(walls)
 
 # Window sizes (4:3)
 screen_width = 640
@@ -147,8 +150,8 @@ while True:
         #         player.move("RIGHT")
         
         elif event.type == pygame.KEYDOWN:
-            print (wall_1.rect.x, wall_2.rect.x)
-            print ("Distance:", distance)
+            # print (wall_1.rect.x, wall_2.rect.x)
+            # print ("Distance:", distance)
 
             if event.key == pygame.K_UP and distance != [0, -20]:
                 wall_2.move("UP") # moves player up by 20 pixels
