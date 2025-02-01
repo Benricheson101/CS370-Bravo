@@ -5,6 +5,7 @@
 # Save a created level with a file name, and then play it
 
 import pygame, sys
+import pickle
 
 
 # Window sizes (4:3)
@@ -87,7 +88,10 @@ wall_color = BROWN
 walls = []
 
 
-    
+# Function for saving placed walls
+def save_walls():
+    with open("walls.pkl", "wb") as f:
+        pickle.dump(walls, f)
     
 
 # Game loop
@@ -96,20 +100,18 @@ if __name__ == "__main__":
         # Event handling
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                # save_level()
+                save_walls()
                 pygame.quit()
                 sys.exit()
                 
-            # Controls and Update player position
-            # >= 0 to avoid negative position values
-            # <= screen_height/width to prevent player from moving off the screen
+    
             x, y = pygame.mouse.get_pos()
             
             
             if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
                 wall_placed = Wall((grid_placed.topleft[0], grid_placed.topleft[1]), wall_size, wall_color)
                 walls.append(wall_placed)
-                print(walls)
+                print(wall_placed)
                 # print(f' Left Mouse clicked at {x}, {y}')
                 print(f'Wall placed at {grid_placed.topleft[0]}, {grid_placed.topleft[1]}')
             

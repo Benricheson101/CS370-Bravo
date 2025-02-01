@@ -21,9 +21,14 @@ Features to add:
 
 
 Bugs:
+    FIXED:
+    - In lines 59 and 63 (in Game Loop section), there is a conditional to prevent player from moving off the 
+    screen, but it currently doesn't work
+    - the player clipping into the wall and not being able to move.
+    - importing variables from kroz_level.py results in executing only kroz_level.py
 
-- In lines 59 and 63 (in Game Loop section), there is a conditional to prevent player from moving off the 
-screen, but it currently doesn't work - FIXED
+    WIP:
+    - list of placed walls from kroz_level.py is not importing correctly
 
 
 
@@ -45,8 +50,14 @@ Features to add:
 - The list variable that stores the objects should transfer over to kroz_test.py and be playable
 
 Bugs:
-- Cursor can go outside of grid and select negative coordinates - FIXED
-- If nothing is drawn on the screen, and rmb is selected, the program crashes - FIXED
-- Multiple objects should not be able to be created in the same grid chunk
+    FIXED:
+    - Cursor can go outside of grid and select negative coordinates
+    - If nothing is drawn on the screen, and rmb is selected, the program crashes
+    
+    - 
+
+    WIP:
+    - Multiple objects should not be able to be created in the same grid chunk
+    - the drawn circle for the player is not centered
 
 

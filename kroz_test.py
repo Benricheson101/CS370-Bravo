@@ -1,5 +1,9 @@
 import pygame, sys
-from kroz_level import walls
+import pickle # for importing placed walls from kroz_level.py
+from kroz_level import Wall  # Import Wall so unpickling works
+
+with open("walls.pkl", "rb") as f:
+    walls = pickle.load(f)
 
 print(walls)
 
