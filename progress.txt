@@ -9,6 +9,8 @@ Current features:
 - Walls
 - Collision detection between objects (like player and enemy)
 - Collision detection between player and walls
+- Collision detection between player and walls needs to be for all Wall objects, not just specific instances
+- Modularized player movement values
 
 Features to add:
 
@@ -26,9 +28,10 @@ Bugs:
     screen, but it currently doesn't work
     - the player clipping into the wall and not being able to move.
     - importing variables from kroz_level.py results in executing only kroz_level.py
+    - list of placed walls from kroz_level.py is not importing correctly
+
 
     WIP:
-    - list of placed walls from kroz_level.py is not importing correctly
 
 
 
@@ -44,10 +47,12 @@ Current features:
 - The wall is drawn in real-time and moves with the cursor
 - Created objects (like walls) snap to the nearest grid chunk
 - Grid drawing is modular, so only 3 variables need to be edited
+- The list variable that stores the objects should transfer over to kroz_test.py and be playable
 
 Features to add:
 
-- The list variable that stores the objects should transfer over to kroz_test.py and be playable
+- User can turn grid on and off with g
+- User can select different objects to place down (items and enemies)
 
 Bugs:
     FIXED:

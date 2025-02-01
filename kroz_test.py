@@ -55,7 +55,8 @@ game_state = init_vars()
 class Object:
     def __init__(self, position, size, color): # "position" is not an attribute of Object, just for creating Rect
         self.rect = pygame.Rect(position[0], position[1], size[0], size[1])
-        self.color = color        
+        self.color = color
+        self.size = size # "size" was not an attribute of Object, just for creating Rect        
 
     def draw(self, screen):
         pass # because it will be overwritten by children classes
@@ -93,19 +94,19 @@ class Wall(Object):
     
     def move(self, direction): 
         if direction == "UP":
-            self.rect.y -= 20 #  # moves player up by 20 pixels
+            self.rect.y -= self.size[1] #  # moves player up by 20 pixels
         if direction == "DOWN":
-            self.rect.y += 20
+            self.rect.y += self.size[1]
         if direction == "LEFT":
-            self.rect.x -= 8
+            self.rect.x -= self.size[0]
         if direction == "RIGHT":
-            self.rect.x += 8
+            self.rect.x += self.size[0]
         
 
 walls = [Wall((wall.rect.x, wall.rect.y), (wall.rect.width, wall.rect.height), BROWN) for wall in walls]
 # <__main__.Wall object at 0x00000268748EA960>
     
-print(walls)        
+# print(walls)        
         
 # damage, speed, graphics, 2 states of behavior (idle and chase)
 # class Enemy(Object):
@@ -125,8 +126,8 @@ wall_color = BROWN
     
 wall_1 = Wall(wall_position, wall_size, wall_color)
 
-wall2_position = [screen_width // 8, screen_height // 8]
-wall2_size = [8,20]
+wall2_position = [50, 125]
+wall2_size = [10,25]
 wall2_color = YELLOW
     
 wall_2 = Wall(wall2_position, wall2_size, wall2_color)
@@ -135,7 +136,9 @@ wall_2 = Wall(wall2_position, wall2_size, wall2_color)
 
 player = Player(game_state["player_position"], game_state["player_size"], game_state["player_color"])       
 
-wall_2_hitbox = Wall((wall2_position[0] + 2, wall2_position[1] + 2), wall2_size, wall2_color)
+distances = []
+for i in range(len(walls)):
+    distances.append(0) # fill distances with 0 so it's not empty
 
 # Game loop
 while True:
@@ -158,23 +161,24 @@ while True:
         #         player.move("RIGHT")
         
         elif event.type == pygame.KEYDOWN:
-            # print (wall_1.rect.x, wall_2.rect.x)
-            # print ("Distance:", distance)
-
-            if event.key == pygame.K_UP and distance != [0, -20]:
-                wall_2.move("UP") # moves player up by 20 pixels
-            elif event.key == pygame.K_DOWN and distance != [0, 20]:
-                wall_2.move("DOWN")
-            elif event.key == pygame.K_LEFT and distance != [-8, 0]:
-                wall_2.move("LEFT")
-            elif event.key == pygame.K_RIGHT and distance != [8,0]:
-                wall_2.move("RIGHT")
-    
-    
+            # print (walls[0].rect.x, wall_2.rect.x)
+            # print ("Distance:", distances)
             
-         
-    
-    distance = [wall_1.rect.x - wall_2.rect.x, wall_1.rect.y - wall_2.rect.y]    
+
+            if event.key == pygame.K_UP and [0, - wall2_size[1]] not in distances: # 25
+                wall_2.move("UP") # moves player up by 20 pixels
+            elif event.key == pygame.K_DOWN and [0, wall2_size[1]] not in distances:
+                wall_2.move("DOWN")
+            elif event.key == pygame.K_LEFT and [-wall2_size[0], 0] not in distances: # 10
+                wall_2.move("LEFT")
+            elif event.key == pygame.K_RIGHT and [wall2_size[0],0] not in distances:
+                wall_2.move("RIGHT")
+            else:
+                print("This is a wall")
+            
+    for i in range(len(walls)):
+        distances[i] = [walls[i].rect.x - wall_2.rect.x, walls[i].rect.y - wall_2.rect.y] 
+    # distance = [walls[0].rect.x - wall_2.rect.x, walls[0].rect.y - wall_2.rect.y]    
     collide = pygame.Rect.colliderect(wall_1.rect, wall_2.rect)
     # if collide:
     #     print("Collision!")    
@@ -193,6 +197,9 @@ while True:
     wall_1.draw(screen)  
     
     wall_2.draw(screen)
+    
+    for wall in walls:
+        wall.draw(screen)
         
     # Update the display
     pygame.display.flip()
