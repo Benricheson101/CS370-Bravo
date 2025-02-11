@@ -1,15 +1,10 @@
+import sys
 import pygame
-pygame.init()
+import pygame.freetype
 import random
 from enum import Enum
 from dataclasses import dataclass
 from typing import Optional, Tuple, Dict
-import winsound, sys
-
-def beep(a: int, b: int):
-    if sys.platform == "win32":
-        import winsound
-        winsound.Beep(a, b)
 
 # Initialize Pygame
 pygame.init()
@@ -18,9 +13,11 @@ pygame.mixer.init()
 # Constants
 TILE_SIZE = 32
 GRID_WIDTH = 36
+SCOREBOARD_WIDTH = 13
 GRID_HEIGHT = 20
-SCREEN_WIDTH = GRID_WIDTH * TILE_SIZE
+SCREEN_WIDTH = (GRID_WIDTH + SCOREBOARD_WIDTH) * TILE_SIZE
 SCREEN_HEIGHT = GRID_HEIGHT * TILE_SIZE
+SCOREBOARD_BEGIN = GRID_WIDTH * TILE_SIZE
 FPS = 60
 
 # Colors
@@ -37,6 +34,11 @@ COLORS = {
     'gray': (128, 128, 128)
 }
 
+def beep(a: int, b: int):
+    if sys.platform == "win32":
+        import winsound
+        winsound.Beep(a, b)
+
 class TileType(Enum):
     VOID = -1
     EMPTY = 0
@@ -47,6 +49,7 @@ class TileType(Enum):
     ENEMY_FAST = 5
     STAIRS = 6
     PLAYER = 7
+    CHAR = 8
 
 class Tile:
     def __init__(self, tile_type: TileType, walkable: bool = True, symbol: str = " "):
@@ -54,7 +57,7 @@ class Tile:
         self.walkable = walkable
         self.symbol = symbol
         self.color = COLORS['white']
-   
+
     def render(self, surface: pygame.Surface, x: int, y: int, tile_size: int):
         pass
 
@@ -70,7 +73,7 @@ class WallTile(Tile):
     def __init__(self):
         super().__init__(TileType.WALL, False, "█")
         self.color = COLORS['brown']
-   
+
     def render(self, surface: pygame.Surface, x: int, y: int, tile_size: int):
         pygame.draw.rect(surface, self.color,
                         (x * tile_size, y * tile_size, tile_size, tile_size))
@@ -79,7 +82,7 @@ class GemTile(Tile):
     def __init__(self):
         super().__init__(TileType.GEM, True, "♦")
         self.color = COLORS['cyan']
-   
+
     def render(self, surface: pygame.Surface, x: int, y: int, tile_size: int):
         font = pygame.font.Font(None, tile_size)
         text = font.render(self.symbol, True, self.color)
@@ -91,7 +94,7 @@ class EnemyTile(Tile):
     def __init__(self, enemy_type: TileType, symbol: str, color: Tuple[int, int, int]):
         super().__init__(enemy_type, False, symbol)
         self.color = color
-   
+
     def render(self, surface: pygame.Surface, x: int, y: int, tile_size: int):
         font = pygame.font.Font(None, tile_size)
         text = font.render(self.symbol, True, self.color)
@@ -99,48 +102,114 @@ class EnemyTile(Tile):
                                         y * tile_size + tile_size//2))
         surface.blit(text, text_rect)
 
+class CharTile(Tile):
+    def __init__(self, char: str, fg = COLORS['white'], bg = COLORS['blue']):
+        super().__init__(TileType.CHAR, False, char)
+        self.char = char
+        self.fg = fg
+        self.bg = bg
+        # self.fg = COLORS['white']
+        # self.bg = COLORS['blue']
+
+    def render(self, surface: pygame.Surface, x: int, y: int, tile_size: int):
+        font = pygame.freetype.SysFont(["Perfect DOS VGA 437", "Courier New"], tile_size, bold=True)
+        text_surface, _ = font.render(self.char, fgcolor=self.fg, bgcolor=self.bg)
+
+        # text_rect = text_surface.convert_alpha().get_rect(center=(x * tile_size + tile_size//2,
+        #                                 y * tile_size + tile_size//2))
+
+        # FIXME: some letters (p, g, j) are positioned weirdly
+        text_rect = text_surface.convert_alpha().get_rect(midbottom=(x * tile_size + tile_size//2,
+        y * tile_size + int(tile_size * (7/8)))) # 7/8 is weird but it looks okay, idk if there's a standard we should follow or now
+        surface.blit(text_surface, text_rect)
+
 class TileMap:
     def __init__(self, width: int, height: int):
         self.tiles = [[EmptyTile() for _ in range(height)] for _ in range(width)]
         self.width = width
         self.height = height
-   
+
     def get_width(self) -> int:
         return self.width
-   
+
     def get_height(self) -> int:
         return self.height
-   
+
     def get_tile(self, x: int, y: int) -> Tile:
         if x < 0 or x >= self.width or y < 0 or y >= self.height:
             return VoidTile()
         return self.tiles[x][y]
-   
+
     def set_tile(self, x: int, y: int, tile: Tile):
         if 0 <= x < self.width and 0 <= y < self.height:
             self.tiles[x][y] = tile
-   
+
     def render(self, surface: pygame.Surface, tile_size: int):
         for x in range(self.width):
             for y in range(self.height):
                 self.tiles[x][y].render(surface, x, y, tile_size)
+
+
+class Scoreboard(TileMap):
+    def __init__(self):
+        super().__init__(SCOREBOARD_WIDTH, GRID_HEIGHT)
+        self.score = 0
+
+    def set_score(self, new_score: int):
+        self.score = new_score
+
+    def set_text(self, text: str, start_pos: tuple[int, int], fg = COLORS['white'], bg = COLORS['blue']):
+        for i, c in enumerate(text):
+            self.set_tile(start_pos[0] + i, start_pos[1], CharTile(c, fg, bg))
+
+    def render(self, surface: pygame.Surface, tile_size: int):
+        sb = pygame.Surface((SCOREBOARD_WIDTH * TILE_SIZE, SCREEN_HEIGHT))
+        rect = sb.get_rect(topleft=(SCOREBOARD_BEGIN, 0))
+
+        sb.fill(COLORS['blue'])
+
+        self.set_text("Score", (4, 0), fg=COLORS['yellow'])
+        for i in range(3, 10):
+            self.set_tile(i, 1, WallTile())
+
+        self.set_text("Level", (4, 3), fg=COLORS['yellow'])
+        for i in range(3, 10):
+            self.set_tile(i, 4, WallTile())
+
+        self.set_text("Gems", (4, 6), fg=COLORS['yellow'])
+        for i in range(3, 10):
+            self.set_tile(i, 7, WallTile())
+
+        self.set_text("Whips", (4, 9), fg=COLORS['yellow'])
+        for i in range(3, 10):
+            self.set_tile(i, 10, WallTile())
+
+        self.set_text("Teleports", (2, 12), fg=COLORS['yellow'])
+        for i in range(3, 10):
+            self.set_tile(i, 13, WallTile())
+
+
+        super().render(sb, tile_size)
+        surface.blit(sb, rect)
 
 class KrozGame:
     def __init__(self):
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Kingdom of Kroz II")
         self.clock = pygame.time.Clock()
-       
+
         # Create tile map
+        # self.tile_map = TileMap(GRID_WIDTH, GRID_HEIGHT)
         self.tile_map = TileMap(GRID_WIDTH, GRID_HEIGHT)
-       
+        self.scoreboard = Scoreboard()
+
         # Player position
         self.player_pos = [GRID_WIDTH // 2, GRID_HEIGHT // 2]
-       
+
         # Game state
         self.score = 0
         self.level = 1
-       
+
         # Initialize level
         self.init_level()
 
@@ -149,11 +218,15 @@ class KrozGame:
         for x in range(GRID_WIDTH):
             self.tile_map.set_tile(x, 0, WallTile())
             self.tile_map.set_tile(x, GRID_HEIGHT-1, WallTile())
-       
+
         for y in range(GRID_HEIGHT):
             self.tile_map.set_tile(0, y, WallTile())
             self.tile_map.set_tile(GRID_WIDTH-1, y, WallTile())
-       
+
+        # for x in range(GRID_WIDTH - SCOREBOARD_WIDTH, GRID_WIDTH):
+        #     for y in range(GRID_HEIGHT):
+        #         self.tile_map.set_tile(x, y, CharTile('A'))
+
         # Add random elements
         for x in range(1, GRID_WIDTH-1):
             for y in range(1, GRID_HEIGHT-1):
@@ -174,23 +247,23 @@ class KrozGame:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
-        
+
         # Get the state of all keys
         keys = pygame.key.get_pressed()
         new_pos = self.player_pos.copy()
-        
+
         # Movement delay variables
         MOVE_DELAY = 150  # Delay in milliseconds (higher = slower)
         current_time = pygame.time.get_ticks()
-        
+
         if not hasattr(self, "last_move_time"):
             self.last_move_time = 0  # Initialize movement time
         if current_time - self.last_move_time > MOVE_DELAY:
             if keys[pygame.K_LEFT] or keys[pygame.K_RIGHT] or keys[pygame.K_UP] or keys[pygame.K_DOWN]:
-                beep(150,20)
-                beep(100,20)
-            
-            
+                beep(150, 20)
+                beep(100, 20)
+
+
             # Movement logic
             if keys[pygame.K_LEFT]:
                 new_pos[0] -= 1
@@ -200,32 +273,32 @@ class KrozGame:
                 new_pos[1] -= 1
             elif keys[pygame.K_DOWN]:
                 new_pos[1] += 1
-                
+
             tile = self.tile_map.get_tile(new_pos[0], new_pos[1])
             if tile.walkable:
                 if isinstance(tile, GemTile):
                     self.score += 10
                     self.tile_map.set_tile(new_pos[0], new_pos[1], EmptyTile())
-                    beep(200,100)
+                    beep(200, 100)
                     # self.draw_message("gem")
                 self.player_pos = new_pos
-            
+
             elif self.score > 10:
                 self.score -= 10 # Player loses points for running into wall
-                beep(100,10)
-                beep(150,1)
+                beep(100, 10)
+                beep(150, 1)
             else:
-                beep(100,10)
-                beep(150,1)
+                beep(100, 10)
+                beep(150, 1)
                 self.draw_message("wall")
-                
-                
-            
+
+
+
             # Update the last movement time
             self.last_move_time = current_time
-       
+
         return True
-    
+
     # Message if player runs into wall
     def draw_message(self, message):
         font = pygame.font.Font(None, 36)
@@ -235,30 +308,31 @@ class KrozGame:
         elif message == "gem":
             gem_text = font.render(f'Gems give you both points and strength', True, COLORS['white'])
             self.screen.blit(gem_text, (SCREEN_WIDTH // 3, SCREEN_HEIGHT - 30))
-        
+
         pygame.display.flip()
         pygame.time.delay(700)
-    
+
     def draw(self):
         self.screen.fill(COLORS['black'])
-       
+
         # Draw tilemap
         self.tile_map.render(self.screen, TILE_SIZE)
-       
+        self.scoreboard.render(self.screen, TILE_SIZE)
+
         # Draw player
         pygame.draw.circle(self.screen, COLORS['yellow'],
                          (self.player_pos[0] * TILE_SIZE + TILE_SIZE//2,
                           self.player_pos[1] * TILE_SIZE + TILE_SIZE//2),
                          TILE_SIZE//3)
-       
+
         # Draw UI
         font = pygame.font.Font(None, 36)
         score_text = font.render(f'Score: {self.score}', True, COLORS['white'])
         level_text = font.render(f'Level: {self.level}', True, COLORS['white'])
-       
+
         self.screen.blit(score_text, (10, 10))
         self.screen.blit(level_text, (10, 50))
-       
+
         pygame.display.flip()
 
     def run(self):
