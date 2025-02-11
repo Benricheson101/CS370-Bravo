@@ -5,7 +5,7 @@ import pygame.freetype
 from enum import Enum
 from dataclasses import dataclass
 from typing import Optional, Tuple, Dict
-import winsound, sys
+import sys
 
 def beep(a: int, b: int):
     if sys.platform == "win32":
