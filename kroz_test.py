@@ -41,7 +41,7 @@ def init_vars():
     return {
         "player_position": [50, 125],
         "player_color": YELLOW,
-        "player_size": [10, 25], # radius of circle
+        "player_size": [25, 25], # radius of circle
         "direction": "UP"
     }
 

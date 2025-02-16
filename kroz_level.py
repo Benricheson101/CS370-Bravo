@@ -82,7 +82,7 @@ class Wall(Object):
 # Instance of Wall class   
 wall_position = [screen_width - 16, screen_height // 2 ]
 # 2:5
-wall_size = [10, 25]
+wall_size = [25, 25]
 wall_color = BROWN
 
 walls = []
