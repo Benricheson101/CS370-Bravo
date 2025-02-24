@@ -13,6 +13,7 @@ from constants import (
 )
 from renderer.cell_grid import Cell, CellGrid
 
+
 RED = Color(0xFF0000FF)
 GREEN = Color(0x00FF00FF)
 BLUE = Color(0x0000FFFF)
@@ -26,6 +27,7 @@ class TestCell(Cell):
 
 if __name__ == "__main__":
     pygame.init()
+
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     screen.fill(GRAY)
 
@@ -41,9 +43,9 @@ if __name__ == "__main__":
         fill=BLUE
     )
 
-    game.put(0, 0, TestCell(RED))
-    game.put(1, 1, TestCell(GREEN))
-    game.put(2, 2, TestCell(BLUE))
+    game.put((0, 0), TestCell(RED))
+    game.put((1, 1), TestCell(GREEN))
+    game.put((2, 2), TestCell(BLUE))
 
     running = True
     clock = pygame.time.Clock()
@@ -54,5 +56,6 @@ if __name__ == "__main__":
 
         game.render(screen)
         scoreboard.render(screen)
+
         pygame.display.flip()
         clock.tick(60)

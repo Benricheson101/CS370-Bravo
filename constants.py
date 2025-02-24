@@ -1,3 +1,4 @@
+# TODO: try to make this scale automatically based on display size
 SCALE = 2
 
 # The size of a single grid cell

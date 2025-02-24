@@ -55,7 +55,9 @@ class CellGrid:
 
         self.surface.fill(fill)
 
-    def put(self, col: int, row: int, sprite: Cell):
+    def put(self, pos: tuple[int, int], sprite: Cell):
+        col, row = pos
+
         assert col >= 0 and col < self.cols, "col position must be within grid bounds"
         assert row >= 0 and row < self.rows, "row position must be within grid bounds"
 

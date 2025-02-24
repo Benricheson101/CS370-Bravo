@@ -9,6 +9,7 @@ class Cell(Sprite):
 
     def __init__(self, width = GRID_CELL_WIDTH, height = GRID_CELL_HEIGHT) -> None:
         super().__init__()
+
         self.image = Surface((width, height))
         self.rect = self.image.get_rect()
 
