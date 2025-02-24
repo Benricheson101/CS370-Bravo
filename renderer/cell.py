@@ -1,5 +1,6 @@
 from typing import Optional, TYPE_CHECKING
 from pygame import Rect, Surface, Vector2
+import pygame
 from pygame.sprite import Sprite
 from constants import GRID_CELL_HEIGHT, GRID_CELL_WIDTH
 
@@ -12,7 +13,6 @@ class Cell(Sprite):
     image: Surface
     x: int
     y: int
-    # walkable: bool
 
     def __init__(self, width = GRID_CELL_WIDTH, height = GRID_CELL_HEIGHT) -> None:
         super().__init__()
@@ -32,10 +32,6 @@ class Cell(Sprite):
         assert self.grid
         return self.grid.move(pos, self)
 
-    def move_wrapping(self, move_delta: "GridPosition") -> Optional["Cell"]:
-        assert self.grid
-        return self.grid.move_wrapping(move_delta, self)
-
     def on_collision(self, cell: "Cell") -> bool:
         """
         A function that runs when another cell collides with the current cell.
@@ -43,3 +39,15 @@ class Cell(Sprite):
         Return: True to replace `cell` else `False` to prevent movement
         """
         return True
+
+    def load_sprite(self, path: str):
+        img = pygame.image.load(path)
+
+        scale_factor = self.rect.size[0] / img.get_size()[0]
+        scaled_img = pygame.transform.scale_by(img, scale_factor)
+
+        rect = scaled_img.get_rect(
+            center=self.rect.center
+        )
+
+        self.image.blit(scaled_img, rect)
