@@ -48,13 +48,13 @@ class Player:
         self.moving = False
         self.move_cooldown = 0
         self.MOVE_DELAY = 150
-   
+
     def move(self, direction):
         if self.moving or self.move_cooldown > 0:
             return
-           
+
         dx = dy = 0
-       
+
         # Movement based on Kroz directional constants
         if direction == MOVE_NORTH:
             dy = -1
@@ -72,30 +72,30 @@ class Player:
             dx, dy = -1, 1
         elif direction == MOVE_SOUTHEAST:
             dx, dy = 1, 1
-           
+
         # Calculate new position
         new_x = self.grid_x + dx
         new_y = self.grid_y + dy
-       
+
         # Check grid boundaries
         max_grid_x = (screen_width // TILE_SIZE) - 1
         max_grid_y = (screen_height // TILE_SIZE) - 1
-       
+
         if 0 <= new_x <= max_grid_x and 0 <= new_y <= max_grid_y:
             self.grid_x = new_x
             self.grid_y = new_y
             self.moving = True
             self.move_cooldown = self.MOVE_DELAY
-           
+
             # Play movement sound
             pygame.mixer.Sound.play(move_sound)
-   
+
     def update(self, dt):
         if self.move_cooldown > 0:
             self.move_cooldown -= dt
         else:
             self.moving = False
-   
+
     def draw(self, surface):
         player_x = self.grid_x * TILE_SIZE + TILE_SIZE // 2
         player_y = self.grid_y * TILE_SIZE + TILE_SIZE // 2
@@ -115,20 +115,20 @@ def main():
     clock = pygame.time.Clock()
     player = Player()
     last_time = pygame.time.get_ticks()
-   
+
     while True:
         current_time = pygame.time.get_ticks()
         dt = current_time - last_time
         last_time = current_time
-       
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-               
+
             if event.type == pygame.KEYDOWN and not player.moving:
                 keys = pygame.key.get_pressed()
-               
+
                 # Handle diagonal movement first
                 if keys[pygame.K_UP] and keys[pygame.K_LEFT]:
                     player.move(MOVE_NORTHWEST)
@@ -147,16 +147,16 @@ def main():
                     player.move(MOVE_WEST)
                 elif keys[pygame.K_RIGHT]:
                     player.move(MOVE_EAST)
-       
+
         # Update
         player.update(dt)
-       
+
         # Drawing
         screen.fill(COLORS['black'])
         draw_grid()
         player.draw(screen)
         pygame.display.flip()
-       
+
         clock.tick(60)
 
 if __name__ == "__main__":
