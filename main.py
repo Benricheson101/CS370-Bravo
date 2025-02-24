@@ -48,6 +48,7 @@ def main():
     game.put((4, 0), Wall())
     game.put((0, 1), Wall())
     game.put((5, 5), Gem())
+    game.put((20,20), Teleport())
 
     running = True
     clock = pygame.time.Clock()
