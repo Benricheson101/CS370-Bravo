@@ -4,7 +4,7 @@ from pygame.color import Color
 from pygame.sprite import Group
 from constants import GRID_CELL_HEIGHT, GRID_CELL_WIDTH
 from renderer.cell import Cell
-from util import clamped_add, wrapping_add
+from util import clamped_add
 
 
 GridPosition = tuple[int, int]
