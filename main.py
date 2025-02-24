@@ -13,8 +13,9 @@ from constants import (
     WINDOW_HEIGHT,
     WINDOW_WIDTH
 )
+from entities.gem import Gem
 from entities.player import Player
-from entities.wall import WallTile
+from entities.wall import Wall
 from renderer.cell_grid import CellGrid
 
 
@@ -43,8 +44,9 @@ def main():
     player = Player()
 
     game.put((0, 0), player)
-    game.put((4, 0), WallTile())
-    game.put((0, 1), WallTile())
+    game.put((4, 0), Wall())
+    game.put((0, 1), Wall())
+    game.put((5, 5), Gem())
 
     running = True
     clock = pygame.time.Clock()

@@ -12,17 +12,16 @@ class Player(Cell):
         assert self.grid
 
         keys = pygame.key.get_pressed()
-
-        dx = 0
-        dy = 0
+        d = pygame.math.Vector2()
 
         if keys[pygame.K_LEFT] ^ keys[pygame.K_RIGHT]:
-            dx = 1 if keys[pygame.K_RIGHT] else -1
+            d.x = 1 if keys[pygame.K_RIGHT] else -1
 
         if keys[pygame.K_UP] ^ keys[pygame.K_DOWN]:
-            dy = 1 if keys[pygame.K_DOWN] else -1
+            d.y = 1 if keys[pygame.K_DOWN] else -1
 
-        if dx or dy:
+        if d.length() > 0:
+            d.normalize_ip()
             # FIXME: add a movement delay
-            self.move((dx, dy))
+            self.move(d)
             # TODO: sound here

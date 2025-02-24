@@ -1,5 +1,5 @@
 from typing import Optional
-from pygame import Surface
+from pygame import Surface, Vector2
 from pygame.color import Color
 from pygame.sprite import Group
 from constants import GRID_CELL_HEIGHT, GRID_CELL_WIDTH
@@ -105,7 +105,7 @@ class CellGrid:
         assert row >= 0 and row < self.rows, f"row position must be within grid bounds (got {row})"
 
         at = self.at(pos)
-        if at and not at.walkable:
+        if at and not at.on_collision(sprite):
             return None
 
         removed = self.remove(pos)
@@ -117,17 +117,10 @@ class CellGrid:
 
         return removed
 
-    def move(self, move_delta: GridPosition, sprite: Cell) -> Optional[Cell]:
+    def move(self, move_delta: Vector2, sprite: Cell) -> Optional[Cell]:
         """Moves the given number of spaces but stops at the edges of the screen"""
-        new_col = clamped_add(sprite.x, move_delta[0], self.cols-1)
-        new_row = clamped_add(sprite.y, move_delta[1], self.rows-1)
-        return self.move_to((new_col, new_row), sprite)
-
-
-    def move_wrapping(self, move_delta: GridPosition, sprite: Cell) -> Optional[Cell]:
-        """Unlike move, this takes a parameter of how many spaces to move rather than the new absolute position"""
-        new_col = wrapping_add(sprite.x, move_delta[0], self.cols)
-        new_row = wrapping_add(sprite.y, move_delta[1], self.rows)
+        new_col = clamped_add(sprite.x, int(move_delta.x), self.cols-1)
+        new_row = clamped_add(sprite.y, int(move_delta.y), self.rows-1)
         return self.move_to((new_col, new_row), sprite)
 
     def render(self, parent: Surface):
