@@ -1,9 +1,13 @@
 from typing import Optional
 from pygame import Surface
 from pygame.color import Color
+from pygame.sprite import Group
 from constants import GRID_CELL_HEIGHT, GRID_CELL_WIDTH
 from renderer.cell import Cell
+from util import clamped_add, wrapping_add
 
+
+GridPosition = tuple[int, int]
 
 class CellGrid:
     """
@@ -18,11 +22,12 @@ class CellGrid:
     cell_width: int
     grid: list[list[Optional[Cell]]]
     surface: Surface
+    fill: Color
 
     def __init__(
             self,
-            grid_size: tuple[int, int],
-            cell_size: tuple[int, int] = (GRID_CELL_WIDTH, GRID_CELL_HEIGHT),
+            grid_size: GridPosition,
+            cell_size: GridPosition = (GRID_CELL_WIDTH, GRID_CELL_HEIGHT),
             offset = (0, 0),
             fill = Color(0x00000000),
     ):
@@ -48,33 +53,81 @@ class CellGrid:
         self.cols = cols
         self.cell_height = cell_height
         self.cell_width = cell_width
+        self.fill = fill
 
         self.grid = [[None for _ in range(cols)] for _ in range(rows)]
         self.surface = Surface((cell_width * cols, cell_height * rows))
         self.rect = self.surface.get_rect(topleft=offset)
 
         self.surface.fill(fill)
+        self.group = Group()
 
-    def put(self, pos: tuple[int, int], sprite: Cell):
+    def put(self, pos: GridPosition, sprite: Cell):
         col, row = pos
 
         assert col >= 0 and col < self.cols, "col position must be within grid bounds"
         assert row >= 0 and row < self.rows, "row position must be within grid bounds"
 
+        sprite.grid = self
+        sprite.x = col
+        sprite.y = row
+
+
+        cell_x = col * self.cell_width
+        cell_y = row * self.cell_height
+
+        sprite.rect.topleft = (int(cell_x), int(cell_y))
+
         self.grid[row][col] = sprite
+        self.group.add(sprite)
+
+
+    def remove(self, pos: GridPosition) -> Optional[Cell]:
+        col, row = pos
+
+        cel = self.grid[row][col]
+        if cel is None:
+            return None
+
+        self.grid[row][col] = None
+        self.group.remove(cel)
+        cel.grid = None
+        return cel
+
+    def at(self, pos: GridPosition) -> Optional[Cell]:
+        return self.grid[pos[1]][pos[0]]
+
+    def move_to(self, pos: GridPosition, sprite: Cell) -> Optional[Cell]:
+        """Moves a sprite on the grid by **replacing anything in its new position**"""
+        col, row = pos
+
+        assert col >= 0 and col < self.cols, f"col position must be within grid bounds (got {col})"
+        assert row >= 0 and row < self.rows, f"row position must be within grid bounds (got {row})"
+
+        removed = self.remove(pos)
+        _sprite = self.remove((sprite.x, sprite.y))
+
+        assert sprite == (_sprite or removed), f"somehow deleted a different sprite"
+
+        self.put((col, row), sprite)
+
+        return removed
+
+    def move(self, move_delta: GridPosition, sprite: Cell) -> Optional[Cell]:
+        """Moves the given number of spaces but stops at the edges of the screen"""
+        new_col = clamped_add(sprite.x, move_delta[0], self.cols-1)
+        new_row = clamped_add(sprite.y, move_delta[1], self.rows-1)
+        return self.move_to((new_col, new_row), sprite)
+
+
+    def move_wrapping(self, move_delta: GridPosition, sprite: Cell) -> Optional[Cell]:
+        """Unlike move, this takes a parameter of how many spaces to move rather than the new absolute position"""
+        new_col = wrapping_add(sprite.x, move_delta[0], self.cols)
+        new_row = wrapping_add(sprite.y, move_delta[1], self.rows)
+        return self.move_to((new_col, new_row), sprite)
 
     def render(self, parent: Surface):
-        for y, row in enumerate(self.grid):
-            for x, cell in enumerate(row):
-                if not cell:
-                    continue
-
-                cell_x = x * self.cell_width
-                cell_y = y * self.cell_height
-
-                cell.rect.topleft = (int(cell_x), int(cell_y))
-
-                cell.update(x=x, y=y)
-                cell.render(self.surface)
-
+        self.group.update()
+        self.surface.fill(self.fill)
+        self.group.draw(self.surface)
         parent.blit(self.surface, self.rect)

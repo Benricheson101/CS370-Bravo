@@ -1,4 +1,7 @@
 # TODO: try to make this scale automatically based on display size
+from pygame import Color
+
+
 SCALE = 2
 
 # The size of a single grid cell
@@ -23,3 +26,15 @@ SCREEN_GRID_COLS = 80
 # Total size of the window
 WINDOW_HEIGHT = SCREEN_GRID_ROWS * GRID_CELL_HEIGHT
 WINDOW_WIDTH = SCREEN_GRID_COLS * GRID_CELL_WIDTH
+
+# colors
+
+# FIXME: these are temporary colors, need to look up actual dos colors
+RED = Color(0xFF0000FF)
+GREEN = Color(0x00FF00FF)
+BLUE = Color(0x0000FFFF)
+GRAY = Color(0x808080FF)
+BLACK = Color(0x000000FF)
+WHITE = Color(0x000000FF)
+YELLOW = Color(0xFFFF00FF)
+ORANGE = Color(0xAA5500FF)
