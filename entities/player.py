@@ -1,12 +1,11 @@
 import pygame
-from constants import YELLOW
 from renderer.cell import Cell
 
 
 class Player(Cell):
     def __init__(self) -> None:
         super().__init__()
-        self.image.fill(YELLOW)
+        self.load_sprite("./sprites/smiley.png")
 
     def update(self) -> None:
         assert self.grid
