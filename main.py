@@ -17,6 +17,7 @@ from entities.gem import Gem
 from entities.player import Player
 from entities.wall import Wall
 from renderer.cell_grid import CellGrid
+from entities.teleport import Teleport
 
 
 def main():
@@ -47,6 +48,7 @@ def main():
     game.put((4, 0), Wall())
     game.put((0, 1), Wall())
     game.put((5, 5), Gem())
+    game.put((10,10), Teleport())
 
     running = True
     clock = pygame.time.Clock()
