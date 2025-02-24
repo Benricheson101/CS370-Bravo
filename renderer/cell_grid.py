@@ -104,6 +104,10 @@ class CellGrid:
         assert col >= 0 and col < self.cols, f"col position must be within grid bounds (got {col})"
         assert row >= 0 and row < self.rows, f"row position must be within grid bounds (got {row})"
 
+        at = self.at(pos)
+        if at and not at.walkable:
+            return None
+
         removed = self.remove(pos)
         _sprite = self.remove((sprite.x, sprite.y))
 

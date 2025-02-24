@@ -12,6 +12,7 @@ class Cell(Sprite):
     image: Surface
     x: int
     y: int
+    walkable: bool
 
     def __init__(self, width = GRID_CELL_WIDTH, height = GRID_CELL_HEIGHT) -> None:
         super().__init__()
@@ -21,6 +22,7 @@ class Cell(Sprite):
         self.x = 0
         self.y = 0
         self.grid: Optional["CellGrid"] = None
+        self.walkable = True
 
     def move_to(self, pos: "GridPosition"):
         assert self.grid

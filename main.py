@@ -8,21 +8,15 @@ from constants import (
     GRAY,
     GRID_CELL_HEIGHT,
     GRID_CELL_WIDTH,
-    ORANGE,
     SCOREBOARD_GRID_COLS,
     SCOREBOARD_GRID_ROWS,
     WINDOW_HEIGHT,
     WINDOW_WIDTH
 )
 from entities.player import Player
-from renderer.cell import Cell
+from entities.wall import WallTile
 from renderer.cell_grid import CellGrid
 
-
-class WallTile(Cell):
-    def __init__(self) -> None:
-        super().__init__()
-        self.image.fill(ORANGE)
 
 def main():
     _, errors = pygame.init()
@@ -49,7 +43,7 @@ def main():
     player = Player()
 
     game.put((0, 0), player)
-    game.put((1, 0), WallTile())
+    game.put((4, 0), WallTile())
     game.put((0, 1), WallTile())
 
     running = True
