@@ -17,6 +17,11 @@ from entities.gem import Gem
 from entities.player import Player
 from entities.wall import Wall
 from renderer.cell_grid import CellGrid
+from level_data import (
+    wall_pos,
+    gem_pos,
+    player_pos
+)
 
 
 def main():
@@ -43,10 +48,16 @@ def main():
 
     player = Player()
 
-    game.put((0, 0), player)
-    game.put((4, 0), Wall())
-    game.put((0, 1), Wall())
+    game.put((player_pos[0][0], player_pos[0][1]), player)
+    # game.put((4, 0), Wall())
+    # game.put((0, 1), Wall())
     game.put((2, 0), Gem())
+    # game.put((63, 21), Wall())
+    # from level_data.py: import positions of walls
+    for i in range (len(wall_pos)):
+        game.put((wall_pos[i][0], wall_pos[i][1]), Wall())
+    for i in range(len(gem_pos)):
+        game.put((gem_pos[i][0], gem_pos[i][1]), Gem())
 
     running = True
     clock = pygame.time.Clock()

@@ -1,6 +1,7 @@
 
 # In the Kroz pascal code, every "row" of a level is story in an array
 # Level text data stored in a list by row
+# level_data dimensions: 23 x 64
 level_data = [
     "+ + + + ס               #temple#of#kroz#   1      XX ]-5--****-%",
     " + + + +#]   ]        1 #######by#######          XX  ]5--*TT*--",
@@ -43,14 +44,16 @@ def get_entity_pos(list, entity):
     for i, row in enumerate(list):
         for j, value in enumerate(row):
             if value == entity:
-                indexes.append((i, j))
+                indexes.append((j, i))
     return indexes
 # print(get_entity_pos(level_data, "X"))
 
 wall_pos = get_entity_pos(level_data, "X")
-print(wall_pos[0])
-print(wall_pos[0][0])
-print(wall_pos[0][1])
+gem_pos = get_entity_pos(level_data, "+")
+player_pos = get_entity_pos(level_data, "P")
+
+
+
 
 # this will go in main.py
 # for i in range (wall_pos):
