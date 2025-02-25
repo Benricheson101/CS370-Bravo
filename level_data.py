@@ -37,3 +37,23 @@ tile_mapping = {
     ']': 'door.png',       # Doors
     ' ': None,             # Empty space
 }
+
+def get_entity_pos(list, entity):
+    indexes = []
+    for i, row in enumerate(list):
+        for j, value in enumerate(row):
+            if value == entity:
+                indexes.append((i, j))
+    return indexes
+# print(get_entity_pos(level_data, "X"))
+
+wall_pos = get_entity_pos(level_data, "X")
+print(wall_pos[0])
+print(wall_pos[0][0])
+print(wall_pos[0][1])
+
+# this will go in main.py
+# for i in range (wall_pos):
+#     game.put((wall_pos[i][0], wall_pos[i][1]), Wall())
+
+# game.put((x_coordinate, y_coordinate), Wall())
