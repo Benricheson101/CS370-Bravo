@@ -51,8 +51,7 @@ def main():
     game.put((player_pos[0][0], player_pos[0][1]), player)
     # game.put((4, 0), Wall())
     # game.put((0, 1), Wall())
-    game.put((2, 0), Gem())
-    # game.put((63, 21), Wall())
+    # game.put((2, 0), Gem())
     # from level_data.py: import positions of walls
     for i in range (len(wall_pos)):
         game.put((wall_pos[i][0], wall_pos[i][1]), Wall())

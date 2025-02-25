@@ -1,5 +1,4 @@
 import pygame, sys
-import keyboard
 
 # Initialize Pygame and check for errors
 check_errors = pygame.init()
