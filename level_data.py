@@ -28,17 +28,8 @@ level_data = [
     "L&XXXXXXX]    1     1           XX               1   ]-4WעWעWעW%",
 ]
 
-# dictionary that maps each text character to a sprite (png file)
-tile_mapping = {
-    'X': 'wall.png',       # Walls
-    'P': 'player.png',     # Player spawn
-    'T': 'treasure.png',   # Treasure
-    'S': 'snake.png',      # Enemy
-    '-': 'floor.png',      # Floor
-    ']': 'door.png',       # Doors
-    ' ': None,             # Empty space
-}
 
+# gets the position of a given text character in the level_data list
 def get_entity_pos(list, entity):
     indexes = []
     for i, row in enumerate(list):
@@ -46,17 +37,8 @@ def get_entity_pos(list, entity):
             if value == entity:
                 indexes.append((j, i))
     return indexes
-# print(get_entity_pos(level_data, "X"))
+
 
 wall_pos = get_entity_pos(level_data, "X")
 gem_pos = get_entity_pos(level_data, "+")
 player_pos = get_entity_pos(level_data, "P")
-
-
-
-
-# this will go in main.py
-# for i in range (wall_pos):
-#     game.put((wall_pos[i][0], wall_pos[i][1]), Wall())
-
-# game.put((x_coordinate, y_coordinate), Wall())
