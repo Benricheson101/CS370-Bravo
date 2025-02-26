@@ -42,3 +42,4 @@ def get_entity_pos(list, entity):
 wall_pos = get_entity_pos(level_data, "X")
 gem_pos = get_entity_pos(level_data, "+")
 player_pos = get_entity_pos(level_data, "P")
+enemy_pos = get_entity_pos(level_data, "1")

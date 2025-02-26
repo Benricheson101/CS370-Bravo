@@ -22,7 +22,8 @@ from entities.enemy import Enemy
 from level_data import (
     wall_pos,
     gem_pos,
-    player_pos
+    player_pos,
+    enemy_pos
 )
 
 
@@ -55,7 +56,7 @@ def main():
     game.put((0, 1), Wall())
     game.put((5, 5), Gem())
     game.put((10,10), Teleport())
-    game.put((20,20), Enemy())
+    # game.put((20,20), Enemy())
     game.put((player_pos[0][0], player_pos[0][1]), player)
     # game.put((4, 0), Wall())
     # game.put((0, 1), Wall())
@@ -65,6 +66,8 @@ def main():
         game.put((wall_pos[i][0], wall_pos[i][1]), Wall())
     for i in range(len(gem_pos)):
         game.put((gem_pos[i][0], gem_pos[i][1]), Gem())
+    for i in range(len(enemy_pos)):
+        game.put((enemy_pos[i][0], enemy_pos[i][1]), Enemy())
 
     running = True
     clock = pygame.time.Clock()
