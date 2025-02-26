@@ -17,6 +17,8 @@ from entities.gem import Gem
 from entities.player import Player
 from entities.wall import Wall
 from renderer.cell_grid import CellGrid
+from entities.teleport import Teleport
+from entities.enemy import Enemy
 from level_data import (
     wall_pos,
     gem_pos,
@@ -48,6 +50,12 @@ def main():
 
     player = Player()
 
+    game.put((0, 0), player)
+    game.put((4, 0), Wall())
+    game.put((0, 1), Wall())
+    game.put((5, 5), Gem())
+    game.put((10,10), Teleport())
+    game.put((20,20), Enemy())
     game.put((player_pos[0][0], player_pos[0][1]), player)
     # game.put((4, 0), Wall())
     # game.put((0, 1), Wall())
