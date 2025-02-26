@@ -88,7 +88,8 @@ class Player:
             self.move_cooldown = self.MOVE_DELAY
 
             # Play movement sound
-            pygame.mixer.Sound.play(move_sound)
+            
+            
 
     def update(self, dt):
         if self.move_cooldown > 0:
@@ -108,8 +109,8 @@ def draw_grid():
             pygame.draw.rect(screen, COLORS['grid'], rect, 1)
 
 # Create a simple movement sound
-move_sound = pygame.mixer.Sound(bytes(bytearray([128] * 1000)))
-move_sound.set_volume(0.1)
+#move_sound = pygame.mixer.Sound(bytes(bytearray([128] * 1000)))
+#move_sound.set_volume(0.1)
 
 def main():
     clock = pygame.time.Clock()
