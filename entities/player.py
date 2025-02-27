@@ -1,11 +1,12 @@
 import pygame
+from constants import YELLOW
 from renderer.cell import Cell
 
 
 class Player(Cell):
     def __init__(self) -> None:
         super().__init__()
-        self.load_sprite("./sprites/smiley.png")
+        self.load_dos_char(2, YELLOW)
 
     def update(self) -> None:
         assert self.grid
@@ -24,3 +25,6 @@ class Player(Cell):
             # FIXME: add a movement delay
             self.move(d)
             # TODO: sound here
+
+    def on_collision(self, cell: "Cell") -> bool:
+        return False

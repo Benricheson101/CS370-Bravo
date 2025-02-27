@@ -5,8 +5,8 @@ from pygame import Color
 SCALE = 2
 
 # The size of a single grid cell
-GRID_CELL_HEIGHT = 16 * SCALE
-GRID_CELL_WIDTH = 9 * SCALE
+GRID_CELL_HEIGHT = int(16 * SCALE)
+GRID_CELL_WIDTH = int(9 * SCALE)
 
 # game grid
 GAME_GRID_ROWS = 23
@@ -39,3 +39,4 @@ BLACK = Color(0x000000FF)
 WHITE = Color(0x000000FF)
 YELLOW = Color(0xFFFF00FF)
 ORANGE = Color(0xAA5500FF)
+PINK = Color(0xFF55FFFF)
