@@ -5,7 +5,7 @@ import pygame
 from pygame.color import Color
 from pygame.sprite import Sprite
 from constants import BLACK, GRID_CELL_HEIGHT, GRID_CELL_WIDTH
-from assets.spritesheet import dos_sprites
+from renderer.spritesheet import dos_sprites
 
 if TYPE_CHECKING:
     from renderer.cell_grid import CellGrid, GridPosition
