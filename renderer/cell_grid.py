@@ -1,5 +1,6 @@
 from typing import Optional
 from pygame import Surface, Vector2
+import pygame
 from pygame.color import Color
 from pygame.sprite import Group
 from constants import GRID_CELL_HEIGHT, GRID_CELL_WIDTH
@@ -56,7 +57,7 @@ class CellGrid:
         self.fill = fill
 
         self.grid = [[None for _ in range(cols)] for _ in range(rows)]
-        self.surface = Surface((cell_width * cols, cell_height * rows))
+        self.surface = Surface((cell_width * cols, cell_height * rows), pygame.SRCALPHA)
         self.rect = self.surface.get_rect(topleft=offset)
 
         self.surface.fill(fill)
