@@ -21,10 +21,27 @@ from entities.wall import Wall
 from renderer.cell_grid import CellGrid
 from entities.teleport import Teleport
 from entities.enemy import Enemy
-from level_load import (
-    game,
-    load_level
-)
+# from level_load import (
+#     game,
+#     load_level
+# )
+
+# test
+from level_data import level_data
+
+tile_mapping = {
+    "P": Player(),
+    "#": Wall(),
+    "X": Block(),
+    "1": Enemy(),
+    "+": Gem(),
+    "T": Teleport(),
+    " ": None
+    }
+
+
+    
+
 
 
 def main():
@@ -47,6 +64,20 @@ def main():
         offset=(GAME_GRID_WIDTH + GRID_CELL_WIDTH * 2, 0),
         fill=BLUE
     )
+    
+    game = CellGrid(
+        grid_size=(GAME_GRID_COLS, GAME_GRID_ROWS),
+        offset=(GRID_CELL_WIDTH, GRID_CELL_HEIGHT),
+        fill=BLACK
+    )
+    def load_level(level_num):
+        entity_positions = []
+        for i, row in enumerate(level_data[f"level_{level_num}"]):
+            for j, value in enumerate(row):
+                if value in tile_mapping:
+                    entity_positions.append(game.put((j, i), tile_mapping.get(value, None)))
+        for i in range(len(entity_positions)):
+            return entity_positions[i]
 
     player = Player()
 
