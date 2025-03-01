@@ -23,7 +23,8 @@ from entities.teleport import Teleport
 from entities.enemy import Enemy
 from level_load import (
     game,
-    load_level
+    load_level,
+    del_level
 )
 # test
 from level_data import level_data
@@ -68,8 +69,10 @@ def level_1(screen):
                 quit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_2:    # Go to Level 1
+                    del_level(1)
                     return LEVEL_2
                 elif event.key == pygame.K_3:    # Go to Level 3
+                    del_level(1)
                     return LEVEL_3
         game.render(screen)
         scoreboard.render(screen)
@@ -100,8 +103,10 @@ def level_2(screen):
                 quit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:    # Go to Level 1
+                    del_level(3)
                     return LEVEL_1
                 elif event.key == pygame.K_3:    # Go to Level 3
+                    del_level(3)
                     return LEVEL_3
         game.render(screen)
         scoreboard.render(screen)
@@ -134,9 +139,12 @@ def level_3(screen):
                 quit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:    # Go to Level 1
+                    del_level(5)
                     return LEVEL_1
                 elif event.key == pygame.K_2:    # Go to Level 2
+                    del_level(5)
                     return LEVEL_2
+                    
         game.render(screen)
         scoreboard.render(screen)
         pygame.display.flip()
