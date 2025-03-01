@@ -46,16 +46,16 @@ def load_level(level_num):
                         entity_pos.append(game.put((j, i), tile_value()))
     for i in range(len(entity_pos)):
         return entity_pos[i]
-    
+        
+        
 def del_level(level_num):
-    entity_pos = []
     for tile_key, tile_value in tile_mapping.items():
             for i, row in enumerate(level_data[f"level_{level_num}"]):
                 for j, level_value in enumerate(row):
                     if level_value == tile_key and tile_value is not None:
-                        entity_pos.append(game.remove((j, i)))
-    for i in range(len(entity_pos)):
-        return entity_pos[i]
+                        game.remove((j, i))
+                        
+print(game.cell_height, game.cell_width)
 
     
   

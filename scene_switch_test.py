@@ -37,6 +37,7 @@ scoreboard = CellGrid(
 
 
 
+
 LEVEL_1 = 1
 LEVEL_2 = 2
 LEVEL_3 = 3
@@ -68,7 +69,7 @@ def level_1(screen):
                 running = False
                 quit()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_2:    # Go to Level 1
+                if event.key == pygame.K_2:    # Go to Level 2
                     del_level(1)
                     return LEVEL_2
                 elif event.key == pygame.K_3:    # Go to Level 3
