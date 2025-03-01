@@ -21,7 +21,6 @@ from constants import (
 from level_data import level_data
 
 
-
 game = CellGrid(
         grid_size=(GAME_GRID_COLS, GAME_GRID_ROWS),
         offset=(GRID_CELL_WIDTH, GRID_CELL_HEIGHT),
@@ -39,40 +38,11 @@ tile_mapping = {
     " ": None
     }
 
-
-
-def load_gem():
-    gem_pos = []
-    for i, row in enumerate(level_data[f"level_1"]):
-        for j, value in enumerate(row):
-            if value == "+":
-                gem_pos.append(game.put((j, i), Gem()))
-    for i in range(len(gem_pos)):
-        return gem_pos[i]
     
-def load_wall():
-    wall_pos = []
-    for i, row in enumerate(level_data[f"level_1"]):
-        for j, value in enumerate(row):
-            if value == "#":
-                wall_pos.append(game.put((j, i), Wall()))
-    for i in range(len(wall_pos)):
-        return wall_pos[i]
-
-# iterate through dictionary
-# for key in tile_mapping.keys():
-#     print(key)
-   
-# for value in tile_mapping.values():
-#     print(value)
-    
-# for key, value in tile_mapping.items():
-#     print(key, value)
-    
-def load_level():
+def load_level(level_num):
     entity_pos = []
     for tile_key, tile_value in tile_mapping.items():
-            for i, row in enumerate(level_data[f"level_1"]):
+            for i, row in enumerate(level_data[f"level_{level_num}"]):
                 for j, level_value in enumerate(row):
                     if level_value == tile_key and tile_value is not None:
                         entity_pos.append(game.put((j, i), tile_value()))

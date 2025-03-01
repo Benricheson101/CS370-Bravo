@@ -52,7 +52,7 @@ def main():
     )
     
     
-    load_level()
+    load_level(1)
 
     running = True
     clock = pygame.time.Clock()

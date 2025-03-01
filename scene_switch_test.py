@@ -23,8 +23,7 @@ from entities.teleport import Teleport
 from entities.enemy import Enemy
 from level_load import (
     game,
-    load_level,
-    load_gem
+    load_level
 )
 # test
 from level_data import level_data
@@ -58,7 +57,7 @@ def level_1(screen):
     dos_sprites()
     
     
-    game.put((0,0), Gem())
+    load_level(1)
     
     running = True
     clock = pygame.time.Clock()
@@ -90,7 +89,7 @@ def level_2(screen):
     # load dos sprite image ahead of time so it doesn't slow the running game
     dos_sprites()
     
-    game.put((0,4), Gem())
+    load_level(3)
     
     running = True
     clock = pygame.time.Clock()
@@ -123,7 +122,7 @@ def level_3(screen):
     # load dos sprite image ahead of time so it doesn't slow the running game
     dos_sprites()
     
-    game.put((0,6), Gem())
+    load_level(5)
     
     
     running = True
