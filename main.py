@@ -29,6 +29,11 @@ from level_load import (
 # test
 from level_data import level_data
 
+def save_level():
+    # will be the same as load_level(), going through game instead of level_data
+    # write to a python file the same way as writing to a text file
+    return None
+
 
 def main():
     _, errors = pygame.init()

@@ -55,8 +55,9 @@ def del_level(level_num):
                     if level_value == tile_key and tile_value is not None:
                         game.remove((j, i))
                         
-print(game.cell_height, game.cell_width)
 
+
+    
     
   
   
