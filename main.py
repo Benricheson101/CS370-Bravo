@@ -23,9 +23,7 @@ from entities.teleport import Teleport
 from entities.enemy import Enemy
 from level_load import (
     game,
-    load_level,
-    load_gem,
-    load_wall
+    load_level
 )
 
 # test
@@ -53,11 +51,8 @@ def main():
         fill=BLUE
     )
     
-    # game.put((0,0), Gem())
-    load_gem()
-    load_wall()
-    # load_gem(1)
-    # load_level(1)
+    
+    load_level()
 
     running = True
     clock = pygame.time.Clock()
