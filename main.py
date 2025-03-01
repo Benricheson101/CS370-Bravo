@@ -6,7 +6,7 @@ from constants import (
     GAME_GRID_COLS,
     GAME_GRID_ROWS,
     GAME_GRID_WIDTH,
-    GRAY,
+    LIGHTGRAY,
     GRID_CELL_HEIGHT,
     GRID_CELL_WIDTH,
     SCOREBOARD_GRID_COLS,
@@ -43,7 +43,7 @@ def main():
 
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     pygame.display.set_caption("Kroz")
-    screen.fill(GRAY)
+    screen.fill(LIGHTGRAY)
 
     # load dos sprite image ahead of time so it doesn't slow the running game
     dos_sprites()
