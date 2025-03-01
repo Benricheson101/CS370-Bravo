@@ -40,55 +40,26 @@ tile_mapping = {
     }
 
 
-def get_entity_pos(list, dictionary):
-    indexes = []
-    for i, row in enumerate(list):
-        for j, value in enumerate(row):
-            if value in dictionary:
-                indexes.append((j, i))
-    return indexes
 
-
-
-def load_level(level_num):
-    entity_positions = []
-    for i, row in enumerate(level_data[f"level_{level_num}"]):
-        for j, value in enumerate(row):
-            if value in tile_mapping:
-                entity_positions.append(game.put((j, i), tile_mapping.get(value, None)))
-    for i in range(len(entity_positions)):
-        return entity_positions[i]
-    
-def load_gem(level_num):
-    # empty list of gem_pos, which will store the game puts
-    # see if there are any "+" in level_data...
-    # when a "+" is found, append the gem_pos list with those index coordinates
+def load_gem():
     gem_pos = []
-    for i, row in enumerate(level_data[f"level_{level_num}"]):
+    for i, row in enumerate(level_data[f"level_1"]):
         for j, value in enumerate(row):
-            if "+" in level_data[f"level_{level_num}"]:
-                gem_pos.append(game.put(j,i), Gem())
+            if value == "+":
+                gem_pos.append(game.put((j, i), Gem()))
     for i in range(len(gem_pos)):
         return gem_pos[i]
     
-    # Gem_place = [
-    #     game.put((20,20), Gem()),
-    #     game.put((22,22), Gem()),
-    #     game.put((24,22), Gem()),
-    #     game.put((26,22), Gem()),
-    #     game.put((28,22), Gem())
-    # ]
-    # for i in range(len(Gem_place)):
-        
-    #     return Gem_place[i]
-
-
-if any("+" in line for line in level_data["level_1"]):
-    print("yes")
-else:
-    print("no")
+def load_wall():
+    wall_pos = []
+    for i, row in enumerate(level_data[f"level_1"]):
+        for j, value in enumerate(row):
+            if value == "#":
+                wall_pos.append(game.put((j, i), Wall()))
+    for i in range(len(wall_pos)):
+        return wall_pos[i]
     
-    
+
     
   
   

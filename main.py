@@ -24,7 +24,8 @@ from entities.enemy import Enemy
 from level_load import (
     game,
     load_level,
-    load_gem
+    load_gem,
+    load_wall
 )
 
 # test
@@ -52,7 +53,9 @@ def main():
         fill=BLUE
     )
     
-    game.put((0,0), Gem())
+    # game.put((0,0), Gem())
+    load_gem()
+    load_wall()
     # load_gem(1)
     # load_level(1)
 

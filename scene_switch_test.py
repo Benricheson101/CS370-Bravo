@@ -42,7 +42,7 @@ LEVEL_2 = 2
 LEVEL_3 = 3
 
 # idk if this is needed or not
-# pygame.init()
+pygame.init()
 
 def level_1(screen):
     _, errors = pygame.init()
