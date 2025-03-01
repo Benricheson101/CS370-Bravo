@@ -21,12 +21,18 @@ from entities.wall import Wall
 from renderer.cell_grid import CellGrid
 from entities.teleport import Teleport
 from entities.enemy import Enemy
-from level_data import (
-    wall_pos,
-    gem_pos,
-    player_pos,
-    enemy_pos
+from level_load import (
+    game,
+    load_level
 )
+
+# test
+from level_data import level_data
+
+def save_level():
+    # will be the same as load_level(), going through game instead of level_data
+    # write to a python file the same way as writing to a text file
+    return None
 
 
 def main():
@@ -42,42 +48,16 @@ def main():
     # load dos sprite image ahead of time so it doesn't slow the running game
     dos_sprites()
 
-    game = CellGrid(
-        grid_size=(GAME_GRID_COLS, GAME_GRID_ROWS),
-        offset=(GRID_CELL_WIDTH, GRID_CELL_HEIGHT),
-        fill=BLACK
-    )
+    
 
     scoreboard = CellGrid(
         grid_size=(SCOREBOARD_GRID_COLS, SCOREBOARD_GRID_ROWS),
         offset=(GAME_GRID_WIDTH + GRID_CELL_WIDTH * 2, 0),
         fill=BLUE
     )
-
-    player = Player()
-
-    # game.put((0, 0), player)
-    # game.put((4, 0), Wall())
-    # game.put((0, 1), Wall())
-    # game.put((5, 5), Gem())
-    # game.put((10,10), Teleport())
-    # game.put((20,20), Enemy())
-    game.put((player_pos[0][0], player_pos[0][1]), player)
-    # game.put((4, 0), Wall())
-    # game.put((0, 1), Wall())
-    # game.put((2, 0), Gem())
-    # from level_data.py: import positions of walls
-    for i in range (len(wall_pos)):
-        game.put((wall_pos[i][0], wall_pos[i][1]), Wall())
-    for i in range(len(gem_pos)):
-        game.put((gem_pos[i][0], gem_pos[i][1]), Gem())
-    for i in range(len(enemy_pos)):
-        game.put((enemy_pos[i][0], enemy_pos[i][1]), Enemy())
-
-    game.put((player_pos[0][0]+1, player_pos[0][1]), Teleport())
-    game.put((player_pos[0][0]+2, player_pos[0][1]), Gem())
-    game.put((player_pos[0][0]+3, player_pos[0][1]), Wall())
-    game.put((player_pos[0][0]+4, player_pos[0][1]), Block())
+    
+    
+    load_level(1)
 
     running = True
     clock = pygame.time.Clock()

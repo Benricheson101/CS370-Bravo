@@ -2,7 +2,7 @@
 from pygame import Color
 
 
-SCALE = 2
+SCALE = 1.5
 
 # The size of a single grid cell
 GRID_CELL_HEIGHT = int(16 * SCALE)
