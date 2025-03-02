@@ -56,7 +56,7 @@ def main():
 
     player = Player()
 
-    # game.put((0, 0), player)
+    # gamputut((0, 0), player)
     # game.put((4, 0), Wall())
     # game.put((0, 1), Wall())
     # game.put((5, 5), Gem())

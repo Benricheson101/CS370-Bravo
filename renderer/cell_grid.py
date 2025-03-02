@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List, Tuple
 from pygame import Surface, Vector2
 import pygame
 from pygame.color import Color
@@ -6,6 +6,7 @@ from pygame.sprite import Group
 from constants import GRID_CELL_HEIGHT, GRID_CELL_WIDTH
 from renderer.cell import Cell
 from util import clamped_add
+import random
 
 
 GridPosition = tuple[int, int]
@@ -129,3 +130,25 @@ class CellGrid:
         self.surface.fill(self.fill)
         self.group.draw(self.surface)
         parent.blit(self.surface, self.rect)
+
+    def get_random_empty_tiles(grid) -> List[Tuple[int, int]]:
+        """
+        Returns a list of (x, y) coordinates for every empty tile in the grid.
+
+        Args:
+            grid: The CellGrid object.
+
+        Returns:
+            A list of (x, y) coordinate tuples.
+        """
+
+        empty_tiles = []
+        for row in range(grid.rows):
+            for col in range(grid.cols):
+                if grid.at((col, row)) is None:  # Check if the cell is empty
+                    empty_tiles.append((col, row))
+        
+
+        if empty_tiles:  # Check if any empty tiles were found
+            return random.choice(empty_tiles)
+        
