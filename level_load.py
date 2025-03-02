@@ -63,19 +63,50 @@ def save_level():
     saved_level = []
     for i in range(GAME_GRID_ROWS):
         for j in range(GAME_GRID_COLS):
-                saved_level.append(game.grid[i][j])
+            entity = game.grid[i][j]
+            if entity is not None:
+                entity_type = entity.__class__.__name__
+                saved_level.append((entity_type, (i,j)))  
     with open("level.pkl", "wb") as f:
         pickle.dump(saved_level, f)
 
-def restore_level():
-    with open("level.pkl", "rb") as f:
-        level = pickle.load(f)
+def del_level():
+    saved_level = []
     for i in range(GAME_GRID_ROWS):
         for j in range(GAME_GRID_COLS):
-            game.put((i,j), level[i][j])
+            entity = game.grid[i][j]
+            if entity is not None:
+                entity_type = entity.__class__.__name__
+                saved_level.append((entity_type, (i,j)))  
+    with open("current_level.pkl", "wb") as f:
+        pickle.dump(saved_level, f)
+    with open("current_level.pkl", "rb") as f:
+        saved_level = pickle.load(f)
+   
+    for i in range(GAME_GRID_ROWS):
+        for j in range(GAME_GRID_COLS):
+                game.remove((j, i))
 
-def del_level():
-    return None
+def restore_level():
+    del_level()
+    with open("level.pkl", "rb") as f:
+        saved_level = pickle.load(f)
+        
+    entity_classes = {
+        "Player": Player,
+        "Wall": Wall,
+        "Block": Block,
+        "Enemy": Enemy,
+        "Gem": Gem,
+        "Teleport": Teleport
+    }
+    
+    for entity_type, (i, j) in saved_level:
+        if entity_type in entity_classes:
+            game.put((j, i), entity_classes[entity_type]()) 
+
+
+
                         
 
 

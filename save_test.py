@@ -42,7 +42,7 @@ scoreboard = CellGrid(
             
 
 LEVEL_1 = 1
-LEVEL_2 = 2
+
 
 
 # idk if this is needed or not
@@ -60,8 +60,7 @@ def level_1(screen):
 
     # load dos sprite image ahead of time so it doesn't slow the running game
     dos_sprites()
-    
-    
+
     load_level(1)
     
     running = True
@@ -76,48 +75,13 @@ def level_1(screen):
                     save_level()
                     
                 elif event.key == pygame.K_r:    # Go to Level 3
+                    restore_level()
                     
-                    return LEVEL_2
         game.render(screen)
         scoreboard.render(screen)
         pygame.display.flip()
         clock.tick(60)
     
-
-def level_2(screen):
-    _, errors = pygame.init()
-    if errors:
-        print("Error:", errors)
-        return
-
-    pygame.display.set_caption("Level 2")
-    screen.fill(LIGHTGRAY)
-
-    # load dos sprite image ahead of time so it doesn't slow the running game
-    dos_sprites()
-    
-    restore_level()
-    
-    running = True
-    clock = pygame.time.Clock()
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-                quit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_1:    # Go to Level 1
-                    
-                    return LEVEL_1
-                elif event.key == pygame.K_3:    # Go to Level 3
-                    
-                    return None
-        game.render(screen)
-        scoreboard.render(screen)
-        pygame.display.flip()
-        clock.tick(60)
-    
-
 
 def main():
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -125,8 +89,6 @@ def main():
     while True:
         if scene == LEVEL_1:
             scene = level_1(screen)
-        elif scene == LEVEL_2:
-            scene = level_2(screen)
         
     
 main()
