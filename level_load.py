@@ -18,6 +18,8 @@ from constants import (
 
 from level_data import level_data
 
+import pickle
+
 
 game = CellGrid(
         grid_size=(GAME_GRID_COLS, GAME_GRID_ROWS),
@@ -47,14 +49,57 @@ def load_level(level_num):
     for i in range(len(entity_pos)):
         return entity_pos[i]
         
+
+def save_level():
+    saved_level = []
+    for i in range(GAME_GRID_ROWS):
+        for j in range(GAME_GRID_COLS):
+            entity = game.grid[i][j]
+            if entity is not None:
+                entity_type = entity.__class__.__name__
+                saved_level.append((entity_type, (i,j)))  
+    with open("level.pkl", "wb") as f:
+        pickle.dump(saved_level, f)
+
+def del_level():
+    saved_level = []
+    for i in range(GAME_GRID_ROWS):
+        for j in range(GAME_GRID_COLS):
+            entity = game.grid[i][j]
+            if entity is not None:
+                entity_type = entity.__class__.__name__
+                saved_level.append((entity_type, (i,j)))  
+    with open("current_level.pkl", "wb") as f:
+        pickle.dump(saved_level, f)
+    with open("current_level.pkl", "rb") as f:
+        saved_level = pickle.load(f)
+   
+    for i in range(GAME_GRID_ROWS):
+        for j in range(GAME_GRID_COLS):
+                game.remove((j, i))
+
+def restore_level():
+    del_level()
+    with open("level.pkl", "rb") as f:
+        saved_level = pickle.load(f)
         
-def del_level(level_num):
-    for tile_key, tile_value in tile_mapping.items():
-            for i, row in enumerate(level_data[f"level_{level_num}"]):
-                for j, level_value in enumerate(row):
-                    if level_value == tile_key and tile_value is not None:
-                        game.remove((j, i))
+    entity_classes = {
+        "Player": Player,
+        "Wall": Wall,
+        "Block": Block,
+        "Enemy": Enemy,
+        "Gem": Gem,
+        "Teleport": Teleport
+    }
+    
+    for entity_type, (i, j) in saved_level:
+        if entity_type in entity_classes:
+            game.put((j, i), entity_classes[entity_type]()) 
+
+
+
                         
+
 
 
     

@@ -6,7 +6,7 @@ from constants import (
     GAME_GRID_COLS,
     GAME_GRID_ROWS,
     GAME_GRID_WIDTH,
-    GRAY,
+    LIGHTGRAY,
     GRID_CELL_HEIGHT,
     GRID_CELL_WIDTH,
     SCOREBOARD_GRID_COLS,
@@ -24,10 +24,13 @@ from entities.enemy import Enemy
 from level_load import (
     game,
     load_level,
-    del_level
+    del_level,
+    tile_mapping
+    
 )
 # test
 from level_data import level_data
+
 
 scoreboard = CellGrid(
         grid_size=(SCOREBOARD_GRID_COLS, SCOREBOARD_GRID_ROWS),
@@ -37,6 +40,7 @@ scoreboard = CellGrid(
 
 
 
+            
 
 LEVEL_1 = 1
 LEVEL_2 = 2
@@ -53,7 +57,7 @@ def level_1(screen):
 
     
     pygame.display.set_caption("Level 1")
-    screen.fill(GRAY)
+    screen.fill(LIGHTGRAY)
 
     # load dos sprite image ahead of time so it doesn't slow the running game
     dos_sprites()
@@ -70,6 +74,7 @@ def level_1(screen):
                 quit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_2:    # Go to Level 2
+                    
                     del_level(1)
                     return LEVEL_2
                 elif event.key == pygame.K_3:    # Go to Level 3
@@ -88,7 +93,7 @@ def level_2(screen):
         return
 
     pygame.display.set_caption("Level 2")
-    screen.fill(GRAY)
+    screen.fill(LIGHTGRAY)
 
     # load dos sprite image ahead of time so it doesn't slow the running game
     dos_sprites()
@@ -123,7 +128,7 @@ def level_3(screen):
 
     
     pygame.display.set_caption("Level 3")
-    screen.fill(GRAY)
+    screen.fill(LIGHTGRAY)
 
     # load dos sprite image ahead of time so it doesn't slow the running game
     dos_sprites()
