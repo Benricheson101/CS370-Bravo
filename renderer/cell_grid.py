@@ -106,9 +106,14 @@ class CellGrid:
         assert col >= 0 and col < self.cols, f"col position must be within grid bounds (got {col})"
         assert row >= 0 and row < self.rows, f"row position must be within grid bounds (got {row})"
 
+        pos_before = sprite.pos
+
         at = self.at(pos)
         if at and not at.on_collision(sprite):
             return None
+
+        assert sprite.pos == pos_before, \
+            f"cell position changed in on_collision (before {pos_before}, after {sprite.pos}). if this is intentional, be sure to return `False` from `on_collision`"
 
         removed = self.remove(pos)
         _sprite = self.remove((sprite.x, sprite.y))

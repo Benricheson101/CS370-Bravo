@@ -74,3 +74,7 @@ class Cell(Sprite):
         )
 
         self.image.blit(scaled_img, rect)
+        
+    @property
+    def pos(self) -> "GridPosition":
+        return self.x, self.y

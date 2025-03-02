@@ -13,26 +13,16 @@ class Teleport(Cell):
         self.load_dos_char(24, PINK)
 
     def on_collision(self, cell: "Cell") -> bool:
+        assert self.grid
         if isinstance(cell, Player):
             print("Player hit a Teleport scroll!")
             
             empty_cell = cell.grid.get_random_empty_tiles()
-            if empty_cell:
-                col, row = empty_cell  # Unpack the tuple into x and y
-                print(f"Teleporting player to: {empty_cell}")
-                
-                
-
-              #  Player.move_to(Teleport, (col,row), Player )
-                Player.get_player_position(self)
-                result = tuple(map(lambda i, j: j - i, Player.get_player_position(self), empty_cell))
-                DVector = pygame.math.Vector2(result)
-                print(DVector)
-
-                Player.move(self, DVector) #moves the teleport object instead of the player... 
-
+            
+            cell.move_to((empty_cell))
+            self.grid.remove((self.x, self.y))
                 
 
-            return True
+            return False
 
         return False
