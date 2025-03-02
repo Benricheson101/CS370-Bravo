@@ -24,9 +24,8 @@ from entities.enemy import Enemy
 from level_load import (
     game,
     load_level,
-    del_level,
-    tile_mapping
-    
+    save_level,
+    restore_level
 )
 # test
 from level_data import level_data
@@ -44,7 +43,7 @@ scoreboard = CellGrid(
 
 LEVEL_1 = 1
 LEVEL_2 = 2
-LEVEL_3 = 3
+
 
 # idk if this is needed or not
 pygame.init()
@@ -73,13 +72,12 @@ def level_1(screen):
                 running = False
                 quit()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_2:    # Go to Level 2
+                if event.key == pygame.K_s:    # Go to Level 2
+                    save_level()
                     
-                    del_level(1)
+                elif event.key == pygame.K_r:    # Go to Level 3
+                    
                     return LEVEL_2
-                elif event.key == pygame.K_3:    # Go to Level 3
-                    del_level(1)
-                    return LEVEL_3
         game.render(screen)
         scoreboard.render(screen)
         pygame.display.flip()
@@ -98,7 +96,7 @@ def level_2(screen):
     # load dos sprite image ahead of time so it doesn't slow the running game
     dos_sprites()
     
-    load_level(3)
+    restore_level()
     
     running = True
     clock = pygame.time.Clock()
@@ -109,52 +107,17 @@ def level_2(screen):
                 quit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:    # Go to Level 1
-                    del_level(3)
+                    
                     return LEVEL_1
                 elif event.key == pygame.K_3:    # Go to Level 3
-                    del_level(3)
-                    return LEVEL_3
-        game.render(screen)
-        scoreboard.render(screen)
-        pygame.display.flip()
-        clock.tick(60)
-    
-
-def level_3(screen):
-    _, errors = pygame.init()
-    if errors:
-        print("Error:", errors)
-        return
-
-    
-    pygame.display.set_caption("Level 3")
-    screen.fill(LIGHTGRAY)
-
-    # load dos sprite image ahead of time so it doesn't slow the running game
-    dos_sprites()
-    
-    load_level(5)
-    
-    
-    running = True
-    clock = pygame.time.Clock()
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-                quit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_1:    # Go to Level 1
-                    del_level(5)
-                    return LEVEL_1
-                elif event.key == pygame.K_2:    # Go to Level 2
-                    del_level(5)
-                    return LEVEL_2
                     
+                    return None
         game.render(screen)
         scoreboard.render(screen)
         pygame.display.flip()
         clock.tick(60)
+    
+
 
 def main():
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -164,7 +127,6 @@ def main():
             scene = level_1(screen)
         elif scene == LEVEL_2:
             scene = level_2(screen)
-        elif scene == LEVEL_3:
-            scene = level_3(screen)
+        
     
 main()

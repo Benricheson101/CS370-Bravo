@@ -18,6 +18,8 @@ from constants import (
 
 from level_data import level_data
 
+import pickle
+
 
 game = CellGrid(
         grid_size=(GAME_GRID_COLS, GAME_GRID_ROWS),
@@ -55,6 +57,27 @@ def del_level(level_num):
                     if level_value == tile_key and tile_value is not None:
                         game.remove((j, i))
                         
+
+
+def save_level():
+    saved_level = []
+    for i in range(GAME_GRID_ROWS):
+        for j in range(GAME_GRID_COLS):
+                saved_level.append(game.grid[i][j])
+    with open("level.pkl", "wb") as f:
+        pickle.dump(saved_level, f)
+
+def restore_level():
+    with open("level.pkl", "rb") as f:
+        level = pickle.load(f)
+    for i in range(GAME_GRID_ROWS):
+        for j in range(GAME_GRID_COLS):
+            game.put((i,j), level[i][j])
+
+def del_level():
+    return None
+                        
+
 
 
     
