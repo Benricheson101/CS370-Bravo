@@ -1,22 +1,19 @@
-from constants import (
-    LIGHTGRAY,
-    BLACK
-)
+from constants import LIGHTRED
 from entities.player import Player
 from renderer.cell import Cell
-# from level_load import load_level
 
 
-class Stairs(Cell):
+class Key(Cell):
     def __init__(self) -> None:
         super().__init__()
-        self.image.fill(LIGHTGRAY)
-        self.load_dos_char(240, BLACK)
+        self.load_dos_char(140, LIGHTRED)
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-            # load_level(3)
-            print("To the next level!")
+            print("You got a Key!")
             return True
 
         return False
+    
+
+    

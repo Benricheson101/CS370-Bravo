@@ -6,6 +6,9 @@ from entities.enemy import Enemy
 from entities.gem import Gem
 from entities.teleport import Teleport
 from entities.stairs import Stairs
+from entities.wall_gray import WallGray
+from entities.door import Door
+from entities.key import Key
 
 # place entities
 from renderer.cell_grid import CellGrid
@@ -37,6 +40,9 @@ tile_mapping = {
     "+": Gem,
     "T": Teleport,
     "L": Stairs,
+    "6": WallGray,
+    "D": Door,
+    "K": Key,
     " ": None
     }
 
@@ -92,20 +98,13 @@ def restore_level():
         "Enemy": Enemy,
         "Gem": Gem,
         "Teleport": Teleport,
-        "Stairs": Stairs
+        "Stairs": Stairs,
+        "WallGray": WallGray,
+        "Door": Door,
+        "Key": Key
     }
     
     for entity_type, (i, j) in saved_level:
         if entity_type in entity_classes:
             game.put((j, i), entity_classes[entity_type]()) 
 
-
-
-                        
-
-
-
-    
-    
-  
-  
