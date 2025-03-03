@@ -75,10 +75,10 @@ def level_1(screen):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_2:    # Go to Level 2
                     
-                    del_level(1)
+                    del_level()
                     return LEVEL_2
                 elif event.key == pygame.K_3:    # Go to Level 3
-                    del_level(1)
+                    del_level()
                     return LEVEL_3
         game.render(screen)
         scoreboard.render(screen)
@@ -109,10 +109,10 @@ def level_2(screen):
                 quit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:    # Go to Level 1
-                    del_level(3)
+                    del_level()
                     return LEVEL_1
                 elif event.key == pygame.K_3:    # Go to Level 3
-                    del_level(3)
+                    del_level()
                     return LEVEL_3
         game.render(screen)
         scoreboard.render(screen)
@@ -145,10 +145,10 @@ def level_3(screen):
                 quit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:    # Go to Level 1
-                    del_level(5)
+                    del_level()
                     return LEVEL_1
                 elif event.key == pygame.K_2:    # Go to Level 2
-                    del_level(5)
+                    del_level()
                     return LEVEL_2
                     
         game.render(screen)
