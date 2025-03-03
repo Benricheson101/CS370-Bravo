@@ -35,16 +35,17 @@ def main():
     # load dos sprite image ahead of time so it doesn't slow the running game
     dos_sprites()
 
-    
+
 
     scoreboard = CellGrid(
         grid_size=(SCOREBOARD_GRID_COLS, SCOREBOARD_GRID_ROWS),
         offset=(GAME_GRID_WIDTH + GRID_CELL_WIDTH * 2, 0),
         fill=BLUE
     )
-    
-    
+
+
     load_level(1)
+
     running = True
     clock = pygame.time.Clock()
     while running:
