@@ -2,7 +2,7 @@
 from pygame import Color
 
 
-SCALE = 1.5
+SCALE = 2
 
 # The size of a single grid cell
 GRID_CELL_HEIGHT = int(16 * SCALE)
@@ -55,7 +55,7 @@ LIGHTCYAN = Color(0x55FFFFFF)
 # 12: lightred
 LIGHTRED = Color(0xFF5555FF)
 # 13: lightmagenta
-LIGHTMAGENTA = Color(0xAA00AAFF)
+LIGHTMAGENTA = Color(0xFF55FFFF)
 # 14: yellow
 YELLOW = Color(0xFFFF55FF)
 # 15: white
