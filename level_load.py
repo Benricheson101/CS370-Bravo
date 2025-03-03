@@ -5,6 +5,7 @@ from entities.block import Block
 from entities.enemy import Enemy
 from entities.gem import Gem
 from entities.teleport import Teleport
+from entities.stairs import Stairs
 
 # place entities
 from renderer.cell_grid import CellGrid
@@ -35,6 +36,7 @@ tile_mapping = {
     "1": Enemy,
     "+": Gem,
     "T": Teleport,
+    "L": Stairs,
     " ": None
     }
 
@@ -89,7 +91,8 @@ def restore_level():
         "Block": Block,
         "Enemy": Enemy,
         "Gem": Gem,
-        "Teleport": Teleport
+        "Teleport": Teleport,
+        "Stairs": Stairs
     }
     
     for entity_type, (i, j) in saved_level:

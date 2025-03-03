@@ -21,6 +21,7 @@ from entities.wall import Wall
 from renderer.cell_grid import CellGrid
 from entities.teleport import Teleport
 from entities.enemy import Enemy
+from entities.stairs import Stairs
 from level_load import (
     game,
     load_level,
