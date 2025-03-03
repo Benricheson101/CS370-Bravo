@@ -7,8 +7,10 @@ from entities.gem import Gem
 from entities.teleport import Teleport
 from entities.stairs import Stairs
 from entities.wall_gray import WallGray
-from entities.door import Door
+# from entities.door import Door
 from entities.key import Key
+
+
 
 # place entities
 from renderer.cell_grid import CellGrid
@@ -41,7 +43,7 @@ tile_mapping = {
     "T": Teleport,
     "L": Stairs,
     "6": WallGray,
-    "D": Door,
+    # "D": Door,
     "K": Key,
     " ": None
     }
@@ -100,7 +102,7 @@ def restore_level():
         "Teleport": Teleport,
         "Stairs": Stairs,
         "WallGray": WallGray,
-        "Door": Door,
+        # "Door": Door,
         "Key": Key
     }
     
