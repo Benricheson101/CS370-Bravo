@@ -10,6 +10,7 @@ from entities.wall_gray import WallGray
 # from entities.door import Door
 from entities.key import Key
 
+
 from constants import (
     LIGHTGRAY,
     BLACK
@@ -18,6 +19,12 @@ from entities.player import Player
 from renderer.cell import Cell
 # from level_load import load_level
 
+current_level_num = 1
+
+def increase_level_num():
+    global current_level_num
+    current_level_num +=2
+    return current_level_num
 
 class Stairs(Cell):
     def __init__(self) -> None:
@@ -28,7 +35,7 @@ class Stairs(Cell):
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
             del_level()
-            load_level(3)
+            load_level(increase_level_num())
             print("To the next level!")
             return False
 

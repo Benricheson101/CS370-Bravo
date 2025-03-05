@@ -18,7 +18,9 @@ from constants import (
 from renderer.cell_grid import CellGrid
 from level_load import (
     game,
-    load_level
+    load_level,
+    save_level,
+    restore_level
 )
 
 
@@ -52,7 +54,13 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
+                quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_s:    
+                    save_level()
+                    
+                elif event.key == pygame.K_r:    
+                    restore_level()
         game.render(screen)
         scoreboard.render(screen)
 
