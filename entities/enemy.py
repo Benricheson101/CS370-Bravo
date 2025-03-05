@@ -15,3 +15,10 @@ class Enemy(Cell):
             return True
 
         return False
+
+    #TODO Make chase function:
+        #get player position
+        #compare y
+        # move towards player on y axis
+        #compare x
+        #move towards player on x axis

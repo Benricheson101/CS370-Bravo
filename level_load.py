@@ -4,6 +4,7 @@ from entities.wall import Wall
 from entities.block import Block
 from entities.enemy import Enemy
 from entities.gem import Gem
+from entities.whip import Whip
 from entities.teleport import Teleport
 # from entities.stairs import Stairs
 from entities.wall_gray import WallGray
@@ -65,6 +66,7 @@ tile_mapping = {
     "T": Teleport,
     "L": Stairs,
     "6": WallGray,
+    "W": Whip,
     # "D": Door,
     "K": Key,
     " ": None
@@ -124,6 +126,7 @@ def restore_level():
         "Teleport": Teleport,
         "Stairs": Stairs,
         "WallGray": WallGray,
+        "Whip": Whip,
         # "Door": Door,
         "Key": Key
     }
