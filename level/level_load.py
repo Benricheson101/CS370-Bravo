@@ -98,7 +98,7 @@ def save_level():
             if entity is not None:
                 entity_type = entity.__class__.__name__
                 saved_level.append((entity_type, (i,j)))  
-    with open("level.pkl", "wb") as f:
+    with open("level/level.pkl", "wb") as f:
         pickle.dump(saved_level, f)
 
 def del_level():
@@ -109,9 +109,9 @@ def del_level():
             if entity is not None:
                 entity_type = entity.__class__.__name__
                 saved_level.append((entity_type, (i,j)))  
-    with open("current_level.pkl", "wb") as f:
+    with open("level/current_level.pkl", "wb") as f:
         pickle.dump(saved_level, f)
-    with open("current_level.pkl", "rb") as f:
+    with open("level/current_level.pkl", "rb") as f:
         saved_level = pickle.load(f)
    
     for i in range(GAME_GRID_ROWS):
@@ -120,7 +120,7 @@ def del_level():
 
 def restore_level():
     del_level()
-    with open("level.pkl", "rb") as f:
+    with open("level/level.pkl", "rb") as f:
         saved_level = pickle.load(f)
         
     entity_classes = {
