@@ -20,7 +20,8 @@ from level.level_load import (
     game,
     load_level,
     save_level,
-    restore_level
+    restore_level,
+    set_game_instance
 )
 
 class Game:
@@ -53,22 +54,34 @@ class Game:
 
         # Score tracking
         self.score = 0
+        
+        # Key count tracking
+        self.key_count = 0
+        
+        # Register the Game instance globally in level_load.py
+        set_game_instance(self) 
 
     def run(self):
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    self.running = False
-                    pygame.quit()
+                    self.running = False 
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_s:
                         save_level()
                     elif event.key == pygame.K_r:
                         restore_level()
 
+            if not self.running:
+                break  # Ensure we exit before rendering again
+
             game.render(self.screen)
             self.scoreboard.render(self.screen)
 
             pygame.display.flip()
             self.clock.tick(60)
+
+        pygame.quit() 
+
+    
 
