@@ -7,7 +7,7 @@ from entities.gem import Gem
 from entities.teleport import Teleport
 from entities.stairs import Stairs
 from entities.wall_gray import WallGray
-# from entities.door import Door
+from entities.door import Door
 from entities.key import Key
 
 
@@ -42,6 +42,7 @@ def increase_level_num():
     current_level_num +=2
     return current_level_num
 # crashes after level 20 obviously, and it needs to be reset if player wants to restore
+# for some reason testing door/key in level 9, stairs takes it to level 2???
 
 
 
@@ -61,7 +62,7 @@ tile_mapping = {
     "T": Teleport,
     "L": Stairs,
     "6": WallGray,
-    # "D": Door,
+    "D": Door,
     "K": Key,
     " ": None
     }
@@ -120,7 +121,7 @@ def restore_level():
         "Teleport": Teleport,
         "Stairs": Stairs,
         "WallGray": WallGray,
-        # "Door": Door,
+        "Door": Door,
         "Key": Key
     }
     

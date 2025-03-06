@@ -46,7 +46,7 @@ class Game:
         )
 
         # Load initial level
-        load_level(1)
+        load_level(9)
 
         # Game loop control
         self.running = True
