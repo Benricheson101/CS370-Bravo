@@ -25,6 +25,7 @@ def increase_level_num():
     global current_level_num
     current_level_num +=2
     return current_level_num
+# crashes after level 20 obviously, and it needs to be reset if player wants to restore
 
 class Stairs(Cell):
     def __init__(self) -> None:
@@ -51,7 +52,7 @@ from constants import (
     GRID_CELL_WIDTH,
 )
 
-from level_data import level_data
+from level.level_data import level_data
 
 import pickle
 
