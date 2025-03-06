@@ -5,34 +5,14 @@ from entities.block import Block
 from entities.enemy import Enemy
 from entities.gem import Gem
 from entities.teleport import Teleport
-# from entities.stairs import Stairs
+from entities.stairs import Stairs
 from entities.wall_gray import WallGray
-# from entities.door import Door
+from entities.door import Door
 from entities.key import Key
 
-from constants import (
-    LIGHTGRAY,
-    BLACK
-)
-from entities.player import Player
-from renderer.cell import Cell
-# from level_load import load_level
 
 
-class Stairs(Cell):
-    def __init__(self) -> None:
-        super().__init__()
-        self.image.fill(LIGHTGRAY)
-        self.load_dos_char(240, BLACK)
 
-    def on_collision(self, cell: "Cell") -> bool:
-        if isinstance(cell, Player):
-            del_level()
-            load_level(3)
-            print("To the next level!")
-            return False
-
-        return False
 
 # place entities
 from renderer.cell_grid import CellGrid
@@ -44,9 +24,26 @@ from constants import (
     GRID_CELL_WIDTH,
 )
 
-from level_data import level_data
+from level.level_data import level_data
 
 import pickle
+
+game_instance = None
+
+def set_game_instance(game):
+    global game_instance
+    game_instance = game  # Store reference to Game
+
+
+current_level_num = 1
+
+def increase_level_num():
+    global current_level_num
+    current_level_num +=2
+    return current_level_num
+# crashes after level 20 obviously, and it needs to be reset if player wants to restore
+# for some reason testing door/key in level 9, stairs takes it to level 2???
+
 
 
 game = CellGrid(
@@ -65,7 +62,7 @@ tile_mapping = {
     "T": Teleport,
     "L": Stairs,
     "6": WallGray,
-    # "D": Door,
+    "D": Door,
     "K": Key,
     " ": None
     }
@@ -90,7 +87,7 @@ def save_level():
             if entity is not None:
                 entity_type = entity.__class__.__name__
                 saved_level.append((entity_type, (i,j)))  
-    with open("level.pkl", "wb") as f:
+    with open("level/level.pkl", "wb") as f:
         pickle.dump(saved_level, f)
 
 def del_level():
@@ -101,9 +98,9 @@ def del_level():
             if entity is not None:
                 entity_type = entity.__class__.__name__
                 saved_level.append((entity_type, (i,j)))  
-    with open("current_level.pkl", "wb") as f:
+    with open("level/current_level.pkl", "wb") as f:
         pickle.dump(saved_level, f)
-    with open("current_level.pkl", "rb") as f:
+    with open("level/current_level.pkl", "rb") as f:
         saved_level = pickle.load(f)
    
     for i in range(GAME_GRID_ROWS):
@@ -112,7 +109,7 @@ def del_level():
 
 def restore_level():
     del_level()
-    with open("level.pkl", "rb") as f:
+    with open("level/level.pkl", "rb") as f:
         saved_level = pickle.load(f)
         
     entity_classes = {
@@ -124,7 +121,7 @@ def restore_level():
         "Teleport": Teleport,
         "Stairs": Stairs,
         "WallGray": WallGray,
-        # "Door": Door,
+        "Door": Door,
         "Key": Key
     }
     

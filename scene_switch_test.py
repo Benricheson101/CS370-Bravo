@@ -21,7 +21,7 @@ from entities.wall import Wall
 from renderer.cell_grid import CellGrid
 from entities.teleport import Teleport
 from entities.enemy import Enemy
-from level_load import (
+from level.level_load import (
     game,
     load_level,
     del_level,
@@ -29,7 +29,7 @@ from level_load import (
     
 )
 # test
-from level_data import level_data
+from level.level_data import level_data
 
 
 scoreboard = CellGrid(

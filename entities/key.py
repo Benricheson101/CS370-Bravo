@@ -3,6 +3,7 @@ from entities.player import Player
 from renderer.cell import Cell
 
 
+
 class Key(Cell):
     def __init__(self) -> None:
         super().__init__()
@@ -11,6 +12,9 @@ class Key(Cell):
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
             print("You got a Key!")
+            from level.level_load import game_instance
+            if game_instance:  
+                game_instance.key_count += 1
             return True
 
         return False
