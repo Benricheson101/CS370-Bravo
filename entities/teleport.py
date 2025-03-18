@@ -1,9 +1,6 @@
 from constants import LIGHTMAGENTA
 from entities.player import Player
 from renderer.cell import Cell
-from pygame import Vector2
-import pygame
-from renderer.cell_grid import CellGrid
 
 
 class Teleport(Cell):
@@ -26,3 +23,5 @@ class Teleport(Cell):
             return False
 
         return False
+    
+    #TODO Make the object be collectable and then press the T key to run the teleport shit
