@@ -3,8 +3,10 @@ from pygame import Surface, Vector2
 import pygame
 from pygame.color import Color
 from pygame.sprite import Group
+from pygame.time import Clock
 from constants import COLORS, GRID_CELL_HEIGHT, GRID_CELL_WIDTH, LIGHTGRAY, RED, TRANSPARENT, WHITE
 from entities.char import Char
+from entities.cursor import Cursor, CursorType
 from renderer.cell import Cell
 from util import clamped_add
 import random
@@ -25,11 +27,15 @@ class CellGrid:
     cell_width: int
     grid: list[list[Optional[Cell]]]
     surface: Surface
+
     fill: Color
-    cur_pos: GridPosition # cursor position for functions like write and writeln. note that put() isn't related to this
-    cur_type: int
     color: Tuple[Color, Color]
     text_background: Tuple[Color, Color]
+
+    cur_pos: GridPosition # cursor position for functions like write and writeln. note that put() isn't related to this
+    cur_type: int
+    blink_visible: bool
+    cur_pos_current: Optional[GridPosition]
 
     flash_groups: List[Group]
 
@@ -66,6 +72,9 @@ class CellGrid:
 
         self.cur_pos = (0, 0)
         self.cur_type = 3
+        self.blink_visible = False
+        self.cur_pos_current = None
+
         self.color = (WHITE, LIGHTGRAY)
         self.text_background = (TRANSPARENT, TRANSPARENT)
         self.grid = [[None for _ in range(cols)] for _ in range(rows)]
@@ -160,19 +169,17 @@ class CellGrid:
                 if self.flash_counter > 15:
                     self.flash_counter = 13
 
-        self.group.update(new_fg=new_fg)
+        if self.blink_visible and not isinstance(self.at(self.cur_pos), Cursor):
+            if self.cur_type != CursorType.Invisible.value:
+                self.put(self.cur_pos, Cursor(CursorType(self.cur_type), fg=RED))
+                self.cur_pos_current = self.cur_pos
+        elif not self.blink_visible and isinstance(self.at(self.cur_pos), Cursor):
+            assert self.cur_pos_current
+            self.remove(self.cur_pos_current)
+            self.cur_pos_current = None
 
-        t = pygame.time.get_ticks()
-        print(t)
-        match self.cur_type:
-            case 2:
-                # dos cursor changes every 1/3 second
-                if t % 60 == 0:
-                    print("set cursor")
-                    self.put(self.cur_pos, Char(chr(219), fg=self.color[0]))
-                elif t % 60 == 30:
-                    print("remove cursor")
-                    self.remove(self.cur_pos)
+
+        self.group.update(new_fg=new_fg)
 
         # counter = 14
         # procedure Flash(XPos,YPos:byte;Message:Str80);
@@ -189,6 +196,9 @@ class CellGrid:
         #   until keypressed;
         #   Restore_Border;
         #  end;
+
+    def _flip_blink(self):
+        self.blink_visible = not self.blink_visible
 
     def get_random_empty_tiles(grid) -> List[Tuple[int, int]]:
         """

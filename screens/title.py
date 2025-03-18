@@ -1,11 +1,12 @@
+from random import randint
 from constants import BLACK, BLUE, BROWN, COLORS, LIGHTBLUE, LIGHTCYAN, LIGHTGRAY, LIGHTGREEN, LIGHTRED, RED, SCREEN_GRID_COLS, WHITE, YELLOW, SCREEN_GRID_ROWS
 from renderer.cell_grid import CellGrid
 
 
 def original_kroz_trilogy(g: CellGrid):
+    g.fill = BLUE
     g.bak(BLUE, BLACK);#bor(4);
-    g.clrscr()
-    #clrscr;g.cur(3);
+    g.clrscr();g.cur(3);
     g.gotoxy(32,1);
     g.col(RED,LIGHTGRAY);g.bak(BLUE,BLACK);
     g.write('ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ');
@@ -35,10 +36,9 @@ def original_kroz_trilogy(g: CellGrid):
     g.write('ovice, an ');g.col(WHITE, WHITE);g.write('E');g.col(YELLOW, LIGHTGRAY);
     g.write('xperienced or an ');g.col(WHITE, WHITE);g.write('A');g.col(YELLOW, LIGHTGRAY);
     g.write('dvanced player?');
-    g.col(LIGHTRED,BLACK);g.write(chr(219)); # TODO the col() should flash
+    g.col(LIGHTRED,BLACK);#g.write(chr(219)); # TODO the col() should flash
     g.bak(RED, LIGHTGRAY)
-
-    # gotoxy(32,2);col(random(16),0);write(' RETURN TO KROZ ');delay(50);
+    #g.gotoxy(32,2);#g.col(randint(0, 16),0);write(' RETURN TO KROZ ');delay(50);
     g.flash(32, 2, ' RETURN TO KROZ ')
 
 def main_menu(g: CellGrid):

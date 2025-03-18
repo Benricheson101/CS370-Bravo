@@ -1,6 +1,7 @@
 import pygame
 
-from constants import BLACK, LIGHTGRAY, SCREEN_GRID_COLS, SCREEN_GRID_ROWS, WINDOW_HEIGHT, WINDOW_WIDTH
+from constants import BLACK, LIGHTGRAY, RED, SCREEN_GRID_COLS, SCREEN_GRID_ROWS, WINDOW_HEIGHT, WINDOW_WIDTH
+from entities.cursor import Cursor, CursorType
 from renderer.cell_grid import CellGrid
 from screens.screen import color_menu
 from screens.title import instructions2, main_menu, marketing, original_kroz_trilogy, instructions1, story
@@ -15,13 +16,16 @@ def main():
         fill=BLACK
     )
 
-    # original_kroz_trilogy(g)
-    tick_fn = main_menu(g)
+    tick_fn = original_kroz_trilogy(g)
+    # tick_fn = main_menu(g)
     # color_menu(g)
     # instructions1(g)
     # instructions2(g)
     # marketing(g)
     # tick_fn = story(g)
+
+    FLASH_EVENT = pygame.event.custom_type()
+    pygame.time.set_timer(FLASH_EVENT, 333)
 
     clock = pygame.time.Clock()
     run = True
@@ -29,6 +33,8 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+            elif event.type == FLASH_EVENT:
+                g._flip_blink()
 
         if callable(tick_fn):
             tick_fn()
