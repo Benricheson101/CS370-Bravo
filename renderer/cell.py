@@ -3,15 +3,15 @@ from typing import Optional, TYPE_CHECKING
 from pygame import Rect, Surface, Vector2
 import pygame
 from pygame.color import Color
-from pygame.sprite import Sprite
-from constants import BLACK, GRID_CELL_HEIGHT, GRID_CELL_WIDTH
+from pygame.sprite import WeakSprite
+from constants import BLACK, GRID_CELL_HEIGHT, GRID_CELL_WIDTH, TRANSPARENT
 from renderer.spritesheet import dos_sprites
 
 if TYPE_CHECKING:
     from renderer.cell_grid import CellGrid, GridPosition
 
 
-class Cell(Sprite):
+class Cell(WeakSprite):
     rect: Rect
     image: Surface
     x: int
@@ -70,11 +70,12 @@ class Cell(Sprite):
         scaled_img = pygame.transform.scale_by(img, scale_factor)
 
         rect = scaled_img.get_rect(
-            center=self.rect.center
+            # center=self.rect.center
+            topleft=(0,0)
         )
 
         self.image.blit(scaled_img, rect)
-        
+
     @property
     def pos(self) -> "GridPosition":
         return self.x, self.y
