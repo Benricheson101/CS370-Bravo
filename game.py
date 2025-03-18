@@ -24,6 +24,8 @@ from level.level_load import (
     set_game_instance
 )
 
+FLASH_EVENT = pygame.event.custom_type()
+
 class Game:
     def __init__(self):
         _, errors = pygame.init()
@@ -34,6 +36,7 @@ class Game:
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption("Kroz")
         self.screen.fill(LIGHTGRAY)
+        pygame.time.set_timer(FLASH_EVENT, 333)
 
         # Load DOS sprite image ahead of time
         dos_sprites()
@@ -54,34 +57,38 @@ class Game:
 
         # Score tracking
         self.score = 0
-        
+
         # Key count tracking
         self.key_count = 0
-        
+
         # Register the Game instance globally in level_load.py
-        set_game_instance(self) 
+        set_game_instance(self)
 
     def run(self):
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    self.running = False 
+                    self.running = False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_s:
                         save_level()
                     elif event.key == pygame.K_r:
                         restore_level()
+                elif event.type == FLASH_EVENT:
+                    game._flip_blink()
 
             if not self.running:
                 break  # Ensure we exit before rendering again
 
+            game.update()
             game.render(self.screen)
+            self.scoreboard.update()
             self.scoreboard.render(self.screen)
 
             pygame.display.flip()
             self.clock.tick(60)
 
-        pygame.quit() 
+        pygame.quit()
 
-    
+
 

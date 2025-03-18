@@ -27,7 +27,7 @@ class Player(Cell):
             self.move(d) # moves player in direction
             # TODO: sound here
 
-        
+
 
     def on_collision(self, cell: "Cell") -> bool:
 
@@ -41,7 +41,7 @@ class Player(Cell):
         """
         print(self.x, self.y)
         return self.x, self.y'''
-        
+
 import pygame
 from time import time
 from constants import YELLOW
@@ -56,7 +56,7 @@ class Player(Cell):
         self.last_move_time = time()  # Time of last movement
         self.move_delay = 0.1  # 100ms delay between moves (adjustable)
 
-    def update(self) -> None:
+    def update(self, **kwargs) -> None:
         assert self.grid
 
         current_time = time()
@@ -84,7 +84,7 @@ class Player(Cell):
 
             # Move the player in the direction of the vector
             self.move(d)
-            self.last_move_time = current_time  
+            self.last_move_time = current_time
 
             # Optional: Add sound here if needed (example)
             # move_sound.play()

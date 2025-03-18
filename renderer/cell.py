@@ -79,3 +79,6 @@ class Cell(WeakSprite):
     @property
     def pos(self) -> "GridPosition":
         return self.x, self.y
+
+    def update(self, **kwargs):
+        pass
