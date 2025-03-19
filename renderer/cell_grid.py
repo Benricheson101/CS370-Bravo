@@ -3,7 +3,6 @@ from pygame import Surface, Vector2
 import pygame
 from pygame.color import Color
 from pygame.sprite import Group
-from pygame.time import Clock
 from constants import COLORS, GRID_CELL_HEIGHT, GRID_CELL_WIDTH, LIGHTGRAY, RED, TRANSPARENT, WHITE
 from entities.char import Char
 from entities.cursor import Cursor, CursorType
@@ -36,8 +35,6 @@ class CellGrid:
     cur_type: int
     blink_visible: bool
     cur_pos_current: Optional[GridPosition]
-
-    flash_groups: List[Group]
 
     def __init__(
             self,
