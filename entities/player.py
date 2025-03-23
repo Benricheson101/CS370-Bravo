@@ -16,13 +16,33 @@ class Player(Cell):
         keys = pygame.key.get_pressed()
         dx, dy = 0, 0  # Movement direction
 
-        # Handle movement input (one direction per axis)
+        # Handle movement input (one direction per axis) On the Arrow Keys
         if keys[pygame.K_LEFT] ^ keys[pygame.K_RIGHT]:
             dx = 1 if keys[pygame.K_RIGHT] else -1
             
         if keys[pygame.K_UP] ^ keys[pygame.K_DOWN]:
             dy = 1 if keys[pygame.K_DOWN] else -1
-
+            
+        # Handle movement input for ASCII keys (IJKM)
+        if keys[pygame.K_j]:  # Left
+            dx = -1
+        if keys[pygame.K_l]:  # Right
+            dx = 1
+        if keys[pygame.K_i]:  # Up
+            dy = -1
+        if keys[pygame.K_m]:  # Down
+            dy = 1
+        
+        # Diagonal movement (for keys U, I, O, N)
+        if keys[pygame.K_u]:  # Up-left
+            dx, dy = -1, -1
+        if keys[pygame.K_o]:  # Up-right
+            dx, dy = 1, -1
+        if keys[pygame.K_n]:  # Down-left
+            dx, dy = -1, 1
+        if keys[pygame.K_COMMA]:  # Down-right
+            dx, dy = 1, 1
+            
         current_time = pygame.time.get_ticks()
         if current_time - self.last_move_time > 150:  # 150ms delay for tile movement
             self.grid.move(pygame.Vector2(dx, dy), self)  # Use the grid's move function
