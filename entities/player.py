@@ -15,7 +15,7 @@ class Player(Cell):
         
         keys = pygame.key.get_pressed()
         dx, dy = 0, 0  # Movement direction
-
+        
         # Handle movement input (one direction per axis) On the Arrow Keys
         if keys[pygame.K_LEFT] ^ keys[pygame.K_RIGHT]:
             dx = 1 if keys[pygame.K_RIGHT] else -1
@@ -23,24 +23,43 @@ class Player(Cell):
         if keys[pygame.K_UP] ^ keys[pygame.K_DOWN]:
             dy = 1 if keys[pygame.K_DOWN] else -1
             
-        # Handle movement input for ASCII keys (IJKM)
-        if keys[pygame.K_j]:  # Left
-            dx = -1
-        if keys[pygame.K_l]:  # Right
-            dx = 1
-        if keys[pygame.K_i]:  # Up
-            dy = -1
-        if keys[pygame.K_m]:  # Down
-            dy = 1
+        if dx == 0 and dy == 0:
+            # Handle movement input for ASCII keys (IJKM)
+            if keys[pygame.K_j]:  # Left
+                dx = -1
+            if keys[pygame.K_l]:  # Right
+                dx = 1
+            if keys[pygame.K_i]:  # Up
+                dy = -1
+            if keys[pygame.K_m]:  # Down
+                dy = 1
+            if keys[pygame.K_u]:  # Up-left
+                dx, dy = -1, -1
+            elif keys[pygame.K_o]:  # Up-right
+                dx, dy = 1, -1
+            elif keys[pygame.K_n]:  # Down-left
+                dx, dy = -1, 1
+            elif keys[pygame.K_COMMA]:  # Down-right
+                dx, dy = 1, 1
         
-        # Diagonal movement (for keys U, I, O, N)
-        if keys[pygame.K_u]:  # Up-left
+        # Movement with numpad
+        if keys[pygame.K_KP4]:  # Numpad 4 (Left)
+            dx = -1
+        elif keys[pygame.K_KP6]:  # Numpad 6 (Right)
+            dx = 1
+
+        if keys[pygame.K_KP8]:  # Numpad 8 (Up)
+            dy = -1
+        elif keys[pygame.K_KP2]:  # Numpad 2 (Down)
+            dy = 1
+        # Diagonal movement with numpad
+        if keys[pygame.K_KP7]:  # Up-Left
             dx, dy = -1, -1
-        if keys[pygame.K_o]:  # Up-right
+        elif keys[pygame.K_KP9]:  # Up-Right
             dx, dy = 1, -1
-        if keys[pygame.K_n]:  # Down-left
+        elif keys[pygame.K_KP1]:  # Down-Left
             dx, dy = -1, 1
-        if keys[pygame.K_COMMA]:  # Down-right
+        elif keys[pygame.K_KP3]:  # Down-Right
             dx, dy = 1, 1
             
         current_time = pygame.time.get_ticks()
