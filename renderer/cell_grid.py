@@ -1,9 +1,11 @@
-from typing import Optional, List, Tuple
+from typing import Optional, List, Tuple, Union
 from pygame import Surface, Vector2
 import pygame
 from pygame.color import Color
 from pygame.sprite import Group
-from constants import GRID_CELL_HEIGHT, GRID_CELL_WIDTH
+from constants import COLORS, GRID_CELL_HEIGHT, GRID_CELL_WIDTH, LIGHTGRAY, RED, TRANSPARENT, WHITE
+from entities.char import Char
+from entities.cursor import Cursor, CursorType
 from renderer.cell import Cell
 from util import clamped_add
 import random
@@ -24,7 +26,15 @@ class CellGrid:
     cell_width: int
     grid: list[list[Optional[Cell]]]
     surface: Surface
+
     fill: Color
+    color: Tuple[Color, Color]
+    text_background: Tuple[Color, Color]
+
+    cur_pos: GridPosition # cursor position for functions like write and writeln. note that put() isn't related to this
+    cur_type: int
+    blink_visible: bool
+    cur_pos_current: Optional[GridPosition]
 
     def __init__(
             self,
@@ -57,12 +67,22 @@ class CellGrid:
         self.cell_width = cell_width
         self.fill = fill
 
+        self.cur_pos = (0, 0)
+        self.cur_type = 3
+        self.blink_visible = False
+        self.cur_pos_current = None
+
+        self.color = (WHITE, LIGHTGRAY)
+        self.text_background = (TRANSPARENT, TRANSPARENT)
         self.grid = [[None for _ in range(cols)] for _ in range(rows)]
         self.surface = Surface((cell_width * cols, cell_height * rows), pygame.SRCALPHA)
         self.rect = self.surface.get_rect(topleft=offset)
 
         self.surface.fill(fill)
         self.group = Group()
+
+        self.flash_groups = []
+        self.flash_counter = 14
 
     def put(self, pos: GridPosition, sprite: Cell):
         col, row = pos
@@ -131,10 +151,51 @@ class CellGrid:
         return self.move_to((new_col, new_row), sprite)
 
     def render(self, parent: Surface):
-        self.group.update()
+        # self.group.update()
         self.surface.fill(self.fill)
         self.group.draw(self.surface)
         parent.blit(self.surface, self.rect)
+
+    def update(self):
+        new_fg = None
+
+        if pygame.time.get_ticks() % 2 == 0:
+                new_fg = COLORS[self.flash_counter]
+
+                self.flash_counter += 1
+                if self.flash_counter > 15:
+                    self.flash_counter = 13
+
+        if self.blink_visible and not isinstance(self.at(self.cur_pos), Cursor):
+            if self.cur_type != CursorType.Invisible.value:
+                self.put(self.cur_pos, Cursor(CursorType(self.cur_type), fg=RED))
+                self.cur_pos_current = self.cur_pos
+        elif not self.blink_visible and isinstance(self.at(self.cur_pos), Cursor):
+            assert self.cur_pos_current
+            self.remove(self.cur_pos_current)
+            self.cur_pos_current = None
+
+
+        self.group.update(new_fg=new_fg)
+
+        # counter = 14
+        # procedure Flash(XPos,YPos:byte;Message:Str80);
+        #  var Counter : integer;
+        #  begin
+        #   Counter := 14;
+        #   ClearKeys;
+        #   repeat
+        #    Counter := Counter + 1;
+        #    if Counter > 15 then Counter := 13;
+        #    col(Counter,15);
+        #    delay(20);
+        #    print(XPos,YPos,Message);
+        #   until keypressed;
+        #   Restore_Border;
+        #  end;
+
+    def _flip_blink(self):
+        self.blink_visible = not self.blink_visible
 
     def get_random_empty_tiles(grid) -> List[Tuple[int, int]]:
         """
@@ -152,8 +213,124 @@ class CellGrid:
             for col in range(grid.cols):
                 if grid.at((col, row)) is None:  # Check if the cell is empty
                     empty_tiles.append((col, row))
-        
+
 
         if empty_tiles:  # Check if any empty tiles were found
             return random.choice(empty_tiles)
-        
+
+    # emulating DOS screen functions
+
+    def cur(self, c: int):
+        """
+        sets the type of the cursor
+
+        Args:
+            c: (int 1-3) the cursor type
+                1: underline
+                2: solid block
+                3: invisible
+        """
+        self.cur_type = c
+
+        # match c:
+        #     case 1:
+        #         print("1!")
+        #
+        #     case 2:
+        #         print("2")
+        #
+        #     case 3:
+        #         print("")
+
+# procedure Cur(Num:byte);
+#  var Result : Registers;
+#  begin
+#   Result.AX := $100;
+#   with Result do
+#    if Color then
+#     case Num of
+#      1:CX:=$707;   { Underline   }
+#      2:CX:=$8;     { Solid Block }
+#      3:CX:=$2000;  { Invisible   }
+#     end
+#    else
+#     case Num of
+#      1:CX:=$C0D;
+#      2:CX:=$E;
+#      3:CX:=$2000;
+#     end;
+#    intr($10,Result);
+#  end; { Cur }
+
+    def bak(self, c: Union[Color, int], m: Union[Color, int]):
+        """
+        Sets the background color of text
+
+        Args:
+            c: the color when in color mode
+            m: the color when in monochrome mode
+        """
+        self.text_background = (
+            c if isinstance(c, Color) else COLORS[c],
+            m if isinstance(m, Color) else COLORS[m],
+        )
+
+    def col(self, c: Union[Color, int], m: Union[Color, int]):
+        """
+        Sets the color for text written using the dos-like methods
+
+        Args:
+            c: the color when in color mode
+            m: the color when in monochrome mode
+        """
+        self.color = (
+            c if isinstance(c, Color) else COLORS[c],
+            m if isinstance(m, Color) else COLORS[m],
+        )
+
+    def clrscr(self):
+        for col in range(self.cols):
+            for row in range(self.rows):
+                self.remove((col, row))
+
+    def gotoxy(self, x: int, y: int):
+        """
+        "GotoXY positions the cursor at (X,Y), X in horizontal, Y in vertical direction relative to the origin of the current window. The origin is located at (1,1), the upper-left corner of the window"
+            - from: https://www.freepascal.org/docs-html/rtl/crt/gotoxy.html
+        """
+        self.cur_pos = (x - 1, y - 1)
+
+    def writeln(self, msg: str = ''):
+        if msg is not None:
+            self.write(msg)
+        self.cur_pos = (0, self.cur_pos[1] + 1)
+
+    def write(self, msg: str, flash: bool = False):
+        start = self.cur_pos[0]
+        end = self.cur_pos[0] + len(msg)
+
+        assert end < self.cols, f"message extends off the edge of the screen, start: {self.cur_pos}, end: {(end, self.cur_pos[1])}"
+
+        # for i in range(start, end):
+        # TODO: put these in a sprite group
+        for i, char in enumerate(msg):
+            self.remove((start + i, self.cur_pos[1]))
+            self.put((start + i, self.cur_pos[1]), Char(char, fg=self.color[0], bg=self.text_background[0], flash=flash)) # TODO: monochrome mode
+
+        self.cur_pos = (end, self.cur_pos[1])
+
+    def flash(self, xpos: int, ypos: int, msg: str):
+        oldcur = self.cur_pos
+        self.gotoxy(xpos, ypos)
+        self.write(msg, flash=True)
+        self.cur_pos = oldcur
+
+        # group = Group()
+        #
+        # sprites = [Char(c, fg=self.color[0]) for c in msg]
+        # group.add(sprites)
+        #
+        # for i, s in enumerate(sprites):
+        #     self.put((xpos - 1 + i, ypos - 1), s)
+        #
+        # self.flash_groups.append(group)

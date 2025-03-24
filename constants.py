@@ -45,7 +45,8 @@ MAGENTA = Color(0xA01FB4FF)
 BROWN = Color(0xAA5500FF)
 # 7: lightgray
 LIGHTGRAY = Color(0xAAAAAAFF)
-# 8: darkgray - NOT USED -
+# 8: darkgray - NOT USED. color is incorrect but needs a color in case it gets randomly chosen
+DARKGRAY = Color(0xAAAAAAFF)
 # 9: lightblue
 LIGHTBLUE = Color(0x5555FFFF)
 # 10: lightgreen
@@ -60,3 +61,24 @@ LIGHTMAGENTA = Color(0xFF55FFFF)
 YELLOW = Color(0xFFFF55FF)
 # 15: white
 WHITE = Color(0xFFFFFFFF)
+
+TRANSPARENT = Color(0x00000000)
+
+COLORS = [
+    BLACK,
+    BLUE,
+    GREEN,
+    CYAN,
+    RED,
+    MAGENTA,
+    BROWN,
+    LIGHTGRAY,
+    DARKGRAY,
+    LIGHTBLUE,
+    LIGHTGREEN,
+    LIGHTCYAN,
+    LIGHTRED,
+    LIGHTMAGENTA,
+    YELLOW,
+    WHITE,
+]
