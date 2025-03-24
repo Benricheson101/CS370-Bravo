@@ -63,7 +63,7 @@ tile_mapping = {
     "T": Teleport,
     "L": Stairs,
     "6": WallGray,
-    "D": Door,
+    # "D": Door,
     "K": Key,
     "W": Whip,
     " ": None
@@ -123,7 +123,7 @@ def restore_level():
         "Teleport": Teleport,
         "Stairs": Stairs,
         "WallGray": WallGray,
-        "Door": Door,
+        # "Door": Door,
         "Key": Key,
         "Whip": Whip
     }
