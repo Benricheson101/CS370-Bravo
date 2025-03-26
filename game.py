@@ -56,11 +56,13 @@ class Game:
         )
 
         self.game_grid = CellGrid(
-            grid_size=(GAME_GRID_COLS, GAME_GRID_ROWS),
-            offset=(GRID_CELL_WIDTH, GRID_CELL_HEIGHT),
+            grid_size=(GAME_GRID_COLS+2, GAME_GRID_ROWS+2),
+            # offset=(GRID_CELL_WIDTH, GRID_CELL_HEIGHT),
             fill=BLACK,
             game=self,
         )
+
+        self.game_grid.border()
 
         # Game loop control
         self.running = True
@@ -71,13 +73,13 @@ class Game:
 
         # Key count tracking
         self.key_count = 0
-        
+
         #Gem count tracking
         self.gem_count = 0
-        
+
         #Whip count Tracking
         self.whip_count = 0
-        
+
         #Teleport count Tracking
         self.teleport_count = 0
 
@@ -110,7 +112,7 @@ class Game:
             self.game_grid.render(self.screen)
             self.scoreboard_grid.update()
             self.scoreboard_grid.render(self.screen)
-            
+
             print(f"Score: {self.score}, Keys: {self.key_count}, Gems: {self.gem_count}, "
                   f"Whips: {self.whip_count}, Teleports: {self.teleport_count}")
 

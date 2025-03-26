@@ -68,7 +68,7 @@ def load_level(game, level_num):
                 for j, level_value in enumerate(row):
                     if level_value == tile_key and tile_value is not None:
                         entity = tile_value(game.game.gem_color) if tile_value == Gem else tile_value()
-                        entity_pos.append(game.put((j, i), entity))
+                        entity_pos.append(game.put((j+1, i+1), entity))
     for i in range(len(entity_pos)):
         return entity_pos[i]
 
@@ -122,5 +122,5 @@ def restore_level(game):
 
     for entity_type, (i, j) in saved_level:
         if entity_type in entity_classes:
-            game.put((j, i), entity_classes[entity_type]())
+            game.put((j+1, i+1), entity_classes[entity_type]())
 

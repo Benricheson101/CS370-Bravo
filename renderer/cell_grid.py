@@ -4,11 +4,12 @@ import pygame
 from pygame.color import Color
 from pygame.sprite import Group
 from constants import COLORS, GRID_CELL_HEIGHT, GRID_CELL_WIDTH, LIGHTGRAY, RED, TRANSPARENT, WHITE
+from entities.border import Border
 from entities.char import Char
 from entities.cursor import Cursor, CursorType
 from renderer.cell import Cell
 from util import ColorValue, clamped_add, to_color
-import random
+from random import randint
 
 if TYPE_CHECKING:
     from game import Game
@@ -352,12 +353,14 @@ class CellGrid:
         self.write(msg, flash=True)
         self.cur_pos = oldcur
 
-        # group = Group()
-        #
-        # sprites = [Char(c, fg=self.color[0]) for c in msg]
-        # group.add(sprites)
-        #
-        # for i, s in enumerate(sprites):
-        #     self.put((xpos - 1 + i, ypos - 1), s)
-        #
-        # self.flash_groups.append(group)
+    def border(self):
+        bc = randint(0, 7) + 8
+        bb = randint(0, 6) + 1
+
+        for i in range(0, self.cols):
+            self.put((i, self.rows - 1), Border(bc, bb))
+            self.put((i, 0), Border(bc, bb))
+
+        for i in range(self.rows):
+            self.put((self.cols - 1, i), Border(bc, bb))
+            self.put((0, i), Border(bc, bb))

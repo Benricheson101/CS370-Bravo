@@ -63,6 +63,8 @@ class Cell(WeakSprite):
         if color is not None:
             print(f"WARNING: self.image.fill is deprecated in favor of self.col() in entity classes (in {self.__class__.__name__})")
 
+        self.image.fill(self.bg[0])
+
         img = dos_sprites().sprite((n, 0))
 
         color_img = Surface(self.image.get_size(), pygame.SRCALPHA)
@@ -73,8 +75,8 @@ class Cell(WeakSprite):
         scale_factor = self.rect.size[0] / img.get_size()[0]
         scaled_img = pygame.transform.scale_by(img, scale_factor)
 
-        self.sprite = scaled_img
-        self.image.blit(self.sprite, self.rect)
+        self.image.blit(scaled_img, self.rect)
+        self.sprite = self.image.copy()
 
     @property
     def pos(self) -> "GridPosition":
