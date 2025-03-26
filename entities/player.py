@@ -14,8 +14,20 @@ class Player(Cell):
     def update(self, **kwargs) -> None:
         assert self.grid
 
+        dx, dy = 0, 0
         keys = pygame.key.get_pressed()
-        dx, dy = 0, 0  # Movement direction
+        current_time = pygame.time.get_ticks()
+        
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key in [pygame.K_LEFT, pygame.K_j]:  # Left
+                    dx = -1
+                elif event.key in [pygame.K_RIGHT, pygame.K_l]:  # Right
+                    dx = 1
+                elif event.key in [pygame.K_UP, pygame.K_i]:  # Up
+                    dy = -1
+                elif event.key in [pygame.K_DOWN, pygame.K_m]:  # Down
+                    dy = 1
 
         # Handle movement input (one direction per axis) On the Arrow Keys
         if keys[pygame.K_LEFT] ^ keys[pygame.K_RIGHT]:
@@ -63,10 +75,13 @@ class Player(Cell):
         elif keys[pygame.K_KP3]:  # Down-Right
             dx, dy = 1, 1
 
-        current_time = pygame.time.get_ticks()
-        if current_time - self.last_move_time > 150:  # 150ms delay for tile movement
+
+        if (dx != 0 or dy != 0) and (current_time - self.last_move_time > 100):
+            self.grid.move(pygame.Vector2(dx, dy), self)
+            self.last_move_time = current_time
+        '''if current_time - self.last_move_time > 150:  # 150ms delay for tile movement
             self.grid.move(pygame.Vector2(dx, dy), self)  # Use the grid's move function
-            self.last_move_time = current_time  # Update movement timer
+            self.last_move_time = current_time  # Update movement timer'''
 
         super().update()
 
