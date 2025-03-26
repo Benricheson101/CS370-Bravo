@@ -7,7 +7,8 @@ class Enemy(Cell):
     def __init__(self) -> None:
         super().__init__()
         # self.load_sprite("./sprites/enemy.png")
-        self.load_dos_char(142, LIGHTRED)
+        self.col(12, 7)
+        self.load_dos_char(142)
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):

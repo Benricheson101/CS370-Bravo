@@ -34,13 +34,13 @@ if __name__ == "__main__":
     game = CellGrid(
         grid_size=(GAME_GRID_COLS, GAME_GRID_ROWS),
         offset=(GRID_CELL_WIDTH, GRID_CELL_HEIGHT),
-        fill=BLACK
+        bg=BLACK
     )
 
     scoreboard = CellGrid(
         grid_size=(SCOREBOARD_GRID_COLS, SCOREBOARD_GRID_ROWS),
         offset=(GAME_GRID_WIDTH + GRID_CELL_WIDTH * 2, 0),
-        fill=BLUE
+        bg=BLUE
     )
 
     game.put((0, 0), TestCell(RED))

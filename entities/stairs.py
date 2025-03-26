@@ -8,8 +8,10 @@ from renderer.cell import Cell
 class Stairs(Cell):
     def __init__(self) -> None:
         super().__init__()
+        # self.img.fill(LIGHTGRAY)
         self.image.fill(LIGHTGRAY)
         self.load_dos_char(240, BLACK)
+        self.blink = True
 
     def on_collision(self, cell: "Cell") -> bool:
         from level.level_load import (

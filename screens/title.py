@@ -4,7 +4,7 @@ from renderer.cell_grid import CellGrid
 
 
 def original_kroz_trilogy(g: CellGrid):
-    g.fill = BLUE
+    g.bg = BLUE
     g.bak(BLUE, BLACK);#bor(4)
     g.clrscr();g.cur(3)
     g.gotoxy(32,1)
@@ -96,7 +96,7 @@ def main_menu(g: CellGrid):
 
 
 def instructions1(g: CellGrid):
-    g.fill = BLUE
+    g.bg = BLUE
     g.bak(BLUE,BLACK)
     # g.bor(4)
     g.clrscr()
@@ -130,7 +130,7 @@ def instructions1(g: CellGrid):
 
 
 def instructions2(g: CellGrid):
-    g.fill = BLUE
+    g.bg = BLUE
     g.clrscr()
     # g.cur(3)
     # g.ClearKeys
@@ -161,7 +161,7 @@ def instructions2(g: CellGrid):
 
 def marketing(g: CellGrid):
     # g.bor(10)
-    g.fill = BLUE
+    g.bg = BLUE
     g.bak(1,0)
     g.clrscr()
     # g.ClearKeys
@@ -192,7 +192,7 @@ def marketing(g: CellGrid):
     g.flash(27,25,'Press any key to continue.')
 
 def story(g: CellGrid):
-    g.fill = BLUE
+    g.bg = BLUE
     g.bak(1,0)
     g.clrscr()
     g.cur(3)

@@ -1,4 +1,5 @@
 import pygame
+from pygame.color import Color
 from renderer.spritesheet import dos_sprites
 from constants import (
     BLACK,
@@ -17,16 +18,21 @@ from constants import (
 
 from renderer.cell_grid import CellGrid
 from level.level_load import (
-    game,
     load_level,
     save_level,
     restore_level,
     set_game_instance
 )
+from util import new_gem_color
 
 FLASH_EVENT = pygame.event.custom_type()
 
 class Game:
+    gem_color: Color
+    art_color: Color
+
+    game_grid: CellGrid
+
     def __init__(self):
         _, errors = pygame.init()
         if errors:
@@ -42,14 +48,19 @@ class Game:
         dos_sprites()
 
         # Initialize scoreboard
-        self.scoreboard = CellGrid(
+        self.scoreboard_grid = CellGrid(
             grid_size=(SCOREBOARD_GRID_COLS, SCOREBOARD_GRID_ROWS),
             offset=(GAME_GRID_WIDTH + GRID_CELL_WIDTH * 2, 0),
-            fill=BLUE
+            fill=BLUE,
+            game=self,
         )
 
-        # Load initial level
-        load_level(1)
+        self.game_grid = CellGrid(
+            grid_size=(GAME_GRID_COLS, GAME_GRID_ROWS),
+            offset=(GRID_CELL_WIDTH, GRID_CELL_HEIGHT),
+            fill=BLACK,
+            game=self,
+        )
 
         # Game loop control
         self.running = True
@@ -70,8 +81,14 @@ class Game:
         #Teleport count Tracking
         self.teleport_count = 0
 
+        self.gem_color, self.art_color = new_gem_color()
+
         # Register the Game instance globally in level_load.py
         set_game_instance(self)
+
+        # Load initial level
+        load_level(self.game_grid, 1)
+
 
     def run(self):
         while self.running:
@@ -80,19 +97,19 @@ class Game:
                     self.running = False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_s:
-                        save_level()
+                        save_level(self.game_grid)
                     elif event.key == pygame.K_r:
-                        restore_level()
+                        restore_level(self.game_grid)
                 elif event.type == FLASH_EVENT:
-                    game._flip_blink()
+                    self.game_grid._flip_blink()
 
             if not self.running:
                 break  # Ensure we exit before rendering again
 
-            game.update()
-            game.render(self.screen)
-            self.scoreboard.update()
-            self.scoreboard.render(self.screen)
+            self.game_grid.update()
+            self.game_grid.render(self.screen)
+            self.scoreboard_grid.update()
+            self.scoreboard_grid.render(self.screen)
             
             print(f"Score: {self.score}, Keys: {self.key_count}, Gems: {self.gem_count}, "
                   f"Whips: {self.whip_count}, Teleports: {self.teleport_count}")

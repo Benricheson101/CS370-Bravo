@@ -1,28 +1,29 @@
 import pygame
-from constants import YELLOW
+from constants import BLACK, WHITE, YELLOW
 from renderer.cell import Cell
 from renderer.cell_grid import CellGrid
-
 
 class Player(Cell):
     def __init__(self) -> None:
         super().__init__()
-        self.load_dos_char(2, YELLOW)
+        # FIXME: what is the monochrome color for here?
+        self.col(14, WHITE)
+        self.load_dos_char(2)
         self.last_move_time = 0 # Track movement delay (milliseconds)
 
     def update(self, **kwargs) -> None:
         assert self.grid
-        
+
         keys = pygame.key.get_pressed()
         dx, dy = 0, 0  # Movement direction
-        
+
         # Handle movement input (one direction per axis) On the Arrow Keys
         if keys[pygame.K_LEFT] ^ keys[pygame.K_RIGHT]:
             dx = 1 if keys[pygame.K_RIGHT] else -1
-            
+
         if keys[pygame.K_UP] ^ keys[pygame.K_DOWN]:
             dy = 1 if keys[pygame.K_DOWN] else -1
-            
+
         if dx == 0 and dy == 0:
             # Handle movement input for ASCII keys (IJKM)
             if keys[pygame.K_j]:  # Left
@@ -41,7 +42,7 @@ class Player(Cell):
                 dx, dy = -1, 1
             elif keys[pygame.K_COMMA]:  # Down-right
                 dx, dy = 1, 1
-        
+
         # Movement with numpad
         if keys[pygame.K_KP4]:  # Numpad 4 (Left)
             dx = -1
@@ -61,17 +62,18 @@ class Player(Cell):
             dx, dy = -1, 1
         elif keys[pygame.K_KP3]:  # Down-Right
             dx, dy = 1, 1
-            
+
         current_time = pygame.time.get_ticks()
         if current_time - self.last_move_time > 150:  # 150ms delay for tile movement
             self.grid.move(pygame.Vector2(dx, dy), self)  # Use the grid's move function
             self.last_move_time = current_time  # Update movement timer
 
-
+        super().update()
 
     def on_collision(self, cell: "Cell") -> bool:
 
         return False
+
     def get_player_position(self) -> tuple[int, int]:
         """
         Gets the player's current position on the grid.
@@ -81,4 +83,3 @@ class Player(Cell):
         """
         print(self.x, self.y)
         return self.x, self.y
- 
