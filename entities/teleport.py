@@ -13,12 +13,15 @@ class Teleport(Cell):
         assert self.grid
         if isinstance(cell, Player):
             print("Player hit a Teleport scroll!")
-            
+            from level.level_load import game_instance
+            if game_instance:  
+                game_instance.teleport_count += 1
+                
             empty_cell = cell.grid.get_random_empty_tiles()
             
             cell.move_to((empty_cell))
             self.grid.remove((self.x, self.y))
-                
+            game_instance.teleport_count -= 1
 
             return False
 

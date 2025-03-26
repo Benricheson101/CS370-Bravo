@@ -12,6 +12,9 @@ class Enemy(Cell):
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
             print("Player hit a monster! OUCHIE!")
+            from level.level_load import game_instance
+            if game_instance:  
+                game_instance.gem_count -= 10
             return True
 
         return False

@@ -11,6 +11,9 @@ class Gem(Cell):
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
             print("Player hit a Gem!")
+            from level.level_load import game_instance
+            if game_instance:  
+                game_instance.gem_count += 1
             return True
-
+        
         return False

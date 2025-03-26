@@ -10,7 +10,10 @@ class Whip(Cell):
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
             print("Im indiana jonesing it!!!!!")
-            return True
+            #from level.level_load import game_instance
+            #if game_instance:  
+                #game_instance.whip_count += 1
+            return True 
         
         return False
     
