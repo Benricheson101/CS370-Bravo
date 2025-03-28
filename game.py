@@ -21,13 +21,24 @@ from level.level_load import (
     load_level,
     save_level,
     restore_level,
-    set_game_instance
+    set_game_instance,
 )
 from util import new_gem_color
 
 FLASH_EVENT = pygame.event.custom_type()
 
 class Game:
+    
+    def load_current_level(self):
+        # Check for even-numbered levels (randomly generated)
+        if self.current_level % 2 == 0:
+            from level.level_load import random_level, object_counts
+            random_level(self.game_grid, self.current_level, object_counts)
+        else:
+            from level.level_load import load_level
+            load_level(self.game_grid, self.current_level)
+    
+    
     gem_color: Color
     art_color: Color
 
@@ -89,7 +100,10 @@ class Game:
         set_game_instance(self)
 
         # Load initial level
-        load_level(self.game_grid, 1)
+        self.current_level = 1
+        self.load_current_level()
+        
+
 
 
     def run(self):

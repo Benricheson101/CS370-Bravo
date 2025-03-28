@@ -12,15 +12,17 @@ class Stairs(Cell):
         assert self.grid
         assert self.grid.game
 
-        from level.level_load import (
-            del_level,
-            load_level,
-            increase_level_num
-        )
-
         if isinstance(cell, Player):
-            del_level(self.grid.game)
-            load_level(self.grid.game, increase_level_num())
+            # Increment the level number
+            self.grid.game.current_level += 1
+
+            # Clear the current level
+            self.grid.game.game_grid.clrscr()
+            self.grid.game.game_grid.border()
+
+            # Load the next level using load_current_level()
+            self.grid.game.load_current_level()
+
             print("To the next level!")
             return False
 

@@ -36,19 +36,11 @@ def set_game_instance(game):
     game_instance = game  # Store reference to Game
 
 
-current_level_num = 1
-
-def increase_level_num():
-    global current_level_num
-    current_level_num +=2
-    return current_level_num
-# crashes after level 20 obviously, and it needs to be reset if player wants to restore
-# for some reason testing door/key in level 9, stairs takes it to level 2???
 
 tile_mapping = {
     "P": Player,
     "#": Wall,
-    "X": Block,
+    # "X": Block,
     "1": Enemy,
     "+": Gem,
     "T": Teleport,
@@ -109,7 +101,7 @@ def restore_level(game):
     entity_classes = {
         "Player": Player,
         "Wall": Wall,
-        "Block": Block,
+        # "Block": Block,
         "Enemy": Enemy,
         "Gem": Gem,
         "Teleport": Teleport,
@@ -123,4 +115,40 @@ def restore_level(game):
     for entity_type, (i, j) in saved_level:
         if entity_type in entity_classes:
             game.put((j+1, i+1), entity_classes[entity_type]())
+            
+            
 
+
+
+
+object_counts = {
+    "P": 1,
+    "#": 0,
+    # "X": 50,
+    "1": 100,
+    "+": 200,
+    "T": 50,
+    "L": 2,
+    "6": 0,
+    "D": 0,
+    "K": 0,
+    "W": 20
+}
+
+def random_level(grid: CellGrid, level_num, object_counts):
+   
+    for obj_char, count in object_counts.items():
+        entity_class = tile_mapping.get(obj_char)
+
+        if entity_class is None:
+            print(f"Warning: No entity mapped for '{obj_char}'")
+            continue
+
+        # Place entities using random empty tiles
+        for _ in range(count):
+            x, y = grid.get_random_empty_tiles(grid)
+
+            # Create the correct entity and place it
+            entity = entity_class() if entity_class != Gem else entity_class(grid.game.gem_color)
+            grid.put((x, y), entity)
+            
