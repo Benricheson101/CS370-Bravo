@@ -112,7 +112,7 @@ class Game:
             self.game_grid.render(self.screen)
             self.scoreboard_grid.update()
             self.scoreboard_grid.render(self.screen)
-
+            
             print(f"Score: {self.score}, Keys: {self.key_count}, Gems: {self.gem_count}, "
                   f"Whips: {self.whip_count}, Teleports: {self.teleport_count}")
 
@@ -120,6 +120,13 @@ class Game:
             self.clock.tick(60)
 
         pygame.quit()
+        
+        ''' def handle_input(self):
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_w]:
+                # Make sure self.player exists
+                if hasattr(self, 'player'):
+                    self.player.use_whip()'''
 
 
 
