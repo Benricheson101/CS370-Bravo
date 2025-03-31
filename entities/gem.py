@@ -15,11 +15,17 @@ class Gem(Cell):
         if isinstance(cell, Player):
             print("Player hit a Gem!")
             from level.level_load import game_instance
-            if game_instance:  
+            if game_instance:
                 game_instance.gem_count += 1
-            return True
-        
+                return True
         return False
+    
+    '''if self.whip_count > 0:
+            self.whip_count -= 1
+            #whip_sound.play() 
+            return True
+        return False'''
+    
 
     def update(self, **kwargs):
         return super().update(**kwargs)
