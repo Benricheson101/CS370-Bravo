@@ -1,4 +1,5 @@
 import pygame
+from os import environ
 from pygame.color import Color
 from entities.char import Char
 from renderer.spritesheet import dos_sprites
@@ -6,6 +7,7 @@ from constants import (
     BLACK,
     BLINK_EVENT,
     BLUE,
+    FLASH_EVENT,
     GAME_GRID_COLS,
     GAME_GRID_ROWS,
     GAME_GRID_WIDTH,
@@ -24,7 +26,17 @@ from level.level_load import (
     restore_level,
     set_game_instance
 )
+from screens.difficulty import DifficultyScreen
+from screens.game import GameScreen
+from screens.instructions import InstructionsPage1, InstructionsPage2
+from screens.main_menu import MainMenuScreen
+from screens.marketing import MarketingScreen
+from screens.original_kroz_trilogy import OriginalKrozTrilogyScreen
+from screens.screen import ColorMenu
+from screens.shareware import SharewareScreen
+from screens.story import StoryScreen
 from util.color import new_gem_color
+from util.state import StateMachine
 
 class Game:
     gem_color: Color
@@ -33,6 +45,10 @@ class Game:
     game_grid: CellGrid
 
     difficulty: int
+
+    sm: StateMachine
+    color: bool # color or mono
+    fastpc: bool
 
     def __init__(self):
         _, errors = pygame.init()
@@ -44,26 +60,10 @@ class Game:
         pygame.display.set_caption("Kroz")
         self.screen.fill(LIGHTGRAY)
         pygame.time.set_timer(BLINK_EVENT, 333)
+        pygame.time.set_timer(FLASH_EVENT, 1_000 // 30)
 
         # Load DOS sprite image ahead of time
         dos_sprites()
-
-        # Initialize scoreboard
-        self.scoreboard_grid = CellGrid(
-            grid_size=(SCOREBOARD_GRID_COLS, SCOREBOARD_GRID_ROWS),
-            offset=(GAME_GRID_WIDTH + GRID_CELL_WIDTH * 2, 0),
-            fill=BLUE,
-            game=self,
-        )
-
-        self.game_grid = CellGrid(
-            grid_size=(GAME_GRID_COLS+2, GAME_GRID_ROWS+2),
-            # offset=(GRID_CELL_WIDTH, GRID_CELL_HEIGHT),
-            fill=BLACK,
-            game=self,
-        )
-
-        self.game_grid.border()
 
         # Game loop control
         self.running = True
@@ -91,30 +91,37 @@ class Game:
         # Register the Game instance globally in level_load.py
         set_game_instance(self)
 
-        # Load initial level
-        load_level(self.game_grid, 1)
+        self.color = True
+        self.fastpc = True
+
+        self.sm = StateMachine(self)
+
+        self.sm.add_state("main_menu", MainMenuScreen(self.sm))
+        self.sm.add_state("difficulty", DifficultyScreen(self.sm))
+        self.sm.add_state("game", GameScreen(self.sm))
+        self.sm.add_state("instructions_1", InstructionsPage1(self.sm))
+        self.sm.add_state("instructions_2", InstructionsPage2(self.sm))
+        self.sm.add_state("marketing", MarketingScreen(self.sm))
+        self.sm.add_state("story", StoryScreen(self.sm))
+        self.sm.add_state("original_kroz_trilogy", OriginalKrozTrilogyScreen(self.sm))
+        self.sm.add_state("color_menu", ColorMenu(self.sm))
+        self.sm.add_state("shareware", SharewareScreen(self.sm))
+
+        # set initial scene. since the menus are really slow and annoying to get through, set env KROZ_SKIP_MENUS=1 to skip straight to the game
+        self.sm.transition("game" if environ.get("KROZ_SKIP_MENUS") else "color_menu")
 
     def run(self):
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_s:
-                        save_level(self.game_grid)
-                    elif event.key == pygame.K_r:
-                        restore_level(self.game_grid)
-                elif event.type == BLINK_EVENT:
-                    self.game_grid._flip_blink()
+                    break
+                else:
+                    self.sm.handle_event(event)
 
-            if not self.running:
-                break  # Ensure we exit before rendering again
+            self.sm.update()
+            self.sm.render(self.screen)
 
-            self.game_grid.update()
-            self.game_grid.render(self.screen)
-            self.scoreboard_grid.update()
-            self.scoreboard_grid.render(self.screen)
-            
             print(f"Score: {self.score}, Keys: {self.key_count}, Gems: {self.gem_count}, "
                   f"Whips: {self.whip_count}, Teleports: {self.teleport_count}")
 
@@ -122,7 +129,7 @@ class Game:
             self.clock.tick(60)
 
         pygame.quit()
-        
+
         ''' def handle_input(self):
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:

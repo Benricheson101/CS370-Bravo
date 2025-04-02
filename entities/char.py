@@ -17,9 +17,6 @@ class Char(Cell):
 
         assert len(char) == 1, f"Char cell can only hold one character (got: {char})"
 
-        # self.bg = bg
-        # self.fg = fg
-
         # FIXME: add mono colors here
         self.col(fg, TRANSPARENT)
         self.bak(bg, TRANSPARENT)
@@ -32,9 +29,12 @@ class Char(Cell):
 
     def update(self, new_fg: Optional[Color] = None, **kwargs) -> None:
         if self.flash and new_fg:
-            # self.fg = (new_fg, self.fg[1])
             self.col(new_fg, self.fg[1])
             self.load_dos_char(self.char) # FIXME
+
+
+        if self.blink and self.visible:
+            self._blink()
 
     def on_collision(self, cell: "Cell") -> bool:
         return False

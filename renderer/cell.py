@@ -20,6 +20,8 @@ class Cell(WeakSprite):
     blink: bool
     fill_color: Color
 
+    visible: bool
+
     fg: Tuple[Color, Color]
     bg: Tuple[Color, Color]
 
@@ -41,6 +43,8 @@ class Cell(WeakSprite):
 
         self.bg = (TRANSPARENT, TRANSPARENT)
         self.fg = (TRANSPARENT, TRANSPARENT)
+
+        self.visible = False
 
     def move_to(self, pos: "GridPosition"):
         assert self.grid

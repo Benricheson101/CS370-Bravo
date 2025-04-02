@@ -1,3 +1,5 @@
+from pygame import KEYDOWN
+from pygame.event import Event
 from constants import BLUE
 from util.state import State, StateMachine
 
@@ -33,6 +35,10 @@ class OriginalKrozTrilogyScreen(State):
         self.grid.writeln(' Plus, they only rely on keyboard control, and have slow-down routines that')
         self.grid.writeln(' permit them to function correctly on any speed IBM PC compatible computer.')
         self.grid.writeln('   ASP also sells an "Adventure FUN-PAK", that contains four games that are')
-        self.grid.writeln(' similar to the Kroz games in style.  This FUN-PAK (there''s also a "Puzzle')
+        self.grid.writeln(" similar to the Kroz games in style.  This FUN-PAK (there's also a \"Puzzle\"")
         self.grid.writeln(' FUN-PAK" avalaible) is sold for $10, which includes shipping.  Thank you.')
         self.grid.flash(27,25,'Press any key to continue.')
+
+    def handle_event(self, event: Event):
+        if event.type == KEYDOWN:
+            self.sm.transition("main_menu")

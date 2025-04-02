@@ -7,14 +7,6 @@ from util.state import State, StateMachine
 class MainMenuScreen(State):
     def __init__(self, sm: StateMachine) -> None:
         super().__init__(sm)
-        #
-        # g = CellGrid(
-        #     grid_size=SCREEN_SIZE,
-        #     fill=BLACK,
-        #     game=sm.game,
-        # )
-
-        # self.grid = g
 
         self.grid.fill = BLACK
 
@@ -78,19 +70,8 @@ class MainMenuScreen(State):
 
     def handle_event(self, event: Event):
         if event.type == pygame.KEYDOWN:
-            # if event.key == pygame.K_b:
-            #     print("BEGIN GAME")
-            # elif event.key == pygame.K_i:
-            #     self.sm.transition("instructions_1")
-            # elif event.key == pygame.K_m:
-            #     self.sm.transition("marketing")
-            # elif event.key == pygame.K_s:
-            #     self.sm.transition("story")
-            # elif event.key == pygame.K_o:
-            #     self.sm.transition("original_kroz_trilogy")
-
             transition_map = {
-                # pygame.K_b: "game",
+                pygame.K_b: "game",
                 pygame.K_i: "instructions_1",
                 pygame.K_m: "marketing",
                 pygame.K_s: "story",
