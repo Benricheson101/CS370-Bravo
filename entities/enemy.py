@@ -1,3 +1,4 @@
+
 from constants import LIGHTRED
 from entities.player import Player
 from renderer.cell import Cell

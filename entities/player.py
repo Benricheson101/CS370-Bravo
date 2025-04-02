@@ -10,6 +10,11 @@ class Player(Cell):
         self.col(14, WHITE)
         self.load_dos_char(2)
         self.last_move_time = 0 # Track movement delay (milliseconds)
+        #         WHIP
+        self.whip_animation_frames = 0
+        self.whip_animation_active = False
+        self.whip_direction = 0
+        self.whip_symbols = ['\\', 'ƒ', '/', '≥', '\\', 'ƒ', '/', '≥']
 
     def update(self, **kwargs) -> None:
         assert self.grid
@@ -79,11 +84,18 @@ class Player(Cell):
         if (dx != 0 or dy != 0) and (current_time - self.last_move_time > 100):
             self.grid.move(pygame.Vector2(dx, dy), self)
             self.last_move_time = current_time
-        '''if current_time - self.last_move_time > 150:  # 150ms delay for tile movement
-            self.grid.move(pygame.Vector2(dx, dy), self)  # Use the grid's move function
-            self.last_move_time = current_time  # Update movement timer'''
+        
+                # Handle whip animation
+        if self.whip_animation_active:
+            self.update_whip_animation()
+        
+        # Check for whip usage
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_w] and not self.whip_animation_active:
+            self.use_whip()
 
         super().update()
+            
 
     def on_collision(self, cell: "Cell") -> bool:
 
