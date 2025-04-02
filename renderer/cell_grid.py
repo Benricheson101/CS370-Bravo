@@ -9,7 +9,7 @@ from entities.char import Char
 from entities.cursor import Cursor, CursorType
 from renderer.cell import Cell
 from util import ColorValue, clamped_add, to_color
-from random import randint
+from random import randint, choice
 
 if TYPE_CHECKING:
     from game import Game
@@ -231,7 +231,7 @@ class CellGrid:
 
 
         if empty_tiles:  # Check if any empty tiles were found
-            return random.choice(empty_tiles)
+            return choice(empty_tiles)
 
     # emulating DOS screen functions
 

@@ -99,10 +99,9 @@ class Game:
         # Register the Game instance globally in level_load.py
         set_game_instance(self)
 
-        # Load initial level
-        self.current_level = 1
+
+        self.current_level = 4
         self.load_current_level()
-        
 
 
 

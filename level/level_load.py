@@ -146,7 +146,7 @@ def random_level(grid: CellGrid, level_num, object_counts):
 
         # Place entities using random empty tiles
         for _ in range(count):
-            x, y = grid.get_random_empty_tiles(grid)
+            x, y = grid.get_random_empty_tiles()
 
             # Create the correct entity and place it
             entity = entity_class() if entity_class != Gem else entity_class(grid.game.gem_color)

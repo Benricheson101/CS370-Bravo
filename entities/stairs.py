@@ -21,7 +21,7 @@ class Stairs(Cell):
             self.grid.game.game_grid.border()
 
             # Load the next level using load_current_level()
-            self.grid.game.load_current_level()
+            self.grid.load_current_level()
 
             print("To the next level!")
             return False
