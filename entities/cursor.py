@@ -17,7 +17,8 @@ class CursorType(Enum):
 class Cursor(Cell):
     def __init__(self, cur_type: CursorType, fg: Color) -> None:
         super().__init__()
-        self.load_dos_char(cur_type.to_char(), fg)
+        self.col(fg, fg)
+        self.load_dos_char(cur_type.to_char())
         self.blink = True
 
     def on_collision(self, cell: "Cell") -> bool:

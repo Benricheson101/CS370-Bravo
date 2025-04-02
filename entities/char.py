@@ -28,13 +28,13 @@ class Char(Cell):
         self.blink = blink
 
         self.image.fill(bg)
-        self.load_dos_char(self.char, fg)
+        self.load_dos_char(self.char)
 
     def update(self, new_fg: Optional[Color] = None, **kwargs) -> None:
         if self.flash and new_fg:
             # self.fg = (new_fg, self.fg[1])
             self.col(new_fg, self.fg[1])
-            self.load_dos_char(self.char, None) # FIXME
+            self.load_dos_char(self.char) # FIXME
 
     def on_collision(self, cell: "Cell") -> bool:
         return False

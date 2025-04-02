@@ -4,9 +4,9 @@ from pygame import Rect, Surface, Vector2
 import pygame
 from pygame.color import Color
 from pygame.sprite import WeakSprite
-from constants import GRID_CELL_HEIGHT, GRID_CELL_WIDTH, TRANSPARENT
+from constants import BLACK, GRID_CELL_HEIGHT, GRID_CELL_WIDTH, TRANSPARENT
 from renderer.spritesheet import dos_sprites
-from util import ColorValue, to_color
+from util.color import ColorValue, to_color
 
 if TYPE_CHECKING:
     from renderer.cell_grid import CellGrid, GridPosition
@@ -75,7 +75,12 @@ class Cell(WeakSprite):
         scale_factor = self.rect.size[0] / img.get_size()[0]
         scaled_img = pygame.transform.scale_by(img, scale_factor)
 
-        self.image.blit(scaled_img, self.rect)
+        self.image.blit(
+            scaled_img,
+            scaled_img.get_rect(
+                topleft=(0,0)
+            )
+        )
         self.sprite = self.image.copy()
 
     @property

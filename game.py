@@ -1,14 +1,15 @@
 import pygame
 from pygame.color import Color
+from entities.char import Char
 from renderer.spritesheet import dos_sprites
 from constants import (
     BLACK,
+    BLINK_EVENT,
     BLUE,
     GAME_GRID_COLS,
     GAME_GRID_ROWS,
     GAME_GRID_WIDTH,
     LIGHTGRAY,
-    GRID_CELL_HEIGHT,
     GRID_CELL_WIDTH,
     SCOREBOARD_GRID_COLS,
     SCOREBOARD_GRID_ROWS,
@@ -23,15 +24,15 @@ from level.level_load import (
     restore_level,
     set_game_instance
 )
-from util import new_gem_color
-
-FLASH_EVENT = pygame.event.custom_type()
+from util.color import new_gem_color
 
 class Game:
     gem_color: Color
     art_color: Color
 
     game_grid: CellGrid
+
+    difficulty: int
 
     def __init__(self):
         _, errors = pygame.init()
@@ -42,7 +43,7 @@ class Game:
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption("Kroz")
         self.screen.fill(LIGHTGRAY)
-        pygame.time.set_timer(FLASH_EVENT, 333)
+        pygame.time.set_timer(BLINK_EVENT, 333)
 
         # Load DOS sprite image ahead of time
         dos_sprites()
@@ -85,12 +86,13 @@ class Game:
 
         self.gem_color, self.art_color = new_gem_color()
 
+        self.difficulty = 0
+
         # Register the Game instance globally in level_load.py
         set_game_instance(self)
 
         # Load initial level
         load_level(self.game_grid, 1)
-
 
     def run(self):
         while self.running:
@@ -102,7 +104,7 @@ class Game:
                         save_level(self.game_grid)
                     elif event.key == pygame.K_r:
                         restore_level(self.game_grid)
-                elif event.type == FLASH_EVENT:
+                elif event.type == BLINK_EVENT:
                     self.game_grid._flip_blink()
 
             if not self.running:

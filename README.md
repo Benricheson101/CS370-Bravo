@@ -25,3 +25,57 @@ PS> pip3 install -r requirements.txt
 ```
 
 To exit, run `deactivate` (same command on all platforms)
+
+### Game State
+Internally switching between game states (e.g., main menu, instruction screen, game) is handled by a state machine. This closely matches the internal flow of the original Pascal code.
+
+```mermaid
+stateDiagram-v2
+    state "Difficulty Menu" as DifficultyMenu
+    state "Color Mode Menu" as ColorModeMenu
+    state "Computer Speed Menu" as SpeedMenu
+    state "Shareware Info" as Shareware
+    state "Main Menu" as MainMenu
+    state "Exit Screen" as SignOff
+
+    [*] --> ColorModeMenu
+    ColorModeMenu --> SpeedMenu  : press C or M
+    SpeedMenu --> DifficultyMenu : press S or F
+    DifficultyMenu --> Shareware : press N or E or A or !
+    Shareware --> MainMenu : any key
+
+    MainMenu --> Game : press B
+    MainMenu --> Instructions : press I
+    MainMenu --> Marketing : press M
+    MainMenu --> Story : press S
+    MainMenu --> OriginalKroz : press O
+
+    OriginalKroz --> MainMenu : any key
+
+    Marketing --> MainMenu : any key
+
+    Story --> MainMenu : any key
+
+    %% InstructionsScreen1 --> InstructionsScreen2 : any key
+    Instructions --> MainMenu : any key
+
+    %% MainMenu --> ? : press B or I or M or S or O or R
+
+    Game --> SignOff : press Q
+
+
+%% state MainMenu {
+%%     [*] --> Game : press B
+%%     [*] --> Instructions
+
+%% }
+
+state Instructions {
+    Screen1 --> Screen2 : any key
+    Screen2 --> [*] : any key
+}
+
+%% state Game {
+%%     PlayingGame
+%% }
+```

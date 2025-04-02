@@ -8,8 +8,9 @@ from entities.border import Border
 from entities.char import Char
 from entities.cursor import Cursor, CursorType
 from renderer.cell import Cell
-from util import ColorValue, clamped_add, to_color
-from random import randint
+from util.color import ColorValue, to_color
+from util.math import clamped_add
+from random import randint, random, choice
 
 if TYPE_CHECKING:
     from game import Game
@@ -168,14 +169,14 @@ class CellGrid:
         parent.blit(self.surface, self.rect)
 
     def update(self):
-        new_fg = None
+        # new_fg = None
 
-        if pygame.time.get_ticks() % 2 == 0:
-                new_fg = COLORS[self.flash_counter]
-
-                self.flash_counter += 1
-                if self.flash_counter > 15:
-                    self.flash_counter = 13
+        # if pygame.time.get_ticks() % 2 == 0:
+        #         new_fg = COLORS[self.flash_counter]
+        #
+        #         self.flash_counter += 1
+        #         if self.flash_counter > 15:
+        #             self.flash_counter = 13
 
         # if self.blink_visible and not isinstance(self.at(self.cur_pos), Cursor):
         if self.cur_type != CursorType.Invisible.value:
@@ -191,7 +192,7 @@ class CellGrid:
         #     self.cur_pos_current = None
 
 
-        self.group.update(new_fg=new_fg)
+        self.group.update(new_fg=COLORS[self.flash_counter])
 
         # counter = 14
         # procedure Flash(XPos,YPos:byte;Message:Str80);
@@ -212,6 +213,11 @@ class CellGrid:
     def _flip_blink(self):
         self.blink_visible = not self.blink_visible
 
+    def _flip_flash(self):
+        self.flash_counter += 1
+        if self.flash_counter > 15:
+            self.flash_counter = 13
+
     def get_random_empty_tiles(grid) -> List[Tuple[int, int]]:
         """
         Returns a list of (x, y) coordinates for every empty tile in the grid.
@@ -231,7 +237,7 @@ class CellGrid:
 
 
         if empty_tiles:  # Check if any empty tiles were found
-            return random.choice(empty_tiles)
+            return choice(empty_tiles)
 
     # emulating DOS screen functions
 
