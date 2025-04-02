@@ -86,7 +86,7 @@ class Game:
 
         self.gem_color, self.art_color = new_gem_color()
 
-        self.difficulty = 0
+        self.difficulty = 8
 
         # Register the Game instance globally in level_load.py
         set_game_instance(self)
