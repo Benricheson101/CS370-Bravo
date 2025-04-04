@@ -12,6 +12,7 @@ from entities.door import Door
 from entities.key import Key
 from entities.invisible import Invisible
 from entities.nugget import Nugget
+from entities.river import River
 
 
 
@@ -53,6 +54,7 @@ tile_mapping = {
     "W": Whip,
     "I": Invisible,
     "*": Nugget,
+    "R": River,
     " ": None
     }
 
@@ -116,7 +118,8 @@ def restore_level(game):
         "Key": Key,
         "Whip": Whip,
         "Invisible": Invisible,
-        "Nugget": Nugget
+        "Nugget": Nugget,
+        "River": River
     }
 
     for entity_type, (i, j) in saved_level:
