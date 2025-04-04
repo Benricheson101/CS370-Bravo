@@ -69,7 +69,7 @@ def save_level(game):
     saved_level = []
     for i in range(GAME_GRID_ROWS):
         for j in range(GAME_GRID_COLS):
-            entity = game.grid[i][j]
+            entity = game.game_grid.grid[i][j]
             if entity is not None:
                 entity_type = entity.__class__.__name__
                 saved_level.append((entity_type, (i,j)))
@@ -80,7 +80,7 @@ def del_level(game):
     saved_level = []
     for i in range(GAME_GRID_ROWS):
         for j in range(GAME_GRID_COLS):
-            entity = game.grid[i][j]
+            entity = game.game_grid.grid[i][j]
             if entity is not None:
                 entity_type = entity.__class__.__name__
                 saved_level.append((entity_type, (i,j)))
@@ -91,7 +91,8 @@ def del_level(game):
 
     for i in range(GAME_GRID_ROWS):
         for j in range(GAME_GRID_COLS):
-                game.remove((j, i))
+            game.game_grid.remove((j, i))
+
 
 def restore_level(game):
     del_level(game)
@@ -118,7 +119,7 @@ def restore_level(game):
                 entity = Gem(game.gem_color)
             else:
                 entity = entity_classes[entity_type]()
-            game.put((j+1, i+1), entity)
+            game.game_grid.put((j+1, i+1), entity)
 
 
             

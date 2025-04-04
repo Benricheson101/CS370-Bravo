@@ -112,9 +112,9 @@ class Game:
                     self.running = False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_s:
-                        save_level(self.game_grid)
+                        save_level(self)
                     elif event.key == pygame.K_r:
-                        restore_level(self.game_grid)
+                        restore_level(self)
                 elif event.type == FLASH_EVENT:
                     self.game_grid._flip_blink()
 
