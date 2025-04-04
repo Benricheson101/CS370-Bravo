@@ -9,21 +9,22 @@ class Stairs(Cell):
         self.load_dos_char(240)
 
     def on_collision(self, cell: "Cell") -> bool:
-        assert self.grid
-        assert self.grid.game
-
         if isinstance(cell, Player):
+            game = self.grid.game
+
             # Increment the level number
-            self.grid.game.current_level += 1
+            game.current_level += 1
 
-            # Clear the current level
-            self.grid.game.game_grid.clrscr()
-            self.grid.game.game_grid.border()
+            # Clear current level display
+            game.game_grid.clrscr()
+            game.game_grid.border()
 
-            # Load the next level using load_current_level()
-            self.grid.load_current_level()
+            # Load the next level using game's method
+            game.load_current_level()
 
             print("To the next level!")
             return False
 
         return False
+
+

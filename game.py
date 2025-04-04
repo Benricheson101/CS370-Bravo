@@ -100,7 +100,7 @@ class Game:
         set_game_instance(self)
 
 
-        self.current_level = 4
+        self.current_level = 1
         self.load_current_level()
 
 
