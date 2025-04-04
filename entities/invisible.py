@@ -11,6 +11,7 @@ class Invisible(Cell):
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
             print('Oh no, a temporary Blindness Potion!')
+            cell.make_invisible(3000)
         
             return True
         return False

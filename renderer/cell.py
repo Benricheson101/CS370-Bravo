@@ -75,7 +75,7 @@ class Cell(WeakSprite):
         scale_factor = self.rect.size[0] / img.get_size()[0]
         scaled_img = pygame.transform.scale_by(img, scale_factor)
 
-        self.image.blit(scaled_img, self.rect)
+        self.image.blit(scaled_img, (0, 0))
         self.sprite = self.image.copy()
 
     @property

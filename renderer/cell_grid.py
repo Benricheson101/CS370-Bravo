@@ -164,7 +164,8 @@ class CellGrid:
     def render(self, parent: Surface):
         # self.group.update()
         self.surface.fill(self.fill)
-        self.group.draw(self.surface)
+        for sprite in self.group:
+            self.surface.blit(sprite.image, sprite.rect)
         parent.blit(self.surface, self.rect)
 
     def update(self):
