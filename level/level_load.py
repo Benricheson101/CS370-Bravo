@@ -10,6 +10,7 @@ from entities.stairs import Stairs
 from entities.wall_gray import WallGray
 from entities.door import Door
 from entities.key import Key
+from entities.invisible import Invisible
 
 
 
@@ -49,6 +50,7 @@ tile_mapping = {
     "D": Door,
     "K": Key,
     "W": Whip,
+    "I": Invisible,
     " ": None
     }
 
@@ -110,7 +112,8 @@ def restore_level(game):
         "WallGray": WallGray,
         "Door": Door,
         "Key": Key,
-        "Whip": Whip
+        "Whip": Whip,
+        "Invisible": Invisible
     }
 
     for entity_type, (i, j) in saved_level:
