@@ -36,7 +36,7 @@ class Game:
             random_level(self.game_grid, self.current_level, object_counts)
         else:
             from level.level_load import load_level
-            load_level(self.game_grid, self.current_level)
+            load_level(self, self.current_level)
     
     
     gem_color: Color

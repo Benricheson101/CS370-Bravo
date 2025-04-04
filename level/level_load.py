@@ -62,11 +62,17 @@ tile_mapping = {
 def load_level(game, level_num):
     entity_pos = []
     for tile_key, tile_value in tile_mapping.items():
-            for i, row in enumerate(level_data[f"level_{level_num}"]):
-                for j, level_value in enumerate(row):
-                    if level_value == tile_key and tile_value is not None:
-                        entity = tile_value(game.game.gem_color) if tile_value == Gem else tile_value()
-                        entity_pos.append(game.put((j+1, i+1), entity))
+        for i, row in enumerate(level_data[f"level_{level_num}"]):
+            for j, level_value in enumerate(row):
+                if level_value == tile_key and tile_value is not None:
+                    # entities that alternate colors
+                    if tile_value == Gem:
+                        entity = tile_value(game.gem_color)
+                    elif tile_value == Nugget:
+                        entity = tile_value(game.art_color)
+                    else:
+                        entity = tile_value()
+                    entity_pos.append(game.game_grid.put((j+1, i+1), entity))
     for i in range(len(entity_pos)):
         return entity_pos[i]
 
@@ -124,7 +130,7 @@ def restore_level(game):
 
     for entity_type, (i, j) in saved_level:
         if entity_type in entity_classes:
-            if entity_type == "Gem":
+            if entity_type in ("Gem", "Nugget"):
                 entity = Gem(game.gem_color)
             else:
                 entity = entity_classes[entity_type]()
