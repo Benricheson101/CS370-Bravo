@@ -114,7 +114,13 @@ def restore_level(game):
 
     for entity_type, (i, j) in saved_level:
         if entity_type in entity_classes:
-            game.put((j+1, i+1), entity_classes[entity_type]())
+            if entity_type == "Gem":
+                entity = Gem(game.gem_color)
+            else:
+                entity = entity_classes[entity_type]()
+            game.put((j+1, i+1), entity)
+
+
             
             
 
