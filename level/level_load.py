@@ -13,6 +13,7 @@ from entities.key import Key
 from entities.invisible import Invisible
 from entities.nugget import Nugget
 from entities.river import River
+from entities.show_gems import ShowGems
 
 
 
@@ -55,6 +56,7 @@ tile_mapping = {
     "I": Invisible,
     "*": Nugget,
     "R": River,
+    "&": ShowGems,
     " ": None
     }
 
@@ -125,7 +127,8 @@ def restore_level(game):
         "Whip": Whip,
         "Invisible": Invisible,
         "Nugget": Nugget,
-        "River": River
+        "River": River,
+        "ShowGems": ShowGems
     }
 
     for entity_type, (i, j) in saved_level:
@@ -173,4 +176,5 @@ def random_level(grid: CellGrid, level_num, object_counts):
             # Create the correct entity and place it
             entity = entity_class() if entity_class != Gem else entity_class(grid.game.gem_color)
             grid.put((x, y), entity)
+            
             
