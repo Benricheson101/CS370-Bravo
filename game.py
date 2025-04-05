@@ -39,21 +39,10 @@ from util.color import new_gem_color
 from util.state import StateMachine
 
 class Game:
-    
-    def load_current_level(self):
-        # Check for even-numbered levels (randomly generated)
-        if self.current_level % 2 == 0:
-            from level.level_load import random_level, object_counts
-            random_level(self.game_grid, self.current_level, object_counts)
-        else:
-            from level.level_load import load_level
-            load_level(self, self.current_level)
-    
-    
+ 
     gem_color: Color
     art_color: Color
 
-    game_grid: CellGrid
 
     difficulty: int
 
@@ -121,8 +110,7 @@ class Game:
         # set initial scene. since the menus are really slow and annoying to get through, set env KROZ_SKIP_MENUS=1 to skip straight to the game
         self.sm.transition("game" if environ.get("KROZ_SKIP_MENUS") else "color_menu")
 
-        self.current_level = 1
-        self.load_current_level()
+        
 
 
 

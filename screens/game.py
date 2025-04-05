@@ -9,6 +9,8 @@ from util.state import State, StateMachine
 class GameScreen(State):
     def __init__(self, sm: StateMachine) -> None:
         super().__init__(sm)
+        
+        self.game = sm.game
 
         self.scoreboard = CellGrid(
             grid_size=(SCOREBOARD_GRID_COLS, SCOREBOARD_GRID_ROWS),

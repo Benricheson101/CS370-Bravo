@@ -61,40 +61,37 @@ tile_mapping = {
     }
 
 
-def load_level(game, level_num):
-    entity_pos = []
+def load_level(grid: CellGrid, level_num):
     for tile_key, tile_value in tile_mapping.items():
         for i, row in enumerate(level_data[f"level_{level_num}"]):
             for j, level_value in enumerate(row):
                 if level_value == tile_key and tile_value is not None:
                     # entities that alternate colors
                     if tile_value == Gem:
-                        entity = tile_value(game.gem_color)
+                        entity = tile_value(game_instance.gem_color)
                     elif tile_value == Nugget:
-                        entity = tile_value(game.art_color)
+                        entity = tile_value(game_instance.art_color)
                     else:
                         entity = tile_value()
-                    entity_pos.append(game.game_grid.put((j+1, i+1), entity))
-    for i in range(len(entity_pos)):
-        return entity_pos[i]
+                    grid.put((j+1, i+1), entity)
 
 
-def save_level(game):
+def save_level(grid: CellGrid):
     saved_level = []
     for i in range(GAME_GRID_ROWS):
         for j in range(GAME_GRID_COLS):
-            entity = game.game_grid.grid[i][j]
+            entity = grid.grid[i][j]
             if entity is not None:
                 entity_type = entity.__class__.__name__
                 saved_level.append((entity_type, (i,j)))
     with open("level/level.pkl", "wb") as f:
         pickle.dump(saved_level, f)
 
-def del_level(game):
+def del_level(grid: CellGrid):
     saved_level = []
     for i in range(GAME_GRID_ROWS):
         for j in range(GAME_GRID_COLS):
-            entity = game.game_grid.grid[i][j]
+            entity = grid.grid[i][j]
             if entity is not None:
                 entity_type = entity.__class__.__name__
                 saved_level.append((entity_type, (i,j)))
@@ -105,11 +102,11 @@ def del_level(game):
 
     for i in range(GAME_GRID_ROWS):
         for j in range(GAME_GRID_COLS):
-            game.game_grid.remove((j, i))
+            grid.remove((j, i))
 
 
-def restore_level(game):
-    del_level(game)
+def restore_level(grid: CellGrid):
+    del_level(grid)
     with open("level/level.pkl", "rb") as f:
         saved_level = pickle.load(f)
 
@@ -134,10 +131,10 @@ def restore_level(game):
     for entity_type, (i, j) in saved_level:
         if entity_type in entity_classes:
             if entity_type in ("Gem", "Nugget"):
-                entity = Gem(game.gem_color)
+                entity = Gem(game_instance.gem_color)
             else:
                 entity = entity_classes[entity_type]()
-            game.game_grid.put((j+1, i+1), entity)
+            grid.put((j+1, i+1), entity)
 
 
             
@@ -174,7 +171,7 @@ def random_level(grid: CellGrid, level_num, object_counts):
             x, y = grid.get_random_empty_tiles()
 
             # Create the correct entity and place it
-            entity = entity_class() if entity_class != Gem else entity_class(grid.game.gem_color)
+            entity = entity_class() if entity_class != Gem else entity_class(game_instance.gem_color)
             grid.put((x, y), entity)
             
             

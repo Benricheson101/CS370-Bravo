@@ -15,6 +15,21 @@ class Player(Cell):
         self.whip_animation_active = False
         self.whip_direction = 0
         self.whip_symbols = ['\\', 'ƒ', '/', '≥', '\\', 'ƒ', '/', '≥']
+        
+        
+    # For invisible.py
+        self.invisible_until = 0  # Time (ms) when invisibility ends
+        self.is_invisible = False
+
+    def make_invisible(self, duration: int):
+        """
+        Temporarily turns the player invisible by replacing the sprite with a blank character.
+        """
+        self.image = pygame.Surface((self.width, self.height), pygame.SRCALPHA)  # Reset image
+        self.load_dos_char(0)  # blank/invisible
+        self.invisible_until = pygame.time.get_ticks() + duration
+        self.is_invisible = True
+
 
     def update(self, **kwargs) -> None:
         assert self.grid
