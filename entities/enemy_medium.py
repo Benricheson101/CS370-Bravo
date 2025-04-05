@@ -1,14 +1,23 @@
+'''
+OBJECT:  Green enemy
+APPEARANCE:  Green "O" with umlaut; various other appearances
+METADATA:  2
+POINT VALUE:  20
+
+The level-2 enemy moves at medium speed
+'''
+
 from typing import Optional
-from constants import LIGHTRED
+from constants import GREEN
 from entities.player import Player
 from renderer.cell import Cell
 import pygame
 
 
-class Enemy(Cell):
+class Enemy_Medium(Cell):
     def __init__(self, player: Optional[Player] = None) -> None:
         super().__init__()
-        self.load_dos_char(142, LIGHTRED)
+        self.load_dos_char(153, GREEN)
         self.speed = 2
         self.player = player  # Store player reference
         self.last_move_time = pygame.time.get_ticks()  # Milliseconds
@@ -25,7 +34,7 @@ class Enemy(Cell):
         current_time = pygame.time.get_ticks()
 
         # Move every 1000 milliseconds (1 second)
-        if current_time - self.last_move_time < 3000:
+        if current_time - self.last_move_time < 2000:
             return
 
         self.last_move_time = current_time

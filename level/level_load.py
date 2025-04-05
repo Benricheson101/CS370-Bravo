@@ -3,6 +3,8 @@ from entities.player import Player
 from entities.wall import Wall
 from entities.block import Block
 from entities.enemy import Enemy
+from entities.enemy_medium import Enemy_Medium
+from entities.enemy_hard import Enemy_Hard
 from entities.gem import Gem
 from entities.whip import Whip
 from entities.teleport import Teleport
@@ -50,6 +52,8 @@ tile_mapping = {
     "#": Wall,
     "X": Block,
     "1": Enemy,
+    "2": Enemy_Medium,
+    "3": Enemy_Hard,
     "+": Gem,
     "T": Teleport,
     "L": Stairs,
@@ -77,6 +81,10 @@ def load_level(game, level_num):
                             entity = tile_value(game.game.gem_color)
                         elif tile_value == Enemy:
                             entity = Enemy(player=game_instance.player)
+                        elif tile_value == Enemy_Medium:
+                            entity = Enemy_Medium(player=game_instance.player)
+                        elif tile_value == Enemy_Hard:
+                            entity = Enemy_Hard(player=game_instance.player)
                         else:
                             entity = tile_value()
                         entity_pos.append(game.put((j+1, i+1), entity))
@@ -122,6 +130,7 @@ def restore_level(game):
         "Wall": Wall,
         "Block": Block,
         "Enemy": Enemy,
+        "Enemy_Medium": Enemy_Medium,
         "Gem": Gem,
         "Teleport": Teleport,
         "Stairs": Stairs,
