@@ -62,12 +62,23 @@ tile_mapping = {
 
 
 def load_level(game, level_num):
+    #global instance call
+    global game_instance
     entity_pos = []
     for tile_key, tile_value in tile_mapping.items():
             for i, row in enumerate(level_data[f"level_{level_num}"]):
                 for j, level_value in enumerate(row):
                     if level_value == tile_key and tile_value is not None:
-                        entity = tile_value(game.game.gem_color) if tile_value == Gem else tile_value()
+                        if tile_value == Player:
+                            player_instance = Player()
+                            entity = player_instance
+                            game_instance.player = player_instance
+                        elif tile_value == Gem:
+                            entity = tile_value(game.game.gem_color)
+                        elif tile_value == Enemy:
+                            entity = Enemy(player=game_instance.player)
+                        else:
+                            entity = tile_value()
                         entity_pos.append(game.put((j+1, i+1), entity))
     for i in range(len(entity_pos)):
         return entity_pos[i]

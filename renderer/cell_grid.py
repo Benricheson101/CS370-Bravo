@@ -10,6 +10,7 @@ from entities.cursor import Cursor, CursorType
 from renderer.cell import Cell
 from util import ColorValue, clamped_add, to_color
 from random import randint
+import random
 
 if TYPE_CHECKING:
     from game import Game

@@ -10,6 +10,7 @@ class Player(Cell):
         self.col(14, WHITE)
         self.load_dos_char(2)
         self.last_move_time = 0 # Track movement delay (milliseconds)
+        self.collected_teleports = 0
 
     def update(self, **kwargs) -> None:
         assert self.grid
@@ -82,6 +83,14 @@ class Player(Cell):
         '''if current_time - self.last_move_time > 150:  # 150ms delay for tile movement
             self.grid.move(pygame.Vector2(dx, dy), self)  # Use the grid's move function
             self.last_move_time = current_time  # Update movement timer'''
+
+         # Use teleport on 'T'
+        if keys[pygame.K_t] and self.collected_teleports > 0:
+            empty_cell = self.grid.get_random_empty_tiles()
+            self.move_to(empty_cell)
+            self.collected_teleports -= 1
+            print("Teleported using a scroll!")
+            return  # Skip movement on teleport
 
         super().update()
 
