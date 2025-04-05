@@ -85,10 +85,11 @@ class Player(Cell):
             self.last_move_time = current_time  # Update movement timer'''
 
          # Use teleport on 'T'
-        if keys[pygame.K_t] and self.collected_teleports > 0:
+        if keys[pygame.K_t] and self.collected_teleports > 0 and (current_time - self.last_move_time > 100):
             empty_cell = self.grid.get_random_empty_tiles()
             self.move_to(empty_cell)
             self.collected_teleports -= 1
+            self.last_move_time = current_time
             print("Teleported using a scroll!")
             return  # Skip movement on teleport
 
