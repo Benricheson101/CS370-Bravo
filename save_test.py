@@ -34,12 +34,12 @@ from level_data import level_data
 scoreboard = CellGrid(
         grid_size=(SCOREBOARD_GRID_COLS, SCOREBOARD_GRID_ROWS),
         offset=(GAME_GRID_WIDTH + GRID_CELL_WIDTH * 2, 0),
-        fill=BLUE
+        bg=BLUE
     )
 
 
 
-            
+
 
 LEVEL_1 = 1
 
@@ -54,7 +54,7 @@ def level_1(screen):
         print("Error:", errors)
         return
 
-    
+
     pygame.display.set_caption("Level 1")
     screen.fill(LIGHTGRAY)
 
@@ -62,7 +62,7 @@ def level_1(screen):
     dos_sprites()
 
     load_level(1)
-    
+
     running = True
     clock = pygame.time.Clock()
     while running:
@@ -73,15 +73,15 @@ def level_1(screen):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:    # Go to Level 2
                     save_level()
-                    
+
                 elif event.key == pygame.K_r:    # Go to Level 3
                     restore_level()
-                    
+
         game.render(screen)
         scoreboard.render(screen)
         pygame.display.flip()
         clock.tick(60)
-    
+
 
 def main():
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -89,6 +89,6 @@ def main():
     while True:
         if scene == LEVEL_1:
             scene = level_1(screen)
-        
-    
+
+
 main()

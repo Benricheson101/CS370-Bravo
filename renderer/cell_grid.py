@@ -1,15 +1,18 @@
-from typing import Optional, List, Tuple, Union
-from pygame import Surface, Vector2
+from typing import TYPE_CHECKING, Optional, List, Tuple, Union
+from pygame import Rect, Surface, Vector2
 import pygame
 from pygame.color import Color
 from pygame.sprite import Group
 from constants import COLORS, GRID_CELL_HEIGHT, GRID_CELL_WIDTH, LIGHTGRAY, RED, TRANSPARENT, WHITE
+from entities.border import Border
 from entities.char import Char
 from entities.cursor import Cursor, CursorType
 from renderer.cell import Cell
-from util import clamped_add
-import random
+from util import ColorValue, clamped_add, to_color
+from random import randint
 
+if TYPE_CHECKING:
+    from game import Game
 
 GridPosition = tuple[int, int]
 
@@ -25,19 +28,24 @@ class CellGrid:
     cell_height: int
     cell_width: int
     grid: list[list[Optional[Cell]]]
+    group: Group
     surface: Surface
+    rect: Rect
+    game: "Game"
 
     fill: Color
-    color: Tuple[Color, Color]
-    text_background: Tuple[Color, Color]
+    fg: Tuple[Color, Color]
+    bg: Tuple[Color, Color]
 
     cur_pos: GridPosition # cursor position for functions like write and writeln. note that put() isn't related to this
     cur_type: int
+    blink: bool
     blink_visible: bool
     cur_pos_current: Optional[GridPosition]
 
     def __init__(
             self,
+            game: "Game",
             grid_size: GridPosition,
             cell_size: GridPosition = (GRID_CELL_WIDTH, GRID_CELL_HEIGHT),
             offset = (0, 0),
@@ -47,6 +55,7 @@ class CellGrid:
         Creates a CellGrid
 
         Args:
+            game: the Game this grid is associated with
             grid_size: (cols, rows) in the grid
             cell_size: (width, height) of once cell
             offset: offset the position of the grid on the parent surface
@@ -70,10 +79,11 @@ class CellGrid:
         self.cur_pos = (0, 0)
         self.cur_type = 3
         self.blink_visible = False
+        self.blink = False
         self.cur_pos_current = None
 
-        self.color = (WHITE, LIGHTGRAY)
-        self.text_background = (TRANSPARENT, TRANSPARENT)
+        self.fg = (WHITE, LIGHTGRAY)
+        self.bg = (TRANSPARENT, TRANSPARENT)
         self.grid = [[None for _ in range(cols)] for _ in range(rows)]
         self.surface = Surface((cell_width * cols, cell_height * rows), pygame.SRCALPHA)
         self.rect = self.surface.get_rect(topleft=offset)
@@ -81,7 +91,8 @@ class CellGrid:
         self.surface.fill(fill)
         self.group = Group()
 
-        self.flash_groups = []
+        self.game = game
+
         self.flash_counter = 14
 
     def put(self, pos: GridPosition, sprite: Cell):
@@ -166,14 +177,18 @@ class CellGrid:
                 if self.flash_counter > 15:
                     self.flash_counter = 13
 
-        if self.blink_visible and not isinstance(self.at(self.cur_pos), Cursor):
-            if self.cur_type != CursorType.Invisible.value:
-                self.put(self.cur_pos, Cursor(CursorType(self.cur_type), fg=RED))
-                self.cur_pos_current = self.cur_pos
-        elif not self.blink_visible and isinstance(self.at(self.cur_pos), Cursor):
-            assert self.cur_pos_current
-            self.remove(self.cur_pos_current)
-            self.cur_pos_current = None
+        # if self.blink_visible and not isinstance(self.at(self.cur_pos), Cursor):
+        if self.cur_type != CursorType.Invisible.value:
+            self.put(self.cur_pos, Cursor(CursorType(self.cur_type), fg=RED))
+            self.cur_pos_current = self.cur_pos
+        else:
+            if self.cur_pos_current:
+                self.remove(self.cur_pos_current)
+                self.cur_pos_current = None
+        # elif not self.blink_visible and isinstance(self.at(self.cur_pos), Cursor):
+        #     assert self.cur_pos_current
+        #     self.remove(self.cur_pos_current)
+        #     self.cur_pos_current = None
 
 
         self.group.update(new_fg=new_fg)
@@ -270,12 +285,12 @@ class CellGrid:
             c: the color when in color mode
             m: the color when in monochrome mode
         """
-        self.text_background = (
+        self.bg = (
             c if isinstance(c, Color) else COLORS[c],
             m if isinstance(m, Color) else COLORS[m],
         )
 
-    def col(self, c: Union[Color, int], m: Union[Color, int]):
+    def col(self, c: ColorValue, m: ColorValue):
         """
         Sets the color for text written using the dos-like methods
 
@@ -283,10 +298,14 @@ class CellGrid:
             c: the color when in color mode
             m: the color when in monochrome mode
         """
-        self.color = (
-            c if isinstance(c, Color) else COLORS[c],
-            m if isinstance(m, Color) else COLORS[m],
-        )
+        c1, blink = to_color(c)
+        m1, _ = to_color(m)
+        self.fg = (c1, m1)
+        self.blink = blink
+        # self.color = (
+        #     c if isinstance(c, Color) else COLORS[c],
+        #     m if isinstance(m, Color) else COLORS[m],
+        # )
 
     def clrscr(self):
         for col in range(self.cols):
@@ -315,7 +334,16 @@ class CellGrid:
         # TODO: put these in a sprite group
         for i, char in enumerate(msg):
             self.remove((start + i, self.cur_pos[1]))
-            self.put((start + i, self.cur_pos[1]), Char(char, fg=self.color[0], bg=self.text_background[0], flash=flash)) # TODO: monochrome mode
+            self.put(
+                (start + i, self.cur_pos[1]),
+                Char(
+                    char,
+                    fg=self.fg[0],
+                    bg=self.bg[0],
+                    flash=flash,
+                    blink=self.blink
+                )
+            ) # TODO: monochrome mode
 
         self.cur_pos = (end, self.cur_pos[1])
 
@@ -325,12 +353,14 @@ class CellGrid:
         self.write(msg, flash=True)
         self.cur_pos = oldcur
 
-        # group = Group()
-        #
-        # sprites = [Char(c, fg=self.color[0]) for c in msg]
-        # group.add(sprites)
-        #
-        # for i, s in enumerate(sprites):
-        #     self.put((xpos - 1 + i, ypos - 1), s)
-        #
-        # self.flash_groups.append(group)
+    def border(self):
+        bc = randint(0, 7) + 8
+        bb = randint(0, 6) + 1
+
+        for i in range(0, self.cols):
+            self.put((i, self.rows - 1), Border(bc, bb))
+            self.put((i, 0), Border(bc, bb))
+
+        for i in range(self.rows):
+            self.put((self.cols - 1, i), Border(bc, bb))
+            self.put((0, i), Border(bc, bb))

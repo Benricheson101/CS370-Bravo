@@ -1,4 +1,3 @@
-from constants import BROWN
 from renderer.cell import Cell
 
 
@@ -8,7 +7,8 @@ class Block(Cell):
     """
     def __init__(self) -> None:
         super().__init__()
-        self.load_dos_char(178, BROWN)
+        self.col(6,7)
+        self.load_dos_char(178)
 
     def on_collision(self, cell: "Cell") -> bool:
         return False

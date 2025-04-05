@@ -8,20 +8,21 @@ from entities.player import Player
 class Door(Cell):
     def __init__(self) -> None:
         super().__init__()
-        self.image.fill(MAGENTA)
-        self.load_dos_char(236, CYAN)
+        self.bak(5,7)
+        self.col(3,0)
+        self.load_dos_char(236)
 
     def on_collision(self, cell: Cell) -> bool:
         if isinstance(cell, Player):
             from level.level_load import game_instance
             if game_instance:
-                if game_instance.key_count > 0: 
+                if game_instance.key_count > 0:
                     print("You unlocked a Door!")
                     game_instance.key_count -=1
-                    return True    
+                    return True
                 else:
                     print("You need a Key.")
                     return False
-    
 
-    
+
+
