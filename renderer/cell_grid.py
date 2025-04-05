@@ -8,8 +8,9 @@ from entities.border import Border
 from entities.char import Char
 from entities.cursor import Cursor, CursorType
 from renderer.cell import Cell
-from util import ColorValue, clamped_add, to_color
-from random import randint, choice
+from util.color import ColorValue, to_color
+from util.math import clamped_add
+from random import randint, random, choice
 
 if TYPE_CHECKING:
     from game import Game
@@ -41,7 +42,9 @@ class CellGrid:
     cur_type: int
     blink: bool
     blink_visible: bool
-    cur_pos_current: Optional[GridPosition]
+    # cur_pos_current: Optional[GridPosition]
+
+    cursor: Cursor
 
     def __init__(
             self,
@@ -80,7 +83,7 @@ class CellGrid:
         self.cur_type = 3
         self.blink_visible = False
         self.blink = False
-        self.cur_pos_current = None
+        # self.cur_pos_current = None
 
         self.fg = (WHITE, LIGHTGRAY)
         self.bg = (TRANSPARENT, TRANSPARENT)
@@ -94,8 +97,9 @@ class CellGrid:
         self.game = game
 
         self.flash_counter = 14
+        self.cursor = Cursor(CursorType.SolidBlock, self.fg)
 
-    def put(self, pos: GridPosition, sprite: Cell):
+    def put(self, pos: GridPosition, sprite: Cell, _add_to_grid = True):
         col, row = pos
 
         assert col >= 0 and col < self.cols, "col position must be within grid bounds"
@@ -111,8 +115,14 @@ class CellGrid:
 
         sprite.rect.topleft = (int(cell_x), int(cell_y))
 
-        self.grid[row][col] = sprite
+        # if self.at(pos) is not None:
+        #     self.remove(pos)
+
+        if _add_to_grid:
+            self.grid[row][col] = sprite
+
         self.group.add(sprite)
+        sprite.visible = True
 
 
     def remove(self, pos: GridPosition) -> Optional[Cell]:
@@ -125,6 +135,8 @@ class CellGrid:
         self.grid[row][col] = None
         self.group.remove(cel)
         cel.grid = None
+        cel.visible = False
+
         return cel
 
     def at(self, pos: GridPosition) -> Optional[Cell]:
@@ -162,56 +174,33 @@ class CellGrid:
         return self.move_to((new_col, new_row), sprite)
 
     def render(self, parent: Surface):
-        # self.group.update()
         self.surface.fill(self.fill)
         for sprite in self.group:
             self.surface.blit(sprite.image, sprite.rect)
         parent.blit(self.surface, self.rect)
 
     def update(self):
-        new_fg = None
-
-        if pygame.time.get_ticks() % 2 == 0:
-                new_fg = COLORS[self.flash_counter]
-
-                self.flash_counter += 1
-                if self.flash_counter > 15:
-                    self.flash_counter = 13
-
-        # if self.blink_visible and not isinstance(self.at(self.cur_pos), Cursor):
         if self.cur_type != CursorType.Invisible.value:
-            self.put(self.cur_pos, Cursor(CursorType(self.cur_type), fg=RED))
-            self.cur_pos_current = self.cur_pos
+            # HACK: superimpose the cursor instead of replacing a grid space with it
+            if self.cursor.visible:
+                self.group.remove(self.cursor)
+                self.cursor.visible = False
+
+            self.put(self.cur_pos, self.cursor, _add_to_grid=False)
         else:
-            if self.cur_pos_current:
-                self.remove(self.cur_pos_current)
-                self.cur_pos_current = None
-        # elif not self.blink_visible and isinstance(self.at(self.cur_pos), Cursor):
-        #     assert self.cur_pos_current
-        #     self.remove(self.cur_pos_current)
-        #     self.cur_pos_current = None
+            if self.cursor.visible:
+                self.group.remove(self.cursor)
+                self.cursor.visible = False
 
-
-        self.group.update(new_fg=new_fg)
-
-        # counter = 14
-        # procedure Flash(XPos,YPos:byte;Message:Str80);
-        #  var Counter : integer;
-        #  begin
-        #   Counter := 14;
-        #   ClearKeys;
-        #   repeat
-        #    Counter := Counter + 1;
-        #    if Counter > 15 then Counter := 13;
-        #    col(Counter,15);
-        #    delay(20);
-        #    print(XPos,YPos,Message);
-        #   until keypressed;
-        #   Restore_Border;
-        #  end;
+        self.group.update(new_fg=COLORS[self.flash_counter])
 
     def _flip_blink(self):
         self.blink_visible = not self.blink_visible
+
+    def _flip_flash(self):
+        self.flash_counter += 1
+        if self.flash_counter > 15:
+            self.flash_counter = 13
 
     def get_random_empty_tiles(grid) -> List[Tuple[int, int]]:
         """
@@ -248,36 +237,6 @@ class CellGrid:
         """
         self.cur_type = c
 
-        # match c:
-        #     case 1:
-        #         print("1!")
-        #
-        #     case 2:
-        #         print("2")
-        #
-        #     case 3:
-        #         print("")
-
-# procedure Cur(Num:byte);
-#  var Result : Registers;
-#  begin
-#   Result.AX := $100;
-#   with Result do
-#    if Color then
-#     case Num of
-#      1:CX:=$707;   { Underline   }
-#      2:CX:=$8;     { Solid Block }
-#      3:CX:=$2000;  { Invisible   }
-#     end
-#    else
-#     case Num of
-#      1:CX:=$C0D;
-#      2:CX:=$E;
-#      3:CX:=$2000;
-#     end;
-#    intr($10,Result);
-#  end; { Cur }
-
     def bak(self, c: Union[Color, int], m: Union[Color, int]):
         """
         Sets the background color of text
@@ -303,6 +262,7 @@ class CellGrid:
         m1, _ = to_color(m)
         self.fg = (c1, m1)
         self.blink = blink
+
         # self.color = (
         #     c if isinstance(c, Color) else COLORS[c],
         #     m if isinstance(m, Color) else COLORS[m],
@@ -312,6 +272,31 @@ class CellGrid:
         for col in range(self.cols):
             for row in range(self.rows):
                 self.remove((col, row))
+
+    def delline(self):
+        """
+        Deletes the line the cursor is on and shifts all of the lines below it up by one. The cursor does not move
+        """
+        for x in range(self.cols):
+            self.remove((x, self.cur_pos[1]))
+
+        for col in range(0, self.cols):
+            for row in range(self.cur_pos[1], self.rows):
+                if (sprite := self.at((col, row))) is not None:
+                    self.move_to((col, row - 1), sprite)
+
+    def insline(self):
+        """
+        Inserts a new line at the cursor and shifts all of the lines below it down by one. The last line is removed. The cursor does not move
+        """
+
+        for x in range(self.cols):
+            self.remove((x, self.rows - 1))
+
+        for col in range(0, self.cols):
+            for row in range(self.cur_pos[1], self.rows - 1):
+                if (sprite := self.at((col, row))) is not None:
+                    self.move_to((col, row + 1), sprite)
 
     def gotoxy(self, x: int, y: int):
         """

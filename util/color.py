@@ -5,13 +5,6 @@ from pygame import Color
 from constants import COLORS
 
 
-def wrapping_add(a: int, b: int, limit: int) -> int:
-    return (a + b) % limit if (a + b) > 0 else limit - (abs(a + b) % limit) - 1
-
-
-def clamped_add(a: int, b: int, limit: int) -> int:
-    return max(0, min(limit, a + b))
-
 ColorValue = Union[Color, int]
 
 def to_color(c: ColorValue, blink: Optional[bool] = False) -> Tuple[Color, bool]:

@@ -14,9 +14,12 @@ class Key(Cell):
         if isinstance(cell, Player):
             print("You got a Key!")
             from level.level_load import game_instance
-            if game_instance:
-                game_instance.key_count += 1
-            return True
+            if game_instance.key_countt > 0:
+                if game_instance:
+                 game_instance.key_count += 1
+                return True
+            else:
+                game_instance.key_count -= 1
 
         return False
 

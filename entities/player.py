@@ -9,20 +9,12 @@ class Player(Cell):
         # Player color and sprite
         self.col(14, WHITE)
         self.load_dos_char(2)
-        self.last_move_time = 0  # Track movement delay (milliseconds)
-
-        # Invisibility state
-        self.invisible_until = 0  # Time (ms) when invisibility ends
-        self.is_invisible = False
-
-    def make_invisible(self, duration: int):
-        """
-        Temporarily turns the player invisible by replacing the sprite with a blank character.
-        """
-        self.image = pygame.Surface((self.width, self.height), pygame.SRCALPHA)  # Reset image
-        self.load_dos_char(0)  # blank/invisible
-        self.invisible_until = pygame.time.get_ticks() + duration
-        self.is_invisible = True
+        self.last_move_time = 0 # Track movement delay (milliseconds)
+        #         WHIP
+        self.whip_animation_frames = 0
+        self.whip_animation_active = False
+        self.whip_direction = 0
+        self.whip_symbols = ['\\', 'ƒ', '/', '≥', '\\', 'ƒ', '/', '≥']
 
     def update(self, **kwargs) -> None:
         assert self.grid
@@ -82,8 +74,18 @@ class Player(Cell):
         if (dx != 0 or dy != 0) and (current_time - self.last_move_time > 100):
             self.grid.move(pygame.Vector2(dx, dy), self)
             self.last_move_time = current_time
+        
+                # Handle whip animation
+        if self.whip_animation_active:
+            self.update_whip_animation()
+        
+        # Check for whip usage
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_w] and not self.whip_animation_active:
+            self.use_whip()
 
         super().update()
+            
 
     def on_collision(self, cell: "Cell") -> bool:
         return False

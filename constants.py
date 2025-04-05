@@ -1,5 +1,6 @@
 # TODO: try to make this scale automatically based on display size
 from pygame import Color
+import pygame
 
 
 SCALE = 1.5
@@ -22,6 +23,8 @@ SCOREBOARD_GRID_COLS = 14
 # Total dimensions of the window
 SCREEN_GRID_ROWS = 25
 SCREEN_GRID_COLS = 80
+
+SCREEN_SIZE = (SCREEN_GRID_COLS, SCREEN_GRID_ROWS)
 
 # Total size of the window
 WINDOW_HEIGHT = SCREEN_GRID_ROWS * GRID_CELL_HEIGHT
@@ -82,3 +85,6 @@ COLORS = [
     YELLOW,
     WHITE,
 ]
+
+FLASH_EVENT = pygame.event.custom_type()
+BLINK_EVENT = pygame.event.custom_type()
