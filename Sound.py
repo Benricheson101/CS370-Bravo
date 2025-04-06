@@ -1,67 +1,86 @@
+import pygame
 import numpy as np
-import sounddevice as sd
-import random
 import time
+import random
+import threading
 
-# Sound settings
-SAMPLE_RATE = 44100  
-FastPC = True  # Toggle FastPC behavior
+class SoundEffects:
+    def __init__(self):
+        pygame.mixer.init()
+    
+    def sound(self, frequency, duration=1.0):
+        """Play sound indefinitely."""
+        sample_rate = 44100
+        t = np.linspace(0, duration, int(sample_rate * duration), False)
+        audio_data = 0.5 * np.sin(2 * np.pi * frequency * t)
+        audio_data = (audio_data * 32767).astype(np.int16)
 
-def generate_tone(frequency, duration):
-    """Generates a sine wave tone."""
-    t = np.linspace(0, duration, int(SAMPLE_RATE * duration), False)
-    wave = 0.5 * np.sin(2 * np.pi * frequency * t)  # Sine wave
-    return wave
+        # Create stereo audio data by duplicating the mono data
+        stereo_audio_data = np.column_stack((audio_data, audio_data))
 
-def play_sound(frequency, duration):
-    """Plays a generated sound using sounddevice."""
-    wave = generate_tone(frequency, duration)
-    sd.play(wave, samplerate=SAMPLE_RATE)
-    sd.wait()
+        # Create a sound object
+        sound = pygame.sndarray.make_sound(stereo_audio_data)
+        sound.play()  # Play sound once
 
-def GrabSound():
-    """GrabSound effect with high-pitched random tones."""
-    count = 160 if FastPC else 65
-    for _ in range(count):
-        play_sound(random.randint(1000, 2000), 0.01)
+    def nosound(self):
+        """Stop all sounds."""
+        pygame.mixer.stop()
 
-def BlockSound():
-    """BlockSound effect with descending tones."""
-    for x in range(60, 29, -1):
-        play_sound(x, 0.001 + (0.002 if FastPC else 0))
+    def delay(self, milliseconds):
+        """Delay for a given time in milliseconds."""
+        pygame.time.wait(milliseconds)
 
-def NoneSound():
-    for _ in range(5):
-        play_sound(400, 0.01)
-        time.sleep(0.01)
-        play_sound(700, 0.01)
-        time.sleep(0.01)
+    def play(self, frequency1, frequency2, delay_length):
+        """Play a range of frequencies with a delay."""
+        if frequency1 <= frequency2:
+            for x in range(frequency1, frequency2 + 1):
+                self.sound(x)
+                self.delay(delay_length)
+        else:
+            for x in range(frequency1, frequency2 - 1, -1):
+                self.sound(x)
+                self.delay(delay_length)
+            self.nosound()
 
-def FootStep():
-    """Simulates a footstep sound with two different tones."""
-    step1_count = 50 if FastPC else 23
-    step2_count = 60 if FastPC else 30
+    def FootStep(self, FastPC):
+        """Generate footstep sounds based on CPU speed."""
+        for x in range(1, int(FastPC)*50+int(not FastPC)*23):
+            self.sound(random.randint(0, 550) + 350, 0.1)
+            self.delay(10)  # Added delay to compensate for fast CPU
+            self.nosound()
+            self.delay(120)
 
-    for _ in range(step1_count):
-        play_sound(random.randint(350, 900), 0.05)
+        for x in range(1, int(FastPC)*60+int(not FastPC)*30):
+            self.sound(random.randint(0, 50) + 150, 0.1)
 
-    time.sleep(0.12)
+    def GrabSound(self, FastPC):
+        """Generate grab sound effects."""
+        for x in range(1, int(FastPC)*160+int(not FastPC)*65):
+            self.sound(random.randint(0, 1000) + 1000, 0.1)
+            self.delay(10)
+            self.nosound()
 
-    for _ in range(step2_count):
-        play_sound(random.randint(150, 200), 0.05)
+    def BlockSound(self, FastPC):
+        """Generate block sound effects."""
+        for x in range(60, 30, -1):
+            self.sound(x, 0.1)
+            self.delay(1 + int(FastPC) * 2)
+        self.nosound()
 
-# Test the sounds
-print("Playing GrabSound...")
-GrabSound()
-time.sleep(1)
-
-print("Playing BlockSound...")
-BlockSound()
-time.sleep(1)
-
-print("Playing NoneSound...")
-NoneSound()
-time.sleep(1)
-
-print("Playing FootStep...")
-FootStep()
+    def NoneSound(self):
+        """Generate 'none' sound effect."""
+        for x in range(1, 5):
+            self.sound(400, 0.1)
+            self.delay(10)
+            self.nosound()
+            self.delay(10)
+            self.sound(700, 0.1)
+            self.delay(10)
+            self.nosound()
+            self.delay(10)
+            
+    def play_in_thread(self, sound_method, *args):
+        """Plays any sound method in a separate thread."""
+        thread = threading.Thread(target=sound_method, args=args)
+        thread.daemon = True
+        thread.start()

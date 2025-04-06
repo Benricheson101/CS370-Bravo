@@ -1,7 +1,9 @@
 import pygame
+import threading
 from constants import BLACK, WHITE, YELLOW
 from renderer.cell import Cell
 from renderer.cell_grid import CellGrid
+from Sound import SoundEffects
 
 class Player(Cell):
     def __init__(self) -> None:
@@ -15,10 +17,13 @@ class Player(Cell):
         self.whip_animation_active = False
         self.whip_direction = 0
         self.whip_symbols = ['\\', 'ƒ', '/', '≥', '\\', 'ƒ', '/', '≥']
+        
+        self.FastPC = True
+        self.sound_effects = SoundEffects()
 
     def update(self, **kwargs) -> None:
         assert self.grid
-
+        
         dx, dy = 0, 0
         keys = pygame.key.get_pressed()
         current_time = pygame.time.get_ticks()
@@ -82,23 +87,33 @@ class Player(Cell):
 
 
         if (dx != 0 or dy != 0) and (current_time - self.last_move_time > 100):
-            self.grid.move(pygame.Vector2(dx, dy), self)
+            self.sound_effects.play_in_thread(self.sound_effects.FootStep, self.FastPC)
+            moved = self.grid.move(pygame.Vector2(dx, dy), self)
             self.last_move_time = current_time
+            if not moved:
+                self.sound_effects.play_in_thread(self.sound_effects.BlockSound, True)
         
-                # Handle whip animation
-        if self.whip_animation_active:
-            self.update_whip_animation()
-        
-        # Check for whip usage
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_w] and not self.whip_animation_active:
+            # Handle whip animation
+        '''if self.whip_animation_active:
+            self.update_whip_animation()'''
+
+        ''' if keys[pygame.K_w] and not self.whip_animation_active:
             self.use_whip()
+            # Play whip sound (using grab sound as a substitute)
+            self.sound_effects.play_sound_in_thread(self.sound_effects.grab_sound)'''
 
         super().update()
             
 
-    def on_collision(self, cell: "Cell") -> bool:
+    def play_sound_in_thread(self, sound_method, FastPC=True):
+        """Run sound methods in a separate thread to avoid freezing the game"""
+        sound_thread = threading.Thread(target=sound_method, args=(FastPC,))
+        sound_thread.daemon = True  # Thread will close when program exits
+        sound_thread.start()
 
+    def on_collision(self, cell: "Cell") -> bool:
+        self.sound_effects.play_sound_in_thread(self.sound_effects.BlockSound,True)
+        
         return False
 
     def get_player_position(self) -> tuple[int, int]:
@@ -110,3 +125,23 @@ class Player(Cell):
         """
         print(self.x, self.y)
         return self.x, self.y
+    
+    ''' def use_whip(self):
+        """
+        Activate the whip animation and play whip sound
+        """
+        self.whip_animation_active = True
+        self.whip_animation_frames = 0
+        # Get direction from player's last movement or default to right
+        # For now we'll just use a placeholder direction
+        self.whip_direction = 0
+    
+    def update_whip_animation(self):
+        """
+        Update the whip animation frames
+        """
+        self.whip_animation_frames += 1
+        # If animation is complete
+        if self.whip_animation_frames >= len(self.whip_symbols):
+            self.whip_animation_active = False
+            self.whip_animation_frames = 0'''

@@ -1,4 +1,6 @@
 import pygame
+import threading
+from Sound import SoundEffects
 from pygame.color import Color
 from renderer.spritesheet import dos_sprites
 from constants import (
@@ -43,6 +45,8 @@ class Game:
         pygame.display.set_caption("Kroz")
         self.screen.fill(LIGHTGRAY)
         pygame.time.set_timer(FLASH_EVENT, 333)
+        
+        #self.sound_effects = SoundEffects()
 
         # Load DOS sprite image ahead of time
         dos_sprites()
@@ -121,12 +125,23 @@ class Game:
 
         pygame.quit()
         
-        ''' def handle_input(self):
+        
+    def play_sound(self, sound_type):
+        """Play a sound effect based on the type"""
+        if sound_type == "footstep":
+            self.sound_effects.play_sound_in_thread(self.sound_effects.foot_step)
+        elif sound_type == "grab":
+            self.sound_effects.play_sound_in_thread(self.sound_effects.grab_sound)
+        elif sound_type == "block":
+            self.sound_effects.play_sound_in_thread(self.sound_effects.block_sound)
+        elif sound_type == "none":
+            self.sound_effects.play_sound_in_thread(self.sound_effects.none_sound)
+        def handle_input(self):
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:
                 # Make sure self.player exists
                 if hasattr(self, 'player'):
-                    self.player.use_whip()'''
+                    self.player.use_whip()
 
 
 
