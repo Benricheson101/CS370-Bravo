@@ -12,13 +12,14 @@ from constants import BLUE
 from entities.player import Player
 from renderer.cell import Cell
 import pygame
+from gameState import is_frozen
 
 
 class Enemy_Hard(Cell):
     def __init__(self, player: Optional[Player] = None) -> None:
         super().__init__()
         self.load_dos_char(234, BLUE)
-        self.speed = 2
+        self.speed = 2.5
         self.player = player  # Store player reference
         self.last_move_time = pygame.time.get_ticks()  # Milliseconds
 
@@ -35,6 +36,9 @@ class Enemy_Hard(Cell):
 
         # Move every 1000 milliseconds (1 second)
         if current_time - self.last_move_time < 1000:
+            return
+        
+        if is_frozen():
             return
 
         self.last_move_time = current_time

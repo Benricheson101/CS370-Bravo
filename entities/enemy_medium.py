@@ -11,6 +11,7 @@ from typing import Optional
 from constants import GREEN
 from entities.player import Player
 from renderer.cell import Cell
+from gameState import is_frozen
 import pygame
 
 
@@ -38,6 +39,9 @@ class Enemy_Medium(Cell):
             return
 
         self.last_move_time = current_time
+
+        if is_frozen():
+            return
 
 
         player_pos = pygame.Vector2(self.player.get_player_position())

@@ -2,6 +2,7 @@ from typing import Optional
 from constants import LIGHTRED
 from entities.player import Player
 from renderer.cell import Cell
+from gameState import is_frozen
 import pygame
 
 
@@ -29,6 +30,9 @@ class Enemy(Cell):
             return
 
         self.last_move_time = current_time
+         
+        if is_frozen():
+            return
 
 
         player_pos = pygame.Vector2(self.player.get_player_position())

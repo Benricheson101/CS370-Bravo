@@ -12,6 +12,8 @@ from entities.stairs import Stairs
 from entities.wall_gray import WallGray
 from entities.door import Door
 from entities.key import Key
+from entities.spell_freeze import Spell_Freeze
+from entities.spell_zap import Spell_Zap
 
 
 
@@ -54,6 +56,8 @@ tile_mapping = {
     "1": Enemy,
     "2": Enemy_Medium,
     "3": Enemy_Hard,
+    "Z": Spell_Freeze,
+    "%": Spell_Zap,
     "+": Gem,
     "T": Teleport,
     "L": Stairs,
