@@ -14,6 +14,7 @@ class Whip(Cell):
         from level.level_load import game_instance
         if isinstance(cell, Player):
             print("Picked up a whip!")
+            self.sound_effects.play_in_thread(self.sound_effects.GrabSound, self.fast_pc)
             game_instance.whip_count += 1
             print(f"Whip count: {game_instance.whip_count}")
             return True

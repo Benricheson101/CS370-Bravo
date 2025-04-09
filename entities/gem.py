@@ -19,7 +19,7 @@ class Gem(Cell):
         if isinstance(cell, Player):
             print("Player hit a Gem!")
             
-            #Gem.sound_effects.play_sound_in_thread(Gem.sound_effects.grab_sound)
+            self.sound_effects.play_in_thread(self.sound_effects.GrabSound, self.fast_pc)
             
             from level.level_load import game_instance
             if game_instance:

@@ -46,7 +46,7 @@ class Game:
         self.screen.fill(LIGHTGRAY)
         pygame.time.set_timer(FLASH_EVENT, 333)
         
-        #self.sound_effects = SoundEffects()
+        self.sound_effects = SoundEffects()
 
         # Load DOS sprite image ahead of time
         dos_sprites()
@@ -94,9 +94,12 @@ class Game:
 
         # Load initial level
         load_level(self.game_grid, 1)
+        
+        self.fast_pc = True
 
 
     def run(self):
+        
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -112,6 +115,7 @@ class Game:
             if not self.running:
                 break  # Ensure we exit before rendering again
 
+            
             self.game_grid.update()
             self.game_grid.render(self.screen)
             self.scoreboard_grid.update()
@@ -124,24 +128,16 @@ class Game:
             self.clock.tick(60)
 
         pygame.quit()
-        
-        
+
     def play_sound(self, sound_type):
-        """Play a sound effect based on the type"""
         if sound_type == "footstep":
-            self.sound_effects.play_sound_in_thread(self.sound_effects.foot_step)
+            self.sound_effects.play_sound_in_thread(lambda: self.sound_effects.foot_step(self.fast_pc))
         elif sound_type == "grab":
             self.sound_effects.play_sound_in_thread(self.sound_effects.grab_sound)
         elif sound_type == "block":
             self.sound_effects.play_sound_in_thread(self.sound_effects.block_sound)
         elif sound_type == "none":
             self.sound_effects.play_sound_in_thread(self.sound_effects.none_sound)
-        def handle_input(self):
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_w]:
-                # Make sure self.player exists
-                if hasattr(self, 'player'):
-                    self.player.use_whip()
 
-
-
+            
+     
