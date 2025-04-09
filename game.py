@@ -38,6 +38,9 @@ from screens.story import StoryScreen
 from util.color import new_gem_color
 from util.state import StateMachine
 
+# level switch import
+
+
 class Game:
  
     gem_color: Color
@@ -90,6 +93,9 @@ class Game:
 
         # Register the Game instance globally in level_load.py
         set_game_instance(self)
+        
+        # level
+        self.current_level = 1
 
         self.color = True
         self.fastpc = True

@@ -1,5 +1,6 @@
 from entities.player import Player
 from renderer.cell import Cell
+from screens.game import load_current_level
 
 class Stairs(Cell):
     def __init__(self) -> None:
@@ -15,12 +16,14 @@ class Stairs(Cell):
             # Increment the level number
             game.current_level += 1
 
+            grid = self.grid
             # Clear current level display
-            game.game_grid.clrscr()
-            game.game_grid.border()
+            grid.clrscr()
+            grid.border()
+            
 
             # Load the next level using game's method
-            game.load_current_level()
+            load_current_level(self)
 
             print("To the next level!")
             return False
