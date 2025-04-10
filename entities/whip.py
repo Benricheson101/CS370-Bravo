@@ -13,6 +13,11 @@ class Whip(Cell):
     def on_collision(self, cell: "Cell") -> bool:
         
         if isinstance(cell, Player):
+            print("Picked up a whip!")
+            self.sound_effects.play_in_thread(self.sound_effects.GrabSound, self.fast_pc)
+            game_instance.whip_count += 1
+            print(f"Whip count: {game_instance.whip_count}")
+            return True
             print('You found a Whip.')
             from level.level_load import game_instance
             if game_instance:

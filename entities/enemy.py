@@ -2,6 +2,7 @@
 from constants import LIGHTRED
 from entities.player import Player
 from renderer.cell import Cell
+from Sound import SoundEffects
 
 
 class Enemy(Cell):
@@ -15,10 +16,12 @@ class Enemy(Cell):
         if isinstance(cell, Player):
             print("Player hit a monster! OUCHIE!")
             from level.level_load import game_instance
+            
             if game_instance.gem_count > 0:
                 if game_instance:  
                     game_instance.gem_count -= 1
                 return True
+            
         return False
 
     #TODO Make chase function:
