@@ -11,12 +11,14 @@ class Whip(Cell):
         self.load_dos_char(244)
     
     def on_collision(self, cell: "Cell") -> bool:
-        from level.level_load import game_instance
+        
         if isinstance(cell, Player):
-            print("Picked up a whip!")
-            game_instance.whip_count += 1
-            print(f"Whip count: {game_instance.whip_count}")
-            return True
+            print('You found a Whip.')
+            from level.level_load import game_instance
+            if game_instance:
+                game_instance.whip_count += 1
+                game_instance.score += 10
+                return True
         return False
     
     def use_whip(self):

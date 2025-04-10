@@ -16,6 +16,7 @@ class Teleport(Cell):
             from level.level_load import game_instance
             if game_instance:
                 game_instance.teleport_count += 1
+                game_instance.score += 10
 
             empty_cell = cell.grid.get_random_empty_tiles()
 

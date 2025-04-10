@@ -1,4 +1,5 @@
 from renderer.cell import Cell
+from entities.player import Player
 
 
 class Wall(Cell):
@@ -9,7 +10,12 @@ class Wall(Cell):
         self.load_dos_char(219)
 
     def on_collision(self, cell: Cell) -> bool:
-        # prevent moving into the same space
+        if isinstance(cell, Player):
+            print('A Solid Wall blocks your way.')
+            from level.level_load import game_instance
+            if game_instance:
+                if game_instance.score > 20:
+                    game_instance.score -= 20
         return False
 
 
