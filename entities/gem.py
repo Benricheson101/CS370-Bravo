@@ -17,6 +17,7 @@ class Gem(Cell):
             from level.level_load import game_instance
             if game_instance:
                 game_instance.gem_count += 1
+                game_instance.score += 10
                 return True
         return False
     

@@ -17,11 +17,12 @@ class Door(Cell):
             from level.level_load import game_instance
             if game_instance:
                 if game_instance.key_count > 0:
-                    print("You unlocked a Door!")
+                    # no message appears when unlocking door
+                    # print("You unlocked a Door!")
                     game_instance.key_count -=1
+                    game_instance.score += 10
                     return True
                 else:
-                    print("You need a Key.")
                     return False
 
 

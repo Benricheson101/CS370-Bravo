@@ -12,7 +12,10 @@ class Nugget(Cell):
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
             print('You found a Gold Nugget...500 points!')
-            return True
+            from level.level_load import game_instance
+            if game_instance:
+                game_instance.score += 500
+                return True
         return False
     
     def update(self, **kwargs):
