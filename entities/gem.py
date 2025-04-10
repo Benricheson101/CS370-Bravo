@@ -14,6 +14,7 @@ class Gem(Cell):
         # self.col(self.grid.game.gem_color if self.grid is not None and self.grid.game is not None else LIGHTCYAN, 7)
         self.col(color, 7)
         self.load_dos_char(4)
+        self.fast_pc = False
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):

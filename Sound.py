@@ -63,13 +63,12 @@ class SoundEffects:
             
 
             for _ in range(steps1):
-                self.sound(random.randint(350, 899), 0.01)  
-            
+                self.sound(random.randint(350, 899), 0.002)  
             self.nosound()
             self.delay(120)  
             
             for _ in range(steps2):
-                self.sound(random.randint(150, 199), 0.01)  
+                self.sound(random.randint(150, 199), 0.002)  
             
             self.nosound()
         except Exception as e:
@@ -79,10 +78,11 @@ class SoundEffects:
     def GrabSound(self, FastPC):
         """Generate grab sound effects."""
         try:
-            steps = int(FastPC)*160+int(not FastPC)*65
+            steps = int(FastPC)*50+int(not FastPC)*23
             for x in range(1, steps):
-                self.sound(random.randint(0, 1000) + 1000, 0.1)
-                self.delay(5)
+                #self.sound(random.randint(0, 1000) + 1000, 0.01)
+                self.sound(random.randint(1000, 1999), 0.01)
+                self.delay(3)
                 self.nosound()
         except Exception as e:
             print(f"Error in GrabSound method: {e}")
@@ -92,7 +92,7 @@ class SoundEffects:
         """Generate block sound effects."""
         try:
             for x in range(60, 30, -1):
-                self.sound(x, 0.1)
+                self.sound(x, 0.01)
                 self.delay(1 + int(FastPC) * 2)
                 self.nosound()
         except Exception as e:
@@ -121,10 +121,10 @@ class SoundEffects:
         try:
             # Play some random frequencies with occasional silence
             for _ in range(15):
-                self.sound(random.randint(0, 15))  # This mimics `bor(random(16))`
+                self.sound(random.randint(0, 15)) 
                 self.nosound()
                 
-            self.sound(4, 0.02)  # Equivalent to `bor(4)`
+            self.sound(4, 0.02)  
             
             for _ in range(33):
                 # Randomly decide whether to play a tone or remain silent
