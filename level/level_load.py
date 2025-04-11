@@ -20,6 +20,8 @@ from entities.spell_freeze import Spell_Freeze
 from entities.spell_zap import Spell_Zap
 from entities.lava import Lava
 
+from entities.clone import Clone
+
 
 
 
@@ -67,6 +69,7 @@ tile_mapping = {
     "Z": Spell_Freeze,
     "%": Spell_Zap,
     "V": Lava,
+    "~": Clone,
     " ": None
     }
 
@@ -145,7 +148,8 @@ def restore_level(grid: CellGrid):
         "Invisible": Invisible,
         "Nugget": Nugget,
         "River": River,
-        "ShowGems": ShowGems
+        "ShowGems": ShowGems,
+        "Clone": Clone
     }
 
     for entity_type, (i, j) in saved_level:
