@@ -15,6 +15,8 @@ from entities.nugget import Nugget
 from entities.river import River
 from entities.show_gems import ShowGems
 
+from entities.clone import Clone
+
 
 
 
@@ -57,6 +59,7 @@ tile_mapping = {
     "*": Nugget,
     "R": River,
     "&": ShowGems,
+    "~": Clone,
     " ": None
     }
 
@@ -125,7 +128,8 @@ def restore_level(grid: CellGrid):
         "Invisible": Invisible,
         "Nugget": Nugget,
         "River": River,
-        "ShowGems": ShowGems
+        "ShowGems": ShowGems,
+        "Clone": Clone
     }
 
     for entity_type, (i, j) in saved_level:

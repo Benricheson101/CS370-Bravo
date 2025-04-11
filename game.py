@@ -95,7 +95,7 @@ class Game:
         set_game_instance(self)
         
         # level
-        self.current_level = 1
+        self.current_level = 21
 
         self.color = True
         self.fastpc = True
