@@ -2,6 +2,7 @@ import pygame
 from os import environ
 import threading
 from Sound import SoundEffects
+#from entities.whip import Whip
 from pygame.color import Color
 from entities.char import Char
 from renderer.spritesheet import dos_sprites

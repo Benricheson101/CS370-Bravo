@@ -3,7 +3,7 @@ import pygame
 from constants import WHITE
 from entities.player import Player
 from renderer.cell import Cell
-from level.level_load import game_instance
+# from level.level_load import game_instance
 
 class Whip(Cell):
     def __init__(self) -> None:
