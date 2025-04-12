@@ -16,9 +16,9 @@ class Block(Cell):
         self.fast_pc = False
 
     def on_collision(self, cell: "Cell") -> bool:
-        self.sound_effects.play_in_thread(self.sound_effects.BlockSound, True)
         if isinstance(cell, Player):
             print('A Crumbled Wall blocks your way.')
+            self.sound_effects.play_in_thread(self.sound_effects.BlockSound, True)
             from level.level_load import game_instance
             if game_instance:
                 if game_instance.score > 20:

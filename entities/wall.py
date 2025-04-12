@@ -13,10 +13,10 @@ class Wall(Cell):
         self.fast_pc = False
 
     def on_collision(self, cell: Cell) -> bool:
-        self.sound_effects.play_in_thread(self.sound_effects.BlockSound, True)
         # prevent moving into the same space
         if isinstance(cell, Player):
             print('A Solid Wall blocks your way.')
+            self.sound_effects.play_in_thread(self.sound_effects.BlockSound, True)
             from level.level_load import game_instance
             if game_instance:
                 if game_instance.score > 20:

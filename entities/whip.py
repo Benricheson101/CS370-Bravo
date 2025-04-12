@@ -3,6 +3,7 @@ import pygame
 from constants import WHITE
 from entities.player import Player
 from renderer.cell import Cell
+from level.level_load import game_instance
 
 class Whip(Cell):
     def __init__(self) -> None:
@@ -26,7 +27,15 @@ class Whip(Cell):
                 return True
         return False
     
-    def use_whip(self):
+    
+    
+    
+    
+    
+    
+    
+    
+    '''def use_whip(self):
     # Check if player has whips
         keys = pygame.key.get_pressed()
         if self.whip_count > 0:
@@ -63,8 +72,6 @@ class Whip(Cell):
         if cell:
             if hasattr(cell, 'is_enemy') and cell.is_enemy():
                 print(f"Enemy at ({x}, {y}) defeated!")
-                # Remove the enemy
-                # You might need to implement a method for this
                 self.game_grid.remove_cell(x, y)
             elif hasattr(cell, 'is_wall') and cell.is_wall():
                 # Check if the wall should break (30% chance)
@@ -81,7 +88,7 @@ class Whip(Cell):
                 # Play whip sound effect
                 return True
             print("No whips left!")
-            return False
+            return False'''
     
     #def process_hit(self, x, y, symbol):
         #from level.level_load import game_instance 
