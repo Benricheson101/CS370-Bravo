@@ -2,6 +2,7 @@ import pygame
 from os import environ
 import threading
 from Sound import SoundEffects
+#from entities.whip import Whip
 from pygame.color import Color
 from entities.char import Char
 from renderer.spritesheet import dos_sprites
@@ -136,13 +137,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                    break
-                else:
-                    self.sm.handle_event(event)
-
-            self.sm.update()
-            self.sm.render(self.screen)
-
+                    break   
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_s:
                         save_level(self.game_grid)
@@ -150,10 +145,14 @@ class Game:
                         restore_level(self.game_grid)
                 elif event.type == FLASH_EVENT:
                     self.game_grid._flip_blink()
+                else:
+                    self.sm.handle_event(event)
 
             if not self.running:
                 break  # Ensure we exit before rendering again
-
+            
+            self.sm.update()
+            self.sm.render(self.screen)
             
             self.game_grid.update()
             self.game_grid.render(self.screen)
