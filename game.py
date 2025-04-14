@@ -1,8 +1,5 @@
 import pygame
 from os import environ
-import threading
-from Sound import SoundEffects
-#from entities.whip import Whip
 from pygame.color import Color
 from entities.char import Char
 from renderer.spritesheet import dos_sprites
@@ -67,9 +64,6 @@ class Game:
         self.screen.fill(LIGHTGRAY)
         pygame.time.set_timer(BLINK_EVENT, 333)
         pygame.time.set_timer(FLASH_EVENT, 1_000 // 30)
-        pygame.time.set_timer(FLASH_EVENT, 333)
-        
-        self.sound_effects = SoundEffects()
 
         # Load DOS sprite image ahead of time
         dos_sprites()
@@ -125,40 +119,19 @@ class Game:
         
 
 
-        # Load initial level
-        load_level(self.game_grid, 1)
-        
-        self.fast_pc = True
-
 
     def run(self):
-        
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                    break   
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_s:
-                        save_level(self.game_grid)
-                    elif event.key == pygame.K_r:
-                        restore_level(self.game_grid)
-                elif event.type == FLASH_EVENT:
-                    self.game_grid._flip_blink()
+                    break
                 else:
                     self.sm.handle_event(event)
 
-            if not self.running:
-                break  # Ensure we exit before rendering again
-            
             self.sm.update()
             self.sm.render(self.screen)
-            
-            self.game_grid.update()
-            self.game_grid.render(self.screen)
-            self.scoreboard_grid.update()
-            self.scoreboard_grid.render(self.screen)
-            
+
             print(f"Score: {self.score}, Keys: {self.key_count}, Gems: {self.gem_count}, "
                   f"Whips: {self.whip_count}, Teleports: {self.teleport_count}")
 
@@ -175,15 +148,4 @@ class Game:
                     self.player.use_whip()'''
 
 
-    def play_sound(self, sound_type):
-        if sound_type == "footstep":
-            self.sound_effects.play_sound_in_thread(lambda: self.sound_effects.foot_step(self.fast_pc))
-        elif sound_type == "grab":
-            self.sound_effects.play_sound_in_thread(self.sound_effects.grab_sound)
-        elif sound_type == "block":
-            self.sound_effects.play_sound_in_thread(self.sound_effects.block_sound)
-        elif sound_type == "none":
-            self.sound_effects.play_sound_in_thread(self.sound_effects.none_sound)
 
-            
-     
