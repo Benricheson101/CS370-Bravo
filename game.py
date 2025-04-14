@@ -1,5 +1,7 @@
 import pygame
 from os import environ
+import threading
+from Sound import SoundEffects
 from pygame.color import Color
 from entities.char import Char
 from renderer.spritesheet import dos_sprites
@@ -64,6 +66,8 @@ class Game:
         self.screen.fill(LIGHTGRAY)
         pygame.time.set_timer(BLINK_EVENT, 333)
         pygame.time.set_timer(FLASH_EVENT, 1_000 // 30)
+        
+        self.sound_effects = SoundEffects()
 
         # Load DOS sprite image ahead of time
         dos_sprites()
@@ -117,10 +121,11 @@ class Game:
         self.sm.transition("game" if environ.get("KROZ_SKIP_MENUS") else "color_menu")
 
         
-
+        self.fast_pc = True
 
 
     def run(self):
+        
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -140,12 +145,15 @@ class Game:
 
         pygame.quit()
 
-        ''' def handle_input(self):
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_w]:
-                # Make sure self.player exists
-                if hasattr(self, 'player'):
-                    self.player.use_whip()'''
+    def play_sound(self, sound_type):
+        if sound_type == "footstep":
+            self.sound_effects.play_sound_in_thread(lambda: self.sound_effects.foot_step(self.fast_pc))
+        elif sound_type == "grab":
+            self.sound_effects.play_sound_in_thread(self.sound_effects.grab_sound)
+        elif sound_type == "block":
+            self.sound_effects.play_sound_in_thread(self.sound_effects.block_sound)
+        elif sound_type == "none":
+            self.sound_effects.play_sound_in_thread(self.sound_effects.none_sound)
 
-
-
+            
+     
