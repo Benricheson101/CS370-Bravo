@@ -16,13 +16,14 @@ class Stairs(Cell):
             game.current_level += 1
 
             grid = self.grid
+            game_screen = self.grid.game.sm.current_state
             # Clear current level display
             grid.clrscr()
             grid.border()
 
 
             # Load the next level using game's method
-            self.grid.game.sm.current_state.load_current_level()
+            game_screen.load_current_level()
 
             print("To the next level!")
             return False
