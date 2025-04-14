@@ -32,9 +32,9 @@ def new_gem_color() -> Tuple[Color, Color]:
     art_color = COLORS[8]
 
     while gem_color == COLORS[8]:
-        gem_color = COLORS[randint(0, 15)]
+        gem_color = COLORS[randint(0, 15) + 1]
 
     while art_color == COLORS[8] or art_color == gem_color:
-        art_color = COLORS[randint(0, 15)]
+        art_color = COLORS[randint(0, 15) + 1]
 
     return gem_color, art_color
