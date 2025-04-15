@@ -1,34 +1,17 @@
 import pygame
 from os import environ
-import threading
 from Sound import SoundEffects
-#from entities.whip import Whip
 from pygame.color import Color
-from entities.char import Char
 from renderer.spritesheet import dos_sprites
 from constants import (
-    BLACK,
     BLINK_EVENT,
-    BLUE,
     FLASH_EVENT,
-    GAME_GRID_COLS,
-    GAME_GRID_ROWS,
-    GAME_GRID_WIDTH,
     LIGHTGRAY,
-    GRID_CELL_WIDTH,
-    SCOREBOARD_GRID_COLS,
-    SCOREBOARD_GRID_ROWS,
     WINDOW_HEIGHT,
     WINDOW_WIDTH
 )
 
-from renderer.cell_grid import CellGrid
-from level.level_load import (
-    load_level,
-    save_level,
-    restore_level,
-    set_game_instance,
-)
+from level.level_load import set_game_instance
 from screens.difficulty import DifficultyScreen
 from screens.game import GameScreen
 from screens.instructions import InstructionsPage1, InstructionsPage2
@@ -45,7 +28,7 @@ from util.state import StateMachine
 
 
 class Game:
- 
+
     gem_color: Color
     art_color: Color
 
@@ -67,7 +50,7 @@ class Game:
         self.screen.fill(LIGHTGRAY)
         pygame.time.set_timer(BLINK_EVENT, 333)
         pygame.time.set_timer(FLASH_EVENT, 1_000 // 30)
-        
+
         self.sound_effects = SoundEffects()
 
         # Load DOS sprite image ahead of time
@@ -98,7 +81,7 @@ class Game:
 
         # Register the Game instance globally in level_load.py
         set_game_instance(self)
-        
+
         # level
         self.current_level = 1
 
@@ -121,12 +104,12 @@ class Game:
         # set initial scene. since the menus are really slow and annoying to get through, set env KROZ_SKIP_MENUS=1 to skip straight to the game
         self.sm.transition("game" if environ.get("KROZ_SKIP_MENUS") else "color_menu")
 
-        
+
         self.fast_pc = True
 
 
     def run(self):
-        
+
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -137,9 +120,6 @@ class Game:
 
             self.sm.update()
             self.sm.render(self.screen)
-
-            print(f"Score: {self.score}, Keys: {self.key_count}, Gems: {self.gem_count}, "
-                  f"Whips: {self.whip_count}, Teleports: {self.teleport_count}")
 
             pygame.display.flip()
             self.clock.tick(60)
@@ -156,5 +136,5 @@ class Game:
         elif sound_type == "none":
             self.sound_effects.play_sound_in_thread(self.sound_effects.none_sound)
 
-            
-     
+
+

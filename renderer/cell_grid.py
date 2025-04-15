@@ -333,6 +333,12 @@ class CellGrid:
 
         self.cur_pos = (end, self.cur_pos[1])
 
+    def print(self, xpos: int, ypos: int, msg: str):
+        oldcur = self.cur_pos
+        self.gotoxy(xpos, ypos)
+        self.write(msg)
+        self.cur_pos = oldcur
+
     def flash(self, xpos: int, ypos: int, msg: str):
         oldcur = self.cur_pos
         self.gotoxy(xpos, ypos)
