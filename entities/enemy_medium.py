@@ -1,20 +1,33 @@
+'''
+OBJECT:  Green enemy
+APPEARANCE:  Green "O" with umlaut; various other appearances
+METADATA:  2
+POINT VALUE:  20
+
+The level-2 enemy moves at medium speed
+'''
+
 from typing import Optional
-from constants import LIGHTRED
+from constants import GREEN
 from entities.player import Player
 from renderer.cell import Cell
-from Sound import SoundEffects
 from gameState import is_frozen
 import pygame
 
-class Enemy(Cell):
+
+class Enemy_Medium(Cell):
     def __init__(self, player: Optional[Player] = None) -> None:
         super().__init__()
-        self.load_dos_char(142, LIGHTRED)
+        self.load_dos_char(153, GREEN)
         self.speed = 2
         self.player = player  # Store player reference
         self.last_move_time = pygame.time.get_ticks()  # Milliseconds
 
     def update(self, **kwargs) -> None:
+        if not self.grid:
+            print("Enemy is not assigned to a grid!")
+            return
+        
         if self.player is None:
             print("Player is still None in enemy update!")
             return
@@ -22,11 +35,11 @@ class Enemy(Cell):
         current_time = pygame.time.get_ticks()
 
         # Move every 1000 milliseconds (1 second)
-        if current_time - self.last_move_time < 2500:
+        if current_time - self.last_move_time < 2000:
             return
 
         self.last_move_time = current_time
-         
+
         if is_frozen():
             return
 
@@ -41,16 +54,9 @@ class Enemy(Cell):
             self.move(direction * self.speed)
 
 
-
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
             print("Player hit a monster! OUCHIE!")
-            from level.level_load import game_instance
-            
-            if game_instance.gem_count > 0:
-                if game_instance:  
-                    game_instance.gem_count -= 1
-                return True
-            
-        return False
+            return True
 
+        return False

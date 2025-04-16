@@ -1,20 +1,33 @@
+'''
+OBJECT:  Blue enemy
+APPEARANCE:  Blue omega; various other appearances
+METADATA:  3
+POINT VALUE:  30
+
+The level-3 enemy moves fast
+'''
+
 from typing import Optional
-from constants import LIGHTRED
+from constants import BLUE
 from entities.player import Player
 from renderer.cell import Cell
-from Sound import SoundEffects
-from gameState import is_frozen
 import pygame
+from gameState import is_frozen
 
-class Enemy(Cell):
+
+class Enemy_Hard(Cell):
     def __init__(self, player: Optional[Player] = None) -> None:
         super().__init__()
-        self.load_dos_char(142, LIGHTRED)
-        self.speed = 2
+        self.load_dos_char(234, BLUE)
+        self.speed = 2.5
         self.player = player  # Store player reference
         self.last_move_time = pygame.time.get_ticks()  # Milliseconds
 
     def update(self, **kwargs) -> None:
+        if not self.grid:
+            print("Enemy is not assigned to a grid!")
+            return
+        
         if self.player is None:
             print("Player is still None in enemy update!")
             return
@@ -22,13 +35,13 @@ class Enemy(Cell):
         current_time = pygame.time.get_ticks()
 
         # Move every 1000 milliseconds (1 second)
-        if current_time - self.last_move_time < 2500:
+        if current_time - self.last_move_time < 1000:
+            return
+        
+        if is_frozen():
             return
 
         self.last_move_time = current_time
-         
-        if is_frozen():
-            return
 
 
         player_pos = pygame.Vector2(self.player.get_player_position())
@@ -41,16 +54,9 @@ class Enemy(Cell):
             self.move(direction * self.speed)
 
 
-
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
             print("Player hit a monster! OUCHIE!")
-            from level.level_load import game_instance
-            
-            if game_instance.gem_count > 0:
-                if game_instance:  
-                    game_instance.gem_count -= 1
-                return True
-            
-        return False
+            return True
 
+        return False

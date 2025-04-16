@@ -18,6 +18,7 @@ class Player(Cell):
         self.whip_animation_active = False
         self.whip_direction = 0
         self.whip_symbols = ['\\', 'ƒ', '/', '≥', '\\', 'ƒ', '/', '≥']
+        self.collected_teleports = 0
         
     # For invisible.py
         self.invisible_until = 0  # Time (ms) when invisibility ends
@@ -31,7 +32,6 @@ class Player(Cell):
         self.load_dos_char(0)  # blank/invisible
         self.invisible_until = pygame.time.get_ticks() + duration
         self.is_invisible = True
-
 
     def update(self, **kwargs) -> None:
         assert self.grid
@@ -128,7 +128,16 @@ class Player(Cell):
             self.use_whip()
             # Play whip sound (using grab sound as a substitute)
             self.play_sound_in_thread(self.sound_effects.GrabSound)
-            
+
+         # Use teleport on 'T'
+        if keys[pygame.K_t] and self.collected_teleports > 0 and (current_time - self.last_move_time > 100):
+            empty_cell = self.grid.get_random_empty_tiles()
+            self.move_to(empty_cell)
+            self.collected_teleports -= 1
+            self.last_move_time = current_time
+            print("Teleported using a scroll!")
+            return  # Skip movement on teleport
+
         super().update()
     
     def play_sound_in_thread(self, sound_method, FastPC=True):
@@ -153,3 +162,12 @@ class Player(Cell):
     def on_collision(self, cell: "Cell") -> bool:
         self.play_sound_in_thread(self.sound_effects.BlockSound)
         return False
+
+    def get_player_position(self) -> tuple[int, int]:
+        """
+        Gets the player's current position on the grid.
+
+        Returns:
+            A tuple of (x, y) coordinates representing the player's position.
+        """
+        return self.x, self.y

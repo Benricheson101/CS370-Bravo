@@ -3,6 +3,8 @@ from entities.player import Player
 from entities.wall import Wall
 from entities.block import Block
 from entities.enemy import Enemy
+from entities.enemy_medium import Enemy_Medium
+from entities.enemy_hard import Enemy_Hard
 from entities.gem import Gem
 from entities.whip import Whip
 from entities.teleport import Teleport
@@ -14,6 +16,9 @@ from entities.invisible import Invisible
 from entities.nugget import Nugget
 from entities.river import River
 from entities.show_gems import ShowGems
+from entities.spell_freeze import Spell_Freeze
+from entities.spell_zap import Spell_Zap
+from entities.lava import Lava
 
 
 
@@ -46,6 +51,8 @@ tile_mapping = {
     "#": Wall,
     # "X": Block,
     "1": Enemy,
+    "2": Enemy_Medium,
+    "3": Enemy_Hard,
     "+": Gem,
     "T": Teleport,
     "L": Stairs,
@@ -57,9 +64,11 @@ tile_mapping = {
     "*": Nugget,
     "R": River,
     "&": ShowGems,
+    "Z": Spell_Freeze,
+    "%": Spell_Zap,
+    "V": Lava,
     " ": None
     }
-
 
 def load_level(grid: CellGrid, level_num):
     for tile_key, tile_value in tile_mapping.items():
@@ -71,10 +80,19 @@ def load_level(grid: CellGrid, level_num):
                         entity = tile_value(game_instance.gem_color)
                     elif tile_value == Nugget:
                         entity = tile_value(game_instance.art_color)
+                    elif tile_value == Player:
+                        player_instance = Player()
+                        entity = player_instance
+                        game_instance.player = player_instance
+                    elif tile_value == Enemy:
+                        entity = Enemy(player=game_instance.player)
+                    elif tile_value == Enemy_Medium:
+                        entity = Enemy_Medium(player=game_instance.player)
+                    elif tile_value == Enemy_Hard:
+                        entity = Enemy_Hard(player=game_instance.player)
                     else:
                         entity = tile_value()
                     grid.put((j+1, i+1), entity)
-
 
 def save_level(grid: CellGrid):
     saved_level = []
@@ -115,6 +133,8 @@ def restore_level(grid: CellGrid):
         "Wall": Wall,
         # "Block": Block,
         "Enemy": Enemy,
+        "Enemy_Medium": Enemy_Medium,
+        "Enemy_Hard": Enemy_Hard,
         "Gem": Gem,
         "Teleport": Teleport,
         "Stairs": Stairs,
