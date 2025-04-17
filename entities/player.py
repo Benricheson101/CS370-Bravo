@@ -24,10 +24,14 @@ class Player(Cell):
         
         # Teleport
         self.collected_teleports = 0
+    
+    # Dead
+        self.is_dead = False
         
     # For invisible.py
         self.invisible_until = 0  # Time (ms) when invisibility ends
         self.is_invisible = False
+        
 
     def make_invisible(self, duration: int):
         """
@@ -37,6 +41,12 @@ class Player(Cell):
         self.load_dos_char(0)  # blank/invisible
         self.invisible_until = pygame.time.get_ticks() + duration
         self.is_invisible = True
+        
+    def dead(self):
+        self.image = pygame.Surface((self.width, self.height), pygame.SRCALPHA)  # Reset image
+        self.load_dos_char(42)  # asterisk character
+        # self.col()
+        self.is_dead = True
 
     def update(self, **kwargs) -> None:
         assert self.grid

@@ -57,6 +57,8 @@ class Enemy(Cell):
                 if game_instance:
                     game_instance.gem_count -= 1
                 return True
-
+            else:
+                cell.dead()
+            
         return False
 
