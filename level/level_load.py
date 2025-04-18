@@ -24,6 +24,7 @@ from entities.lava import Lava
 from entities.iwall import IWall
 from entities.iblock import IBlock
 from entities.cwall1 import CWall1
+from entities.cspell1 import CSpell1
 
 
 
@@ -161,7 +162,8 @@ def restore_level(grid: CellGrid):
         "ShowGems": ShowGems,
         "IWall": IWall,
         "IBlock": IBlock,
-        "CWall1": CWall1
+        "CWall1": CWall1,
+        "CSpell1": CSpell1
     }
 
     for entity_type, (i, j) in saved_level:

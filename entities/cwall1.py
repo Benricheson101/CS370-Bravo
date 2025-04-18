@@ -1,22 +1,22 @@
 from entities.wall import Wall
 from renderer.cell import Cell
 from entities.player import Player
-
-
+from constants import COLORS
 
 class CWall1(Wall):
     def __init__(self, color: int = 6) -> None:
         super().__init__(color)
-        self.image.fill((0, 0, 0, 0))   # for some reason dos_character(0) didn't work here
-        self.is_invisible = True 
-        
+        self.color = color
+        self.image.fill((0, 0, 0, 0))
+        self.is_invisible = True
+
+    def reveal(self):
+        self.is_invisible = False
+        self.image.fill(COLORS[self.color])
+        self.load_dos_char(219)
+        if self.grid:
+            self.grid.group.add(self)
+            self.visible = True
+
     def on_collision(self, cell: Cell) -> bool:
-        if isinstance(cell, Player) and self.is_invisible:
-            return True
-    
-    def get_cwall_position(self) -> tuple[int, int]:
-        return self.x, self.y
-    
-    
-    
-    
+        return self.is_invisible  # passable when invisible

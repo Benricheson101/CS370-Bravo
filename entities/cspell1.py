@@ -1,18 +1,7 @@
-from entities.wall import Wall
 from renderer.cell import Cell
 from entities.player import Player
 from renderer.cell_grid import CellGrid
 from entities.cwall1 import CWall1
-
-def create_walls(self, grid: CellGrid):
-    for cwall in grid:
-        return True
-
-# def create_walls(grid: CellGrid):
-#     for _ in range(20):
-#         x, y = grid.get_random_empty_tiles()
-#         from level.level_load import game_instance
-#         grid.put((x, y), Gem(game_instance.gem_color))
 
 class CSpell1(Cell):
     def __init__(self) -> None:
@@ -20,6 +9,16 @@ class CSpell1(Cell):
         self.load_dos_char(0)
 
     def on_collision(self, cell: Cell) -> bool:
-        # if isinstance(cell, Player):
-            
+        if isinstance(cell, Player):
+            self.reveal_cwalls()
         return True
+
+    def on_added_to_grid(self, grid: CellGrid):
+        self.grid = grid
+
+    def reveal_cwalls(self):
+        for y in range(self.grid.rows):
+            for x in range(self.grid.cols):
+                entity = self.grid.at((x, y))
+                if isinstance(entity, CWall1) and entity.is_invisible:
+                    entity.reveal()
