@@ -20,6 +20,7 @@ from entities.spell_freeze import Spell_Freeze
 from entities.spell_zap import Spell_Zap
 from entities.lava import Lava
 from entities.iwall import IWall
+from entities.iblock import IBlock
 
 
 
@@ -69,6 +70,7 @@ tile_mapping = {
     "%": Spell_Zap,
     "V": Lava,
     ":": IWall,
+    ";": IBlock,
     " ": None
     }
 
@@ -148,7 +150,8 @@ def restore_level(grid: CellGrid):
         "Nugget": Nugget,
         "River": River,
         "ShowGems": ShowGems,
-        "IWall": IWall
+        "IWall": IWall,
+        "IBlock": IBlock
     }
 
     for entity_type, (i, j) in saved_level:
