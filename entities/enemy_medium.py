@@ -22,6 +22,8 @@ class Enemy_Medium(Cell):
         self.speed = 2
         self.player = player  # Store player reference
         self.last_move_time = pygame.time.get_ticks()  # Milliseconds
+        
+    def is_enemy(self): return True
 
     def update(self, **kwargs) -> None:
         if not self.grid:
