@@ -5,6 +5,8 @@ from renderer.cell import Cell
 from renderer.cell_grid import CellGrid
 from Sound import SoundEffects
 from random import random
+from entities.char import Char
+from pygame.color import Color
 
 
 class Player(Cell):
@@ -19,7 +21,6 @@ class Player(Cell):
         self.whip_animation_frames = 0
         self.whip_animation_active = False
         self.whip_direction = 0
-        self.whip_symbols = ['\\', 'ƒ', '/', '≥', '\\', 'ƒ', '/', '≥']
         self.collected_teleports = 0
         
     # For invisible.py
@@ -149,11 +150,17 @@ class Player(Cell):
         sound_thread.start()
     
     def update_whip_animation(self):
-        # Placeholder for whip animation update logic
-        self.whip_animation_frames += 1
-        if self.whip_animation_frames >= 8:  # Animation length
+        current_time = pygame.time.get_ticks()
+        if self.whip_animation_frames < len(self.whip_sequence):
+            if current_time - self.last_whip_flash_time > 30:  # Delay between steps
+                dx, dy, symbol = self.whip_sequence[self.whip_animation_frames]
+                self.process_whip_hit(self.x + dx, self.y + dy, symbol)
+                self.whip_animation_frames += 1
+                self.last_whip_flash_time = current_time
+        else:
             self.whip_animation_active = False
             self.whip_animation_frames = 0
+
     
     def use_whip(self):
         from level.level_load import game_instance
@@ -164,16 +171,19 @@ class Player(Cell):
         game_instance.whip_count -= 1
         self.whip_animation_active = True
         self.whip_animation_frames = 0
-
-        px, py = self.x, self.y
-        directions = [
-            (-1, -1, '\\'), (-1, 0, 'ƒ'), (-1, 1, '/'),
-            (0, 1, '≥'), (1, 1, '\\'), (1, 0, 'ƒ'),
-            (1, -1, '/'), (0, -1, '≥'),
+        self.whip_sequence = [
+            (-1, -1, '\\'),
+            ( 0, -1, '|'),
+            ( 1, -1, '/'),
+            ( 1,  0, '-'),
+            ( 1,  1, '\\'),
+            ( 0,  1, '|'),
+            (-1,  1, '/'),
+            (-1,  0, '-')
         ]
+        self.last_whip_flash_time = pygame.time.get_ticks()
 
-        for dx, dy, symbol in directions:
-            self.process_whip_hit(px + dx, py + dy, symbol)
+
         self.play_sound_in_thread(self.sound_effects.GrabSound)
         
     def process_whip_hit(self, x: int, y: int, symbol: str):
@@ -183,21 +193,26 @@ class Player(Cell):
         from level.level_load import game_instance
         power = getattr(game_instance, "whip_power", 2)
 
+        
+        from entities.whip import WhipFlash
+        flash = WhipFlash(symbol, self.grid, (x, y))
+        self.grid.fx_group.add(flash)
+
         cell = self.grid.at((x, y))
         if not cell:
             return
 
-        # Enemy
+        
         if hasattr(cell, "is_enemy") and cell.is_enemy():
             self.grid.remove((x, y))
             game_instance.score += 10
             print(f"Enemy at ({x}, {y}) whipped!")
 
-        # Breakable wall
         elif hasattr(cell, "is_breakable_wall") and cell.is_breakable_wall():
             if random() < power / 7:
                 self.grid.remove((x, y))
                 print(f"Wall at ({x}, {y}) destroyed!")
+
 
         
     def on_collision(self, cell: "Cell") -> bool:
@@ -212,3 +227,5 @@ class Player(Cell):
             A tuple of (x, y) coordinates representing the player's position.
         """
         return self.x, self.y
+    
+

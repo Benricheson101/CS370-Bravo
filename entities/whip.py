@@ -5,6 +5,9 @@ from entities.player import Player
 from renderer.cell import Cell
 # from level.level_load import game_instance
 
+#for WhipFlash
+from entities.char import Char
+
 class Whip(Cell):
     def __init__(self) -> None:
         super().__init__()
@@ -25,78 +28,20 @@ class Whip(Cell):
             return True
         return False
     
-    
-    
-    
-    
-    
-    
-    
-    
-    '''def use_whip(self):
-    # Check if player has whips
-        keys = pygame.key.get_pressed()
-        if self.whip_count > 0:
-            self.whip_count -= 1
-            print(f"Whip used! Remaining whips: {self.whip_count}")
-            for event in pygame.event.get():
-            # Get player position
-                px, py = self.player.x, self.player.y
-                if  event.key == pygame.K.w:
-                    # Define the 8 directions
-                    hits = [
-                        (px - 1, py - 1, '\\'),  # Top-left
-                        (px - 1, py, 'ƒ'),      # Left
-                        (px - 1, py + 1, '/'),   # Bottom-left
-                        (px, py + 1, '≥'),       # Down
-                        (px + 1, py + 1, '\\'),  # Bottom-right
-                        (px + 1, py, 'ƒ'),      # Right
-                        (px + 1, py - 1, '/'),   # Top-right
-                        (px, py - 1, '≥')        # Up
-                    ]
-        
-            # Process hits in all directions
-                for x, y, symbol in hits:
-                    self.process_whip_hit(x, y, symbol)
-                    return True
-        else:
-            print("No whips left!")
-            return False
+# for Whip animation
+class WhipFlash(Char):
+    def __init__(self, symbol: str, grid, pos, duration=150):
+        from constants import TRANSPARENT
+        super().__init__(symbol, fg=pygame.Color("white"), bg=TRANSPARENT, blink=True)
 
-    def process_whip_hit(self, x, y, symbol):
-        # Get the cell at the hit location
-        cell = self.game_grid.get_cell(x, y)
+        self.grid = grid
+        self.x, self.y = pos
+        self.rect.topleft = (self.x * grid.cell_width, self.y * grid.cell_height)
+        self.visible = True
+        self.expire_time = pygame.time.get_ticks() + duration
+
+    def update(self, **kwargs):
+        super().update(**kwargs)
+        if pygame.time.get_ticks() >= self.expire_time:
+            self.grid.fx_group.remove(self)
     
-        if cell:
-            if hasattr(cell, 'is_enemy') and cell.is_enemy():
-                print(f"Enemy at ({x}, {y}) defeated!")
-                self.game_grid.remove_cell(x, y)
-            elif hasattr(cell, 'is_wall') and cell.is_wall():
-                # Check if the wall should break (30% chance)
-                if random.random() < 0.3:
-                    print(f"Wall at ({x}, {y}) broken!")
-                    # Break the wall
-                    # You might need to implement a method for this
-                    self.game_grid.remove_cell(x, y)
-        def use_whip(self):
-            from level.level_load import game_instance
-            if game_instance.whip_count > 0:
-                game_instance.whip_count -= 1
-                print(f"Whip used! Remaining whips: {game_instance.whip_count}")
-                # Play whip sound effect
-                return True
-            print("No whips left!")
-            return False'''
-    
-    #def process_hit(self, x, y, symbol):
-        #from level.level_load import game_instance 
-        #cell = game_instance.get_cell(x, y)
-        #if cell:
-
-    #TODO: get player count of whips
-        #button to use whip
-        #in use whip function, have whip spin around
-        #if whip hits enemy, it dies
-        #if whip hits wall, chance for wall to break
-
-

@@ -93,6 +93,8 @@ class CellGrid:
 
         self.surface.fill(fill)
         self.group = Group()
+        self.fx_group = Group()  # new visual-only layer for overlays
+
 
         self.game = game
 
@@ -177,7 +179,13 @@ class CellGrid:
         self.surface.fill(self.fill)
         for sprite in self.group:
             self.surface.blit(sprite.image, sprite.rect)
+
+        # Draw overlays (e.g. whip flashes)
+        for fx_sprite in self.fx_group:
+            self.surface.blit(fx_sprite.image, fx_sprite.rect)
+
         parent.blit(self.surface, self.rect)
+
 
     def update(self):
         if self.cur_type != CursorType.Invisible.value:
@@ -193,6 +201,8 @@ class CellGrid:
                 self.cursor.visible = False
 
         self.group.update(new_fg=COLORS[self.flash_counter])
+        
+        self.fx_group.update(new_fg=COLORS[self.flash_counter])
 
     def _flip_blink(self):
         self.blink_visible = not self.blink_visible
