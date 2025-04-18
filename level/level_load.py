@@ -16,6 +16,7 @@ from entities.invisible import Invisible
 from entities.nugget import Nugget
 from entities.river import River
 from entities.show_gems import ShowGems
+
 from entities.spell_freeze import Spell_Freeze
 from entities.spell_zap import Spell_Zap
 from entities.lava import Lava
@@ -148,8 +149,7 @@ def restore_level(grid: CellGrid):
         "Invisible": Invisible,
         "Nugget": Nugget,
         "River": River,
-        "ShowGems": ShowGems,
-        "Clone": Clone
+        "ShowGems": ShowGems
     }
 
     for entity_type, (i, j) in saved_level:
