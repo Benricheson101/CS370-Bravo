@@ -21,6 +21,8 @@ class Player(Cell):
         self.whip_animation_frames = 0
         self.whip_animation_active = False
         self.whip_direction = 0
+        
+        # Teleport
         self.collected_teleports = 0
         
     # For invisible.py
