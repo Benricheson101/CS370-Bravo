@@ -49,7 +49,7 @@ def set_game_instance(game):
 tile_mapping = {
     "P": Player,
     "#": Wall,
-    # "X": Block,
+    "X": Block,
     "1": Enemy,
     "2": Enemy_Medium,
     "3": Enemy_Hard,
@@ -131,7 +131,7 @@ def restore_level(grid: CellGrid):
     entity_classes = {
         "Player": Player,
         "Wall": Wall,
-        # "Block": Block,
+        "Block": Block,
         "Enemy": Enemy,
         "Enemy_Medium": Enemy_Medium,
         "Enemy_Hard": Enemy_Hard,
