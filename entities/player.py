@@ -4,6 +4,8 @@ from constants import BLACK, WHITE, YELLOW
 from renderer.cell import Cell
 from renderer.cell_grid import CellGrid
 from Sound import SoundEffects
+from random import random
+
 
 class Player(Cell):
     def __init__(self) -> None:
@@ -154,10 +156,49 @@ class Player(Cell):
             self.whip_animation_frames = 0
     
     def use_whip(self):
-        # Placeholder for whip use logic
+        from level.level_load import game_instance
+        if game_instance.whip_count < 1:
+            self.play_sound_in_thread(self.sound_effects.BlockSound)
+            return
+        
+        game_instance.whip_count -= 1
         self.whip_animation_active = True
         self.whip_animation_frames = 0
-        # Determine whip direction based on player facing or input
+
+        px, py = self.x, self.y
+        directions = [
+            (-1, -1, '\\'), (-1, 0, 'ƒ'), (-1, 1, '/'),
+            (0, 1, '≥'), (1, 1, '\\'), (1, 0, 'ƒ'),
+            (1, -1, '/'), (0, -1, '≥'),
+        ]
+
+        for dx, dy, symbol in directions:
+            self.process_whip_hit(px + dx, py + dy, symbol)
+        self.play_sound_in_thread(self.sound_effects.GrabSound)
+        
+    def process_whip_hit(self, x: int, y: int, symbol: str):
+        if not self.grid or x < 0 or y < 0 or x >= self.grid.cols or y >= self.grid.rows:
+            return
+
+        from level.level_load import game_instance
+        power = getattr(game_instance, "whip_power", 2)
+
+        cell = self.grid.at((x, y))
+        if not cell:
+            return
+
+        # Enemy
+        if hasattr(cell, "is_enemy") and cell.is_enemy():
+            self.grid.remove((x, y))
+            game_instance.score += 10
+            print(f"Enemy at ({x}, {y}) whipped!")
+
+        # Breakable wall
+        elif hasattr(cell, "is_breakable_wall") and cell.is_breakable_wall():
+            if random() < power / 7:
+                self.grid.remove((x, y))
+                print(f"Wall at ({x}, {y}) destroyed!")
+
         
     def on_collision(self, cell: "Cell") -> bool:
         self.play_sound_in_thread(self.sound_effects.BlockSound)

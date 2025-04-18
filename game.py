@@ -69,8 +69,11 @@ class Game:
         #Gem count tracking
         self.gem_count = 0
 
-        #Whip count Tracking
-        self.whip_count = 0
+        #Whip
+        self.whip_count = 10
+        
+        self.whip_power = 5  # Initial whip power
+
 
         #Teleport count Tracking
         self.teleport_count = 0

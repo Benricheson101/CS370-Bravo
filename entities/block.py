@@ -14,6 +14,8 @@ class Block(Cell):
         self.load_dos_char(178)
         #SOUND
         self.fast_pc = False
+        
+    def is_breakable_wall(self): return True
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
