@@ -6,11 +6,13 @@ from entities.gem import Gem
 from typing import Optional
 import pygame
 
+
 # amount of gems shown should be (Difficulty * 2) + 5
 def show_gems(grid: CellGrid):
     for _ in range(20):
         x, y = grid.get_random_empty_tiles()
-        grid.put((x, y), Gem(LIGHTRED))
+        from level.level_load import game_instance
+        grid.put((x, y), Gem(game_instance.gem_color))
 
 
 class ShowGems(Cell):
