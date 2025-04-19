@@ -25,6 +25,10 @@ from entities.iwall import IWall
 from entities.iblock import IBlock
 from entities.cwall1 import CWall1
 from entities.cspell1 import CSpell1
+from entities.cwall2 import CWall2
+from entities.cspell2 import CSpell2
+from entities.cwall3 import CWall3
+from entities.cspell3 import CSpell3
 
 
 
@@ -163,7 +167,11 @@ def restore_level(grid: CellGrid):
         "IWall": IWall,
         "IBlock": IBlock,
         "CWall1": CWall1,
-        "CSpell1": CSpell1
+        "CSpell1": CSpell1,
+        "CWall2": CWall2,
+        "CSpell2": CSpell2,
+        "CWall3": CWall3,
+        "CSpell3": CSpell3
     }
 
     for entity_type, (i, j) in saved_level:
