@@ -84,6 +84,12 @@ tile_mapping = {
     "V": Lava,
     ":": IWall,
     ";": IBlock,
+    "7": CWall1,
+    "ô": CSpell1,
+    "8": CWall2,
+    "õ": CSpell2,
+    "9": CWall3,
+    "ö": CSpell3,
     }
 
 def char_to_tile(char: str, game: "Game") -> Optional["Cell"]:
@@ -99,10 +105,11 @@ def char_to_tile(char: str, game: "Game") -> Optional["Cell"]:
         player = Tile()
         game.player = player
         return player
-    elif char.isalnum() and char.islower():
-        return Char(char.upper(), fg=WHITE, bg=BROWN)
     elif Tile is not None:
         return Tile()
+    elif char.isalnum() and char.islower():
+        return Char(char.upper(), fg=WHITE, bg=BROWN)
+    
 
 def load_level(game: "Game", grid: CellGrid, level_num: int):
     for i, row in enumerate(level_data[f"level_{level_num}"]):
