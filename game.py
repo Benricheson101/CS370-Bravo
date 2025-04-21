@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 import pygame
 from os import environ
 from Sound import SoundEffects
@@ -24,6 +25,8 @@ from screens.story import StoryScreen
 from util.color import new_gem_color
 from util.state import StateMachine
 
+if TYPE_CHECKING:
+    from entities.player import Player
 # level switch import
 
 
@@ -38,6 +41,7 @@ class Game:
     sm: StateMachine
     color: bool # color or mono
     fastpc: bool
+    player: "Player"
 
     def __init__(self):
         _, errors = pygame.init()
@@ -71,7 +75,7 @@ class Game:
 
         #Whip
         self.whip_count = 10
-        
+
         self.whip_power = 5  # Initial whip power
 
 

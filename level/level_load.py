@@ -1,4 +1,6 @@
 # entities
+from typing import TYPE_CHECKING, Optional
+from entities.char import Char
 from entities.player import Player
 from entities.wall import Wall
 from entities.block import Block
@@ -27,13 +29,18 @@ from entities.iblock import IBlock
 
 
 # place entities
+if TYPE_CHECKING:
+    from game import Game
+from renderer.cell import Cell
 from renderer.cell_grid import CellGrid
 from constants import (
     BLACK,
+    BROWN,
     GAME_GRID_COLS,
     GAME_GRID_ROWS,
     GRID_CELL_HEIGHT,
     GRID_CELL_WIDTH,
+    WHITE,
 )
 
 from level.level_data import level_data
@@ -71,32 +78,33 @@ tile_mapping = {
     "V": Lava,
     ":": IWall,
     ";": IBlock,
-    " ": None
     }
 
-def load_level(grid: CellGrid, level_num):
-    for tile_key, tile_value in tile_mapping.items():
-        for i, row in enumerate(level_data[f"level_{level_num}"]):
-            for j, level_value in enumerate(row):
-                if level_value == tile_key and tile_value is not None:
-                    # entities that alternate colors
-                    if tile_value == Gem:
-                        entity = tile_value(game_instance.gem_color)
-                    elif tile_value == Nugget:
-                        entity = tile_value(game_instance.art_color)
-                    elif tile_value == Player:
-                        player_instance = Player()
-                        entity = player_instance
-                        game_instance.player = player_instance
-                    elif tile_value == Enemy:
-                        entity = Enemy(player=game_instance.player)
-                    elif tile_value == Enemy_Medium:
-                        entity = Enemy_Medium(player=game_instance.player)
-                    elif tile_value == Enemy_Hard:
-                        entity = Enemy_Hard(player=game_instance.player)
-                    else:
-                        entity = tile_value()
-                    grid.put((j+1, i+1), entity)
+def char_to_tile(char: str, game: "Game") -> Optional["Cell"]:
+    if char == " ":
+        return None
+
+    Tile: Optional["Cell"] = tile_mapping.get(char, None)
+    if Tile is Gem:
+        return Tile(game.gem_color)
+    elif Tile is Nugget:
+        return Tile(game.art_color)
+    elif Tile is Player:
+        player = Tile()
+        game.player = player
+        return player
+    elif char.isalnum() and char.islower():
+        return Char(char.upper(), fg=WHITE, bg=BROWN)
+    elif Tile is not None:
+        return Tile()
+
+def load_level(game: "Game", grid: CellGrid, level_num: int):
+    for i, row in enumerate(level_data[f"level_{level_num}"]):
+        for j, level_value in enumerate(row):
+            tile = char_to_tile(level_value, game)
+            if tile is not None:
+                grid.put((j+1, i+1), tile)
+
 
 def save_level(grid: CellGrid):
     saved_level = []
@@ -163,8 +171,8 @@ def restore_level(grid: CellGrid):
             grid.put((j+1, i+1), entity)
 
 
-            
-            
+
+
 
 
 
@@ -184,7 +192,7 @@ object_counts = {
 }
 
 def random_level(grid: CellGrid, level_num, object_counts):
-   
+
     for obj_char, count in object_counts.items():
         entity_class = tile_mapping.get(obj_char)
 
@@ -199,5 +207,5 @@ def random_level(grid: CellGrid, level_num, object_counts):
             # Create the correct entity and place it
             entity = entity_class() if entity_class != Gem else entity_class(game_instance.gem_color)
             grid.put((x, y), entity)
-            
-            
+
+

@@ -9,18 +9,22 @@ import pygame
 class Enemy(Cell):
     def __init__(self, player: Optional[Player] = None) -> None:
         super().__init__()
-        self.load_dos_char(142, LIGHTRED)
+        self.col(12, 7)
+        self.load_dos_char(142)
         self.speed = 2
         self.player = player  # Store player reference
         self.last_move_time = pygame.time.get_ticks()  # Milliseconds
-        
+
     def is_enemy(self): return True
 
     def update(self, **kwargs) -> None:
+        assert self.grid and self.grid.game
+        if self.player is None:
+            self.player = self.grid.game.player
         if self.player is None:
             print("Player is still None in enemy update!")
             return
-        
+
         current_time = pygame.time.get_ticks()
 
         # Move every 1000 milliseconds (1 second)
@@ -28,7 +32,7 @@ class Enemy(Cell):
             return
 
         self.last_move_time = current_time
-         
+
         if is_frozen():
             return
 
@@ -36,7 +40,7 @@ class Enemy(Cell):
         player_pos = pygame.Vector2(self.player.get_player_position())
         enemy_pos = pygame.Vector2(self.x, self.y)
 
-        
+
         direction = player_pos - enemy_pos
         if direction.length() > 0:
             direction = direction.normalize()
@@ -48,11 +52,11 @@ class Enemy(Cell):
         if isinstance(cell, Player):
             print("Player hit a monster! OUCHIE!")
             from level.level_load import game_instance
-            
+
             if game_instance.gem_count > 0:
-                if game_instance:  
+                if game_instance:
                     game_instance.gem_count -= 1
                 return True
-            
+
         return False
 

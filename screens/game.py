@@ -50,7 +50,7 @@ class GameScreen(State):
                 random_level(self.game_grid, self.game.current_level, object_counts)
             else:
                 from level.level_load import load_level
-                load_level(self.grid, self.game.current_level)
+                load_level(self.game, self.grid, self.game.current_level)
 
 
 class Scoreboard(CellGrid):
