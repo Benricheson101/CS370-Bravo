@@ -44,7 +44,11 @@ class Player(Cell):
         
     def dead(self):
         self.image = pygame.Surface((self.width, self.height), pygame.SRCALPHA)  # Reset image
-        self.load_dos_char(42)  # asterisk character
+        # self.load_dos_char(42)  # asterisk character
+        self.grid.gotoxy(self.x + 1, self.y +1)
+        grid = self.grid
+        self.grid.write('*', True)
+        grid.flash(15, 25, 'You died')
         # self.col()
         self.is_dead = True
 
