@@ -70,7 +70,7 @@ class DifficultyScreen(State):
                 self.sm.game.difficulty = difficulty_map[event.key]
                 cont = True
             elif event.key == pygame.K_1 and pygame.key.get_mods() & (pygame.KMOD_LSHIFT | pygame.KMOD_RSHIFT): # shift + 1 = !
-                self.sm.game.difficulty = 3
+                self.sm.game.difficulty = 9
                 cont = True
 
             if cont:
@@ -82,10 +82,23 @@ class DifficultyScreen(State):
                 mode = self.sm.game.difficulty
 
                 self.grid.col(30,31);self.grid.bak(1,0)
-                if mode == 8: self.grid.gotoxy(37,22);self.grid.write("NOVICE")
-                elif mode == 5: self.grid.gotoxy(34,22);self.grid.write("EXPERIENCED")
-                elif mode == 2: self.grid.gotoxy(34,22);self.grid.write("ADVANCED")
-                elif mode == 9: self.grid.gotoxy(34,22);self.grid.write("SECRET MODE")
+                if mode == 8: 
+                    self.grid.gotoxy(37,22);self.grid.write("NOVICE")
+                    self.sm.game.gem_count = 25
+                    self.sm.game.whip_count = 10
+                elif mode == 5: 
+                    self.grid.gotoxy(34,22);self.grid.write("EXPERIENCED")
+                    self.sm.game.gem_count = 18
+                elif mode == 2: 
+                    self.grid.gotoxy(34,22);self.grid.write("ADVANCED")
+                    self.sm.game.gem_count = 10
+                elif mode == 9: 
+                    self.grid.gotoxy(34,22);self.grid.write("SECRET MODE")
+                    self.sm.game.gem_count = 250
+                    self.sm.game.whip_count = 100
+                    # self.sm.game.teleport_count = 50
+                    self.sm.game.key_count = 1
+                    self.sm.game.whip_power = 3
                 self.grid.gotoxy(33,25)
                 self.grid.col(7,7)
                 self.grid.write("Press any key.")
