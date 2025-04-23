@@ -31,6 +31,7 @@ from entities.cwall3 import CWall3
 from entities.cspell3 import CSpell3
 from entities.forest import Forest
 from entities.tree import Tree
+from entities.power import Power
 
 
 
@@ -94,6 +95,7 @@ tile_mapping = {
     "ö": CSpell3,
     "/": Forest,
     "\\": Tree,
+    "Q": Power,
     }
 
 def char_to_tile(char: str, game: "Game") -> Optional["Cell"]:
@@ -184,7 +186,8 @@ def restore_level(grid: CellGrid):
         "CWall3": CWall3,
         "CSpell3": CSpell3,
         "Forest": Forest,
-        "Tree": Tree
+        "Tree": Tree,
+        "Power": Power
     }
 
     for entity_type, (i, j) in saved_level:
