@@ -4,6 +4,8 @@ from entities.player import Player
 from renderer.cell import Cell
 from Sound import SoundEffects
 from gameState import is_frozen
+from entities.tree import Tree
+from entities.forest import Forest
 import pygame
 
 class Enemy(Cell):
@@ -46,7 +48,26 @@ class Enemy(Cell):
             direction = direction.normalize()
             self.move(direction * self.speed)
 
-
+    #not sure if this is right kinda asked google about some of it 
+    '''def move(self, direction_vector):
+        # Calculate target position
+        target_x = int(self.x + direction_vector.x)
+        target_y = int(self.y + direction_vector.y)
+    
+        # Check if target cell exists in the grid
+        if not self.grid:
+            return False
+        
+        # Get target cell
+        target_cell = self.grid.get_cell_at(target_x, target_y)
+    
+        # If target cell is a breakable wall, forest, or tree - stop the enemy
+        if target_cell and hasattr(target_cell, 'is_breakable_wall') and target_cell.is_breakable_wall():
+            # Enemy stops at the wall without breaking it
+            return False
+    
+        # For other cells, use the default movement logic
+        return super().move(direction_vector)'''
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
