@@ -3,18 +3,18 @@ from entities.player import Player
 from Sound import SoundEffects 
 
 
-class Forest(Cell):
+class Tree(Cell):
     """
     A forest. Blocks movement and deducts score if collided with.
     """
     #sound_effects = SoundEffects()  # Initialize the sound effects
     def __init__(self) -> None:
         super().__init__()
-        #Forest
+        #Tree
         
         self.col(6, 0)
         self.bak(2, 7)
-        self.load_dos_char(177)
+        self.load_dos_char(176)
         #SOUND
         self.fast_pc = False
         

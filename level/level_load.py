@@ -29,6 +29,8 @@ from entities.cwall2 import CWall2
 from entities.cspell2 import CSpell2
 from entities.cwall3 import CWall3
 from entities.cspell3 import CSpell3
+from entities.forest import Forest
+from entities.tree import Tree
 
 
 
@@ -90,6 +92,8 @@ tile_mapping = {
     "õ": CSpell2,
     "9": CWall3,
     "ö": CSpell3,
+    "/": Forest,
+    "\\": Tree,
     }
 
 def char_to_tile(char: str, game: "Game") -> Optional["Cell"]:
