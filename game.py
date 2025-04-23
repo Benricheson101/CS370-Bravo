@@ -74,7 +74,7 @@ class Game:
         self.gem_count = 0
 
         #Whip
-        self.whip_count = 10
+        self.whip_count = 0
 
         self.whip_power = 2  # Initial whip power
 
