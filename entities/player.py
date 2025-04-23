@@ -16,22 +16,22 @@ class Player(Cell):
         self.col(14, WHITE)
         self.load_dos_char(2)
         self.last_move_time = 0  # Track movement delay (milliseconds)
-        
+
         # WHIP
         self.whip_animation_frames = 0
         self.whip_animation_active = False
         self.whip_direction = 0
-        
+
         # Teleport
         self.collected_teleports = 0
-    
+
     # Dead
         self.is_dead = False
-        
+
     # For invisible.py
         self.invisible_until = 0  # Time (ms) when invisibility ends
         self.is_invisible = False
-        
+
 
     def make_invisible(self, duration: int):
         """
@@ -41,7 +41,7 @@ class Player(Cell):
         self.load_dos_char(0)  # blank/invisible
         self.invisible_until = pygame.time.get_ticks() + duration
         self.is_invisible = True
-        
+
     def dead(self):
         self.image = pygame.Surface((self.width, self.height), pygame.SRCALPHA)  # Reset image
         # self.load_dos_char(42)  # asterisk character
@@ -66,11 +66,11 @@ class Player(Cell):
                 self.is_invisible = False
 
         self.sound_effects = SoundEffects()
-    
+
         dx, dy = 0, 0
         moved = False  # Initialize moved variable here
         keys = pygame.key.get_pressed()
-        
+
         # Note: You should handle events in the main game loop, not here
         # for event in pygame.event.get():
         #     if event.type == pygame.KEYDOWN:
@@ -83,13 +83,13 @@ class Player(Cell):
         #         elif event.key in [pygame.K_DOWN, pygame.K_m]:
         #             dy = 1
         # Arrow keys override IJKM
-        
+
         # Handle movement input (one direction per axis) On the Arrow Keys
         if keys[pygame.K_LEFT] ^ keys[pygame.K_RIGHT]:
             dx = 1 if keys[pygame.K_RIGHT] else -1
         if keys[pygame.K_UP] ^ keys[pygame.K_DOWN]:
             dy = 1 if keys[pygame.K_DOWN] else -1
-            
+
         if dx == 0 and dy == 0:
             # Handle movement input for ASCII keys (IJKM)
             if keys[pygame.K_j]:  # Left
@@ -100,7 +100,7 @@ class Player(Cell):
                 dy = -1
             if keys[pygame.K_m]:  # Down
                 dy = 1
-            
+
             if keys[pygame.K_u]:  # Up-left
                 dx, dy = -1, -1
             elif keys[pygame.K_o]:  # Up-right
@@ -109,7 +109,7 @@ class Player(Cell):
                 dx, dy = -1, 1
             elif keys[pygame.K_COMMA]:  # Down-right
                 dx, dy = 1, 1
-                
+
         # Movement with numpad
         if keys[pygame.K_KP4]:  # Numpad 4 (Left)
             dx = -1
@@ -119,7 +119,7 @@ class Player(Cell):
             dy = -1
         elif keys[pygame.K_KP2]:  # Numpad 2 (Down)
             dy = 1
-            
+
         # Diagonal movement with numpad
         if keys[pygame.K_KP7]:  # Up-Left
             dx, dy = -1, -1
@@ -129,7 +129,7 @@ class Player(Cell):
             dx, dy = -1, 1
         elif keys[pygame.K_KP3]:  # Down-Right
             dx, dy = 1, 1
-            
+
         if (dx != 0 or dy != 0) and (current_time - self.last_move_time > 100):
             # Play footstep sound in a separate thread
             self.play_sound_in_thread(self.sound_effects.FootStep)
@@ -138,11 +138,11 @@ class Player(Cell):
             if not moved:
                 # Play block sound in a separate thread
                 self.play_sound_in_thread(self.sound_effects.BlockSound)
-                
+
         # Handle whip animation
         if self.whip_animation_active:
             self.update_whip_animation()
-            
+
         if keys[pygame.K_w] and not self.whip_animation_active:
             self.use_whip()
             # Play whip sound (using grab sound as a substitute)
@@ -158,13 +158,13 @@ class Player(Cell):
             return  # Skip movement on teleport
 
         super().update()
-    
+
     def play_sound_in_thread(self, sound_method, FastPC=True):
         """Run sound methods in a separate thread to avoid freezing the game"""
         sound_thread = threading.Thread(target=sound_method, args=(FastPC,))
         sound_thread.daemon = True  # Thread will close when program exits
         sound_thread.start()
-    
+
     def update_whip_animation(self):
         current_time = pygame.time.get_ticks()
         if self.whip_animation_frames < len(self.whip_sequence):
@@ -177,13 +177,13 @@ class Player(Cell):
             self.whip_animation_active = False
             self.whip_animation_frames = 0
 
-    
+
     def use_whip(self):
         from level.level_load import game_instance
         if game_instance.whip_count < 1:
             self.play_sound_in_thread(self.sound_effects.BlockSound)
             return
-        
+
         game_instance.whip_count -= 1
         self.whip_animation_active = True
         self.whip_animation_frames = 0
@@ -201,7 +201,7 @@ class Player(Cell):
 
 
         self.play_sound_in_thread(self.sound_effects.GrabSound)
-        
+
     def process_whip_hit(self, x: int, y: int, symbol: str):
         if not self.grid or x < 0 or y < 0 or x >= self.grid.cols or y >= self.grid.rows:
             return
@@ -209,7 +209,7 @@ class Player(Cell):
         from level.level_load import game_instance
         power = getattr(game_instance, "whip_power", 2)
 
-        
+
         from entities.whip import WhipFlash
         flash = WhipFlash(symbol, self.grid, (x, y))
         self.grid.fx_group.add(flash)
@@ -218,8 +218,10 @@ class Player(Cell):
         if not cell:
             return
 
-        
-        if hasattr(cell, "is_enemy") and cell.is_enemy():
+
+        # if hasattr(cell, "is_enemy") and cell.is_enemy():
+        from entities.enemy import Enemy
+        if isinstance(cell, "Enemy"):
             self.grid.remove((x, y))
             game_instance.score += 10
             print(f"Enemy at ({x}, {y}) whipped!")
@@ -230,9 +232,19 @@ class Player(Cell):
                 print(f"Wall at ({x}, {y}) destroyed!")
 
 
-        
+
     def on_collision(self, cell: "Cell") -> bool:
         self.play_sound_in_thread(self.sound_effects.BlockSound)
+        assert self.grid and self.grid.game
+
+        from entities.enemy import Enemy
+        if isinstance(cell, Enemy):
+            self.grid.game.gem_count -= 1
+            self.grid.remove(cell.pos)
+
+            if self.grid.game.gem_count <= 0:
+                self.dead()
+
         return False
 
     def get_player_position(self) -> tuple[int, int]:
@@ -243,5 +255,5 @@ class Player(Cell):
             A tuple of (x, y) coordinates representing the player's position.
         """
         return self.x, self.y
-    
+
 
