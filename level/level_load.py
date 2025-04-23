@@ -182,7 +182,9 @@ def restore_level(grid: CellGrid):
         "CWall2": CWall2,
         "CSpell2": CSpell2,
         "CWall3": CWall3,
-        "CSpell3": CSpell3
+        "CSpell3": CSpell3,
+        "Forest": Forest,
+        "Tree": Tree
     }
 
     for entity_type, (i, j) in saved_level:
