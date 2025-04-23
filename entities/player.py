@@ -241,7 +241,7 @@ class Player(Cell):
 
         from entities.enemy import Enemy
         if isinstance(cell, Enemy):
-            self.grid.game.gem_count = clamped_add(self.grid.game.gem_count, -1, 0)
+            self.grid.game.gem_count -= 0 if self.grid.game.gem_count <= 0 else 1
             self.grid.remove(cell.pos)
 
             if self.grid.game.gem_count <= 0:

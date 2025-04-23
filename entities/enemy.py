@@ -79,7 +79,7 @@ class Enemy(Cell):
             # from level.level_load import game_instance
 
             # if game_instance.gem_count > 0:
-            self.grid.game.gem_count = clamped_add(self.grid.game.gem_count, -1, 0)
+            self.grid.game.gem_count -= 0 if self.grid.game.gem_count <= 0 else 1
             if self.grid.game.gem_count <= 0:
                 cell.dead()
             else:
