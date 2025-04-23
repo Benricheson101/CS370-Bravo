@@ -14,7 +14,7 @@ class Forest(Cell):
         
         self.col(6, 0)
         self.bak(2, 7)
-        self.load_dos_char(177)
+        self.load_dos_char(176)
         #SOUND
         self.fast_pc = False
         

@@ -13,8 +13,8 @@ class Tree(Cell):
         #Tree
         
         self.col(6, 0)
-        self.bak(2, 7)
-        self.load_dos_char(176)
+        self.bak(2, 6)
+        self.load_dos_char(177)
         #SOUND
         self.fast_pc = False
         
