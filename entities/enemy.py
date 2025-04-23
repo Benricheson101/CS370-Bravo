@@ -8,6 +8,8 @@ from entities.tree import Tree
 from entities.forest import Forest
 import pygame
 
+from util.math import clamped_add
+
 class Enemy(Cell):
     def __init__(self) -> None:
         super().__init__()
@@ -42,7 +44,6 @@ class Enemy(Cell):
 
 
         direction = player_pos - enemy_pos
-        print(direction, player_pos, enemy_pos)
         if direction.length() > 1:
             direction = direction.normalize()
             self.move(direction * self.speed)
@@ -78,7 +79,7 @@ class Enemy(Cell):
             # from level.level_load import game_instance
 
             # if game_instance.gem_count > 0:
-            self.grid.game.gem_count -= 1
+            self.grid.game.gem_count = clamped_add(self.grid.game.gem_count, -1, 0)
             if self.grid.game.gem_count <= 0:
                 cell.dead()
             else:

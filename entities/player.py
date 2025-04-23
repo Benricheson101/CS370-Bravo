@@ -8,6 +8,8 @@ from random import random
 from entities.char import Char
 from pygame.color import Color
 
+from util.math import clamped_add
+
 
 class Player(Cell):
     def __init__(self) -> None:
@@ -53,7 +55,9 @@ class Player(Cell):
         self.is_dead = True
 
     def update(self, **kwargs) -> None:
-        assert self.grid
+        if self.grid is None:
+            print("self.grid is None for some reason")
+            return
 
         current_time = pygame.time.get_ticks()
 
@@ -237,7 +241,7 @@ class Player(Cell):
 
         from entities.enemy import Enemy
         if isinstance(cell, Enemy):
-            self.grid.game.gem_count -= 1
+            self.grid.game.gem_count = clamped_add(self.grid.game.gem_count, -1, 0)
             self.grid.remove(cell.pos)
 
             if self.grid.game.gem_count <= 0:
