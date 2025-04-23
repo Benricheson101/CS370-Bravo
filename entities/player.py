@@ -219,9 +219,7 @@ class Player(Cell):
             return
 
 
-        # if hasattr(cell, "is_enemy") and cell.is_enemy():
-        from entities.enemy import Enemy
-        if isinstance(cell, "Enemy"):
+        if hasattr(cell, "is_enemy") and cell.is_enemy():
             self.grid.remove((x, y))
             game_instance.score += 10
             print(f"Enemy at ({x}, {y}) whipped!")

@@ -15,6 +15,7 @@ class Enemy(Cell):
         self.load_dos_char(142)
         self.speed = 2
         self.last_move_time = pygame.time.get_ticks()  # Milliseconds
+        self.move_time = 2500
 
     def is_enemy(self): return True
 
@@ -27,7 +28,7 @@ class Enemy(Cell):
         current_time = pygame.time.get_ticks()
 
         # Move every 1000 milliseconds (1 second)
-        if current_time - self.last_move_time < 2500:
+        if current_time - self.last_move_time < self.move_time:
             return
 
         self.last_move_time = current_time
