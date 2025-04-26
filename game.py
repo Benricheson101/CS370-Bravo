@@ -74,9 +74,9 @@ class Game:
         self.gem_count = 0
 
         #Whip
-        self.whip_count = 10
+        self.whip_count = 0
 
-        self.whip_power = 5  # Initial whip power
+        self.whip_power = 2  # Initial whip power
 
 
         #Teleport count Tracking
@@ -90,7 +90,7 @@ class Game:
         set_game_instance(self)
 
         # level
-        self.current_level = 9
+        self.current_level = 1
 
         self.color = True
         self.fastpc = True
