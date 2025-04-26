@@ -3,7 +3,7 @@ from pygame import Color
 import pygame
 
 
-SCALE = 2
+SCALE = 1.0
 
 # The size of a single grid cell
 GRID_CELL_HEIGHT = int(16 * SCALE)
@@ -88,3 +88,21 @@ COLORS = [
 
 FLASH_EVENT = pygame.event.custom_type()
 BLINK_EVENT = pygame.event.custom_type()
+
+
+def recalculate_dimensions():
+    global GRID_CELL_HEIGHT, GRID_CELL_WIDTH
+    global GAME_GRID_HEIGHT, GAME_GRID_WIDTH
+    global WINDOW_HEIGHT, WINDOW_WIDTH
+
+    GRID_CELL_HEIGHT = int(16 * SCALE)
+    GRID_CELL_WIDTH = int(9 * SCALE)
+
+    GAME_GRID_HEIGHT = GAME_GRID_ROWS * GRID_CELL_HEIGHT
+    GAME_GRID_WIDTH = GAME_GRID_COLS * GRID_CELL_WIDTH
+
+    WINDOW_HEIGHT = SCREEN_GRID_ROWS * GRID_CELL_HEIGHT
+    WINDOW_WIDTH = SCREEN_GRID_COLS * GRID_CELL_WIDTH
+
+recalculate_dimensions()  # <--- very important to call this once at the bottom initially
+
