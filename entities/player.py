@@ -7,6 +7,7 @@ from Sound import SoundEffects
 from random import random
 from entities.char import Char
 from pygame.color import Color
+from random import randint
 
 from util.math import clamped_add
 
@@ -49,8 +50,13 @@ class Player(Cell):
         # self.load_dos_char(42)  # asterisk character
         self.grid.gotoxy(self.x + 1, self.y +1)
         grid = self.grid
+        bb = randint(0, 7) + 8
         self.grid.write('*', True)
-        grid.flash(15, 25, 'You died')
+        grid.col(16,16)
+        grid.col(bb, 7)
+        grid.print(27,1,'YOU HAVE DIED!!')
+        # grid.flash(27, 1, 'YOU HAVE DIED!!')
+        # grid.restore_border()
         # self.col()
         self.is_dead = True
 
