@@ -356,8 +356,11 @@ class CellGrid:
         self.cur_pos = oldcur
 
     def border(self):
-        bc = randint(0, 7) + 8
-        bb = randint(0, 6) + 1
+        self.border_fg = randint(0, 7) + 8
+        self.border_bg = randint(0, 6) + 1
+
+        bc = self.border_fg
+        bb = self.border_bg
 
         for i in range(0, self.cols):
             self.put((i, self.rows - 1), Border(bc, bb))
@@ -366,3 +369,15 @@ class CellGrid:
         for i in range(self.rows):
             self.put((self.cols - 1, i), Border(bc, bb))
             self.put((0, i), Border(bc, bb))
+            
+    def restore_border(self):
+        """
+        { Restores the bottom line of the border }
+        """
+        bc = getattr(self, 'border_fg', randint(0, 7) + 8)
+        bb = getattr(self, 'border_bg', randint(0, 6) + 1)
+
+        for x in range(1, self.cols - 1):
+            self.put((x, self.rows - 1), Border(bc, bb))
+
+
