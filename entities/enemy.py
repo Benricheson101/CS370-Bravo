@@ -8,9 +8,9 @@ from entities.tree import Tree
 from entities.forest import Forest
 import pygame
 
-from util.math import clamped_add
+from util.math import clamped_add 
 
-class Enemy(Cell):
+class Enemy(Cell):    
     def __init__(self) -> None:
         super().__init__()
         self.col(12, 7)
@@ -24,7 +24,7 @@ class Enemy(Cell):
     def update(self, **kwargs) -> None:
         assert self.grid, "Missing grid in Enemy"
         assert self.grid.game, "Missing Game in Enemy.grid"
-
+                
         player = self.grid.game.player
 
         current_time = pygame.time.get_ticks()
@@ -37,12 +37,12 @@ class Enemy(Cell):
 
         if is_frozen():
             return
-
+        
 
         player_pos = pygame.Vector2(player.x, player.y)
         enemy_pos = pygame.Vector2(self.x, self.y)
 
-
+        
         direction = player_pos - enemy_pos
         if direction.length() > 1:
             direction = direction.normalize()

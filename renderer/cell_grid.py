@@ -201,7 +201,7 @@ class CellGrid:
                 self.cursor.visible = False
 
         self.group.update(new_fg=COLORS[self.flash_counter])
-
+        
         self.fx_group.update(new_fg=COLORS[self.flash_counter])
 
     def _flip_blink(self):
