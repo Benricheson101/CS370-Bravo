@@ -2,6 +2,7 @@ import pygame
 from pygame.event import Event
 from constants import BLACK, LIGHTBLUE, LIGHTGRAY, WHITE
 from util.state import State, StateMachine
+from Sound import SoundEffects
 
 class ColorMenu(State):
     has_chosen_color: bool
@@ -11,6 +12,8 @@ class ColorMenu(State):
 
         self.has_chosen_color = False
 
+        self.sound_effects = SoundEffects()
+        
         self.grid.bak(BLACK, BLACK)
         self.grid.clrscr()
         # bor(3)
@@ -77,7 +80,8 @@ class ColorMenu(State):
                 self.grid.gotoxy(28,14)
                 self.grid.write('Slow or Fast PC (S/F)? S')
                 self.grid.gotoxy(self.grid.cur_pos[0], self.grid.cur_pos[1]+1)
-
+                self.sound_effects.intr_low()
+                
             else:
                 self.sm.game.fastpc = event.key == pygame.K_f
                 self.sm.transition("difficulty")

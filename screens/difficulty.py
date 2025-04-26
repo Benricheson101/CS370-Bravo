@@ -2,6 +2,7 @@ import pygame
 from pygame.event import Event
 from constants import BLACK, BLUE, LIGHTCYAN, LIGHTGRAY, LIGHTGREEN, RED, WHITE, YELLOW
 from util.state import State, StateMachine
+from Sound import SoundEffects
 
 class DifficultyScreen(State):
     done: bool
@@ -13,6 +14,8 @@ class DifficultyScreen(State):
         self.done = False
 
         self.grid.fill = BLUE
+        
+        self.sound_effects = SoundEffects()
 
         self.grid.bak(BLUE, BLACK)
         self.grid.clrscr();self.grid.cur(3)
@@ -69,12 +72,14 @@ class DifficultyScreen(State):
             if event.key in difficulty_map:
                 self.sm.game.difficulty = difficulty_map[event.key]
                 cont = True
+                self.sound_effects.intr_high()
             elif event.key == pygame.K_1 and pygame.key.get_mods() & (pygame.KMOD_LSHIFT | pygame.KMOD_RSHIFT): # shift + 1 = !
                 self.sm.game.difficulty = 3
                 cont = True
+                self.sound_effects.intr_high()
 
             if cont:
-                # TODO: play beep sound
+                self.sound_effects.intr_middle()
                 self.grid.gotoxy(13,22);self.grid.col(0,0);self.grid.bak(1,0)
                 for _ in range(28):
                     self.grid.write("  ")

@@ -3,6 +3,7 @@ import pygame
 from pygame.event import Event
 from constants import BLUE
 from util.state import State, StateMachine
+from Sound import SoundEffects
 
 SHAREWARE_WAIT = pygame.event.custom_type()
 
@@ -12,6 +13,8 @@ class SharewareScreen(State):
     def __init__(self, sm: StateMachine) -> None:
         super().__init__(sm)
 
+        self.sound_effects = SoundEffects()
+        
         self.grid.fill = BLUE
         self.wait = False
 
@@ -67,11 +70,7 @@ class SharewareScreen(State):
         if event.type == SHAREWARE_WAIT:
             self.wait = False
 
-            # TODO: some sound thing
-            # for x:=70 downto 10 do
-            #     for y:=2 to 12 do
-            #         begin sound(x*y);delay(1);end;nosound;
-            # repeat x:=random(maxint) until keypressed;
+            self.sound_effects.intr_continue()
             self.grid.bak(randint(0, 6)+1,7);
             self.grid.gotoxy(1,25);
             self.grid.insline()

@@ -3,11 +3,14 @@ from pygame.event import Event
 from constants import BLACK, BLUE, BROWN, COLORS, LIGHTBLUE, LIGHTCYAN, LIGHTGRAY, LIGHTGREEN, LIGHTRED, RED, SCREEN_SIZE, WHITE, YELLOW
 from renderer.cell_grid import CellGrid
 from util.state import State, StateMachine
+from Sound import SoundEffects
 
 class MainMenuScreen(State):
     def __init__(self, sm: StateMachine) -> None:
         super().__init__(sm)
 
+        self.sound_effects = SoundEffects()
+        
         self.grid.fill = BLACK
 
         # bor(1)
@@ -79,4 +82,5 @@ class MainMenuScreen(State):
             }
 
             if event.key in transition_map:
+                self.sound_effects.intr_descent()
                 self.sm.transition(transition_map[event.key])
