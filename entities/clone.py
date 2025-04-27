@@ -19,12 +19,13 @@ class Clone(Player):
     def use_whip(self) -> None:
         """Prevent clone from whipping."""
         pass
-
+    
+    
     def on_collision(self, cell: "Cell") -> bool:
         from entities.enemy import Enemy
-
         if isinstance(cell, Enemy):
+            return False  # Clone doesn't die to enemies
+        else:
             return True
 
-        return super().on_collision(cell)
 
