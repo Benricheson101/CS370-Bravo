@@ -47,7 +47,8 @@ level_data_random = {
         "(": 0,
         "M": 0,
         ")": 0
-        }
+        },
+        "player_pos": (63, 20)
     },
     "level_4" : {
         "object_counts": {
@@ -90,7 +91,9 @@ level_data_random = {
         "(": 280,
         "M": 0,
         ")": 280
-        }
+        },
+        "player_pos": (64, 23) # bottom right corner
+
     },
     "level_6" : {
         "object_counts": {
@@ -133,7 +136,9 @@ level_data_random = {
         "(": 0,
         "M": 0,
         ")": 0
-        }
+        },
+        "player_pos": (1, 4)
+
     },
     "level_8" : {
         "object_counts": {
@@ -176,7 +181,9 @@ level_data_random = {
         "(": 0,
         "M": 0,
         ")": 0
-        }
+        },
+        "player_pos": (64, 1)
+
     },
     "level_10" : {
         "object_counts": {
@@ -219,7 +226,9 @@ level_data_random = {
         "(": 0,
         "M": 0,
         ")": 0
-        }
+        },
+        "player_pos": (39, 1)
+
     },
     "level_12" : {
         "object_counts": {
@@ -262,7 +271,9 @@ level_data_random = {
         "(": 50,
         "M": 0,
         ")": 50
-        }
+        },
+        "player_pos": (56, 22)
+
     },
     "level_14" : {
         "object_counts": {
@@ -305,7 +316,9 @@ level_data_random = {
         "(": 0,
         "M": 50,
         ")": 0
-        }
+        },
+        "player_pos": (58, 8)
+
     },
     "level_16" : {
         "object_counts": {
@@ -348,7 +361,9 @@ level_data_random = {
         "(": 0,
         "M": 90,
         ")": 0
-        }
+        },
+        "player_pos": (64, 10)
+
     },
     "level_18" : {
         "object_counts": {
@@ -391,6 +406,8 @@ level_data_random = {
         "(": 0,
         "M": 80,
         ")": 0
-        }
+        },
+        "player_pos": (13, 23)
+
     }
 }
