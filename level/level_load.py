@@ -171,7 +171,6 @@ def save_level(grid: CellGrid):
 
 
 def del_level(grid: CellGrid):
-    
     for i in range(1, GAME_GRID_ROWS + 1):
         for j in range(1, GAME_GRID_COLS + 1):
             grid.remove((j, i))
@@ -182,7 +181,7 @@ def del_level(grid: CellGrid):
 
 
 def restore_level(grid: CellGrid):
-    del_level(grid)
+    grid.clrscr()
     with open("level/level.pkl", "rb") as f:
         save_data = pickle.load(f)
         
@@ -196,58 +195,55 @@ def restore_level(grid: CellGrid):
     game_instance.whip_power = save_data.get("whip_power", 2)
     game_instance.difficulty = save_data.get("difficulty", 8)
     
-    if game_instance.current_level % 2 == 0: # just load randomly generated level
-        random_level(grid, game_instance.current_level)
-    else:
-        saved_level = save_data["level_data"]
-        entity_classes = {
-            "Player": Player,
-            "Wall": Wall,
-            "Block": Block,
-            "Enemy": Enemy,
-            "Enemy_Medium": Enemy_Medium,
-            "Enemy_Hard": Enemy_Hard,
-            "Gem": Gem,
-            "Teleport": Teleport,
-            "Stairs": Stairs,
-            "Door": Door,
-            "Key": Key,
-            "Whip": Whip,
-            "Invisible": Invisible,
-            "Nugget": Nugget,
-            "River": River,
-            "ShowGems": ShowGems,
-            "IWall": IWall,
-            "IBlock": IBlock,
-            "CWall1": CWall1,
-            "CSpell1": CSpell1,
-            "CWall2": CWall2,
-            "CSpell2": CSpell2,
-            "CWall3": CWall3,
-            "CSpell3": CSpell3,
-            "Forest": Forest,
-            "Tree": Tree,
-            "Power": Power,
-            "Tunnel": Tunnel,
-            "Crown": Crown,
-            "OWall1": OWall1,
-            "OWall2": OWall2,
-            "OWall3": OWall3,
-            "OSpell1": OSpell1,
-            "OSpell2": OSpell2,
-            "OSpell3": OSpell3,
-            "GBlock": GBlock,
-            "ZBlock": ZBlock,
-            "BlockSpell": BlockSpell
-        }
+    saved_level = save_data["level_data"]
+    entity_classes = {
+        "Player": Player,
+        "Wall": Wall,
+        "Block": Block,
+        "Enemy": Enemy,
+        "Enemy_Medium": Enemy_Medium,
+        "Enemy_Hard": Enemy_Hard,
+        "Gem": Gem,
+        "Teleport": Teleport,
+        "Stairs": Stairs,
+        "Door": Door,
+        "Key": Key,
+        "Whip": Whip,
+        "Invisible": Invisible,
+        "Nugget": Nugget,
+        "River": River,
+        "ShowGems": ShowGems,
+        "IWall": IWall,
+        "IBlock": IBlock,
+        "CWall1": CWall1,
+        "CSpell1": CSpell1,
+        "CWall2": CWall2,
+        "CSpell2": CSpell2,
+        "CWall3": CWall3,
+        "CSpell3": CSpell3,
+        "Forest": Forest,
+        "Tree": Tree,
+        "Power": Power,
+        "Tunnel": Tunnel,
+        "Crown": Crown,
+        "OWall1": OWall1,
+        "OWall2": OWall2,
+        "OWall3": OWall3,
+        "OSpell1": OSpell1,
+        "OSpell2": OSpell2,
+        "OSpell3": OSpell3,
+        "GBlock": GBlock,
+        "ZBlock": ZBlock,
+        "BlockSpell": BlockSpell
+    }
 
-        for entity_type, (i, j) in saved_level:
-            if entity_type in entity_classes:
-                if entity_type in ("Gem", "Nugget"):
-                    entity = Gem(game_instance.gem_color) if entity_type == "Gem" else Nugget(game_instance.art_color)
-                else:
-                    entity = entity_classes[entity_type]()
-                grid.put((j, i), entity)  # no +1 now
+    for entity_type, (i, j) in saved_level:
+        if entity_type in entity_classes:
+            if entity_type in ("Gem", "Nugget"):
+                entity = Gem(game_instance.gem_color) if entity_type == "Gem" else Nugget(game_instance.art_color)
+            else:
+                entity = entity_classes[entity_type]()
+            grid.put((j, i), entity)  # no +1 now
                 
     grid.border()
 
