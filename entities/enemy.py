@@ -22,14 +22,12 @@ class Enemy(Cell):
     def is_enemy(self): return True
 
     def update(self, **kwargs) -> None:
-        assert self.grid, "Missing grid in Enemy"
-        assert self.grid.game, "Missing Game in Enemy.grid"
-                
-        player = self.grid.game.player
+        if not self.grid:
+            return  # This enemy was removed
 
+        player = self.grid.game.player
         current_time = pygame.time.get_ticks()
 
-        # Move every 1000 milliseconds (1 second)
         if current_time - self.last_move_time < self.move_time:
             return
 
@@ -37,18 +35,17 @@ class Enemy(Cell):
 
         if is_frozen():
             return
-        
 
         player_pos = pygame.Vector2(player.x, player.y)
         enemy_pos = pygame.Vector2(self.x, self.y)
 
-        
         direction = player_pos - enemy_pos
         if direction.length() > 1:
             direction = direction.normalize()
             self.move(direction * self.speed)
         else:
             self.move_to(player.pos)
+
 
     #not sure if this is right kinda asked google about some of it
     '''def move(self, direction_vector):
