@@ -4,6 +4,11 @@ from constants import BLACK, BLUE, GAME_GRID_COLS, GAME_GRID_ROWS, GAME_GRID_WID
 from renderer.cell_grid import CellGrid
 from util.state import State, StateMachine
 
+import pygame
+
+# and somewhere at top
+from level.level_load import save_level, restore_level  # assuming save/restore are here
+
 if TYPE_CHECKING:
     from game import Game
 
@@ -36,12 +41,12 @@ class GameScreen(State):
         self.grid.render(screen)
         self.scoreboard.render(screen)
 
-    # def handle_event(self, event: Event):
-    #     if event.type == pygame.KEYDOWN:
-    #         if event.key == pygame.K_s:
-    #             save_level(self.grid)
-    #         elif event.key == pygame.K_r:
-    #             restore_level(self.grid)
+    def handle_event(self, event: pygame.event.Event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_s:
+                save_level(self.grid)
+            elif event.key == pygame.K_r:
+                restore_level(self.grid)
 
     def load_current_level(self):
             # Check for even-numbered levels (randomly generated)

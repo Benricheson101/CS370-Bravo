@@ -73,7 +73,7 @@ class Game:
         self.gem_color, self.art_color = new_gem_color()
 
         self.difficulty = 8
-        self.current_level = 1
+        self.current_level = 2
         self.color = True
         self.fastpc = True
 
@@ -109,7 +109,12 @@ class Game:
                     else:
                         self.sm.handle_event(event)
                 else:
-                    self.sm.handle_event(event)
+                    # handle Save/Restore
+                    if isinstance(self.sm.current_state, GameScreen):
+                        self.sm.current_state.handle_event(event)
+                    else:
+                        self.sm.handle_event(event)
+
 
             self.sm.update()
             self.sm.render(self.screen)
