@@ -260,6 +260,8 @@ def restore_level(grid: CellGrid):
         game_instance.player.x, game_instance.player.y = player_pos
                 
     grid.border()
+    grid._flip_blink()
+
 
 
 

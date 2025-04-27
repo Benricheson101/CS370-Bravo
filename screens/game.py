@@ -32,6 +32,8 @@ class GameScreen(State):
         self.current_level = 1
 
         self.load_current_level()
+        
+        self.grid._flip_blink()
 
     def update(self, **kwargs):
         self.grid.update(**kwargs)
