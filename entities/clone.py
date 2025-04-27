@@ -22,12 +22,9 @@ class Clone(Player):
 
     def on_collision(self, cell: "Cell") -> bool:
         from entities.enemy import Enemy
-        from entities.lava import Lava
 
-        if isinstance(cell, (Enemy, Lava)):
-            if self.grid:
-                print("Clone removed!")
-                self.grid.remove((self.x, self.y))
+        if isinstance(cell, Enemy):
             return True
 
         return super().on_collision(cell)
+
