@@ -33,6 +33,7 @@ from entities.forest import Forest
 from entities.tree import Tree
 from entities.power import Power
 from entities.tunnel import Tunnel
+from entities.crown import Crown
 
 
 
@@ -97,7 +98,8 @@ tile_mapping = {
     "/": Forest,
     "\\": Tree,
     "Q": Power,
-    "U": Tunnel
+    "U": Tunnel,
+    "A": Crown
     }
 
 def char_to_tile(char: str, game: "Game") -> Optional["Cell"]:
@@ -190,7 +192,8 @@ def restore_level(grid: CellGrid):
         "Forest": Forest,
         "Tree": Tree,
         "Power": Power,
-        "Tunnel": Tunnel
+        "Tunnel": Tunnel,
+        "Crown": Crown
     }
 
     for entity_type, (i, j) in saved_level:
@@ -200,12 +203,6 @@ def restore_level(grid: CellGrid):
             else:
                 entity = entity_classes[entity_type]()
             grid.put((j+1, i+1), entity)
-
-
-
-
-
-
 
 
 
