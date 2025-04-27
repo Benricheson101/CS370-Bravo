@@ -25,6 +25,8 @@ class Clone(Player):
         from entities.enemy import Enemy
         if isinstance(cell, Enemy):
             return False  # Clone doesn't die to enemies
+        if isinstance(cell, Player):
+            return False  # Clone doesn't collide with Player
         else:
             return True
 
