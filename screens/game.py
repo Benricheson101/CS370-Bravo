@@ -46,8 +46,8 @@ class GameScreen(State):
     def load_current_level(self):
             # Check for even-numbered levels (randomly generated)
             if self.game.current_level % 2 == 0:
-                from level.level_load import random_level, object_counts
-                random_level(self.game_grid, self.game.current_level, object_counts)
+                from level.level_load import random_level
+                random_level(self.game_grid, self.game.current_level)
             else:
                 from level.level_load import load_level
                 load_level(self.game, self.grid, self.game.current_level)
