@@ -39,7 +39,7 @@ from entities.ospell2 import OSpell2
 from entities.owall2 import OWall2
 from entities.ospell3 import OSpell3
 from entities.owall3 import OWall3
-from entities.clone import Clone
+from entities.clone_tile import CloneTile
 
 
 
@@ -111,7 +111,8 @@ tile_mapping = {
     "ñ": OSpell1,
     "ò": OSpell2,
     "ó": OSpell3,
-    "~": Clone
+    "A": Crown,
+    "~": CloneTile
     }
 
 def char_to_tile(char: str, game: "Game") -> Optional["Cell"]:
@@ -235,7 +236,9 @@ def restore_level(grid: CellGrid):
         "OSpell1": OSpell1,
         "OSpell2": OSpell2,
         "OSpell3": OSpell3,
-        "Clone": Clone
+        "Crown": Crown,
+        "Power": Power,
+        "CloneTile": CloneTile
     }
 
     for entity_type, (i, j) in saved_level:

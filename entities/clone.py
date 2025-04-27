@@ -1,23 +1,27 @@
-from constants import WHITE
+from pygame import Color
+from constants import LIGHTGRAY
 from entities.player import Player
 from renderer.cell import Cell
-from renderer.cell_grid import CellGrid
 
-def spawn_random_player(grid: CellGrid):
-    x, y = grid.get_random_empty_tiles()
-    grid.put((x, y), Player())
-
-class Clone(Cell):
+class Clone(Player):
     def __init__(self) -> None:
         super().__init__()
-        self.col(2, 7)
-        self.load_dos_char(21)
+        self.col(2, 7)  # Make the clone green
+        self.clone = True
+
+    def use_whip(self) -> None:
+        """Prevent clone from whipping."""
+        pass  # Disable whip usage
 
     def on_collision(self, cell: "Cell") -> bool:
-        if isinstance(cell, Player) and self.grid:
-            print('Wow, you just cloned yourself!')
-            spawn_random_player(self.grid)
+        from entities.enemy import Enemy
+        from entities.lava import Lava
         
+        if isinstance(cell, (Enemy, Lava)):
+            if self.grid:
+                print("Clone removed!")
+                self.grid.remove((self.x, self.y))
             return True
-        return False
+
+        return super().on_collision(cell)
 
