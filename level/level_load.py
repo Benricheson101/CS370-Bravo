@@ -153,9 +153,13 @@ def save_level(grid: CellGrid):
             if entity is not None:
                 entity_type = entity.__class__.__name__
                 saved_level.append((entity_type, (i, j)))  # save positions
+                
+                if entity_type == "Player":
+                    player_pos = (j, i) # save separately
     
     save_data = {
         "level_data": saved_level,
+        "player_pos": player_pos,
         "score": game_instance.score,
         "current_level": game_instance.current_level,
         "key_count": game_instance.key_count,
@@ -213,6 +217,9 @@ def restore_level(grid: CellGrid):
         "Nugget": Nugget,
         "River": River,
         "ShowGems": ShowGems,
+        "Spell_Freeze": Spell_Freeze,    
+        "Spell_Zap": Spell_Zap,         
+        "Lava": Lava, 
         "IWall": IWall,
         "IBlock": IBlock,
         "CWall1": CWall1,
@@ -244,6 +251,13 @@ def restore_level(grid: CellGrid):
             else:
                 entity = entity_classes[entity_type]()
             grid.put((j, i), entity)  # no +1 now
+            
+            if entity_type == "Player":
+                    game_instance.player = entity
+                    
+    player_pos = save_data.get("player_pos")
+    if player_pos and game_instance.player:
+        game_instance.player.x, game_instance.player.y = player_pos
                 
     grid.border()
 
