@@ -11,7 +11,6 @@ from entities.gem import Gem
 from entities.whip import Whip
 from entities.teleport import Teleport
 from entities.stairs import Stairs
-from entities.wall_gray import WallGray
 from entities.door import Door
 from entities.key import Key
 from entities.invisible import Invisible
@@ -34,6 +33,12 @@ from entities.tree import Tree
 from entities.power import Power
 from entities.tunnel import Tunnel
 from entities.crown import Crown
+from entities.ospell1 import OSpell1
+from entities.owall1 import OWall1
+from entities.ospell2 import OSpell2
+from entities.owall2 import OWall2
+from entities.ospell3 import OSpell3
+from entities.owall3 import OWall3
 
 
 
@@ -76,7 +81,6 @@ tile_mapping = {
     "+": Gem,
     "T": Teleport,
     "L": Stairs,
-    "6": WallGray,
     "D": Door,
     "K": Key,
     "W": Whip,
@@ -99,7 +103,13 @@ tile_mapping = {
     "\\": Tree,
     "Q": Power,
     "U": Tunnel,
-    "A": Crown
+    "A": Crown,
+    "4": OWall1,
+    "5": OWall2,
+    "6": OWall3,
+    "ñ": OSpell1,
+    "ò": OSpell2,
+    "ó": OSpell3
     }
 
 def char_to_tile(char: str, game: "Game") -> Optional["Cell"]:
@@ -173,7 +183,6 @@ def restore_level(grid: CellGrid):
         "Gem": Gem,
         "Teleport": Teleport,
         "Stairs": Stairs,
-        "WallGray": WallGray,
         "Door": Door,
         "Key": Key,
         "Whip": Whip,
@@ -193,7 +202,13 @@ def restore_level(grid: CellGrid):
         "Tree": Tree,
         "Power": Power,
         "Tunnel": Tunnel,
-        "Crown": Crown
+        "Crown": Crown,
+        "OWall1": OWall1,
+        "OWall2": OWall2,
+        "OWall3": OWall3,
+        "OSpell1": OSpell1,
+        "OSpell2": OSpell2,
+        "OSpell3": OSpell3
     }
 
     for entity_type, (i, j) in saved_level:
