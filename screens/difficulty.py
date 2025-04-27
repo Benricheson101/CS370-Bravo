@@ -101,7 +101,7 @@ class DifficultyScreen(State):
                     self.grid.gotoxy(34,22);self.grid.write("SECRET MODE")
                     self.sm.game.gem_count = 250
                     self.sm.game.whip_count = 100
-                    # self.sm.game.teleport_count = 50
+                    self.sm.game.teleport_count = 50
                     self.sm.game.key_count = 1
                     self.sm.game.whip_power = 3
                 self.grid.gotoxy(33,25)

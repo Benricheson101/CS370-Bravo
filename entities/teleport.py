@@ -8,14 +8,14 @@ class Teleport(Cell):
         super().__init__()
         self.col(13,7)
         self.load_dos_char(24)
-        self.collected = False
 
     def on_collision(self, cell: "Cell") -> bool:
         assert self.grid
-        if isinstance(cell, Player) and not self.collected:
-            print("Player collected a Teleport scroll!")
-            self.collected = True
-            self.grid.remove((self.x, self.y))  # Remove it from the grid
-            cell.collected_teleports += 1       # Increment player's teleport count
+        if isinstance(cell, Player):
+            from level.level_load import game_instance
+            if game_instance:
+                game_instance.teleport_count += 1
+                game_instance.score += 10
+                print(f"Whip count: {game_instance.teleport_count}")
             return True
         return False
