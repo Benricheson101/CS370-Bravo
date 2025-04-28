@@ -73,7 +73,7 @@ class Game:
         self.gem_color, self.art_color = new_gem_color()
 
         self.difficulty = 8
-        self.current_level = 20
+        self.current_level = 1
         self.color = True
         self.fastpc = True
 
