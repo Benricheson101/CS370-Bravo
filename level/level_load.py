@@ -42,6 +42,7 @@ from entities.owall3 import OWall3
 from entities.gblock import GBlock
 from entities.zblock import ZBlock
 from entities.blockspell import BlockSpell
+from entities.kroz_letter import KLetter, RLetter, OLetter, ZLetter
 
 
 
@@ -115,7 +116,11 @@ tile_mapping = {
     "ó": OSpell3,
     "Y": GBlock,
     "O": ZBlock,
-    "H": BlockSpell
+    "H": BlockSpell,
+    "<": KLetter,
+    "[": RLetter,
+    "|": OLetter,
+    '"': ZLetter
     }
 
 def char_to_tile(char: str, game: "Game") -> Optional["Cell"]:
@@ -207,7 +212,7 @@ def restore_level(grid: CellGrid):
         "Forest": Forest,
         "Tree": Tree,
         "Power": Power,
-        "Tunnel": Tunnel,
+         "Tunnel": Tunnel,
         "Crown": Crown,
         "OWall1": OWall1,
         "OWall2": OWall2,
@@ -217,7 +222,11 @@ def restore_level(grid: CellGrid):
         "OSpell3": OSpell3,
         "GBlock": GBlock,
         "ZBlock": ZBlock,
-        "BlockSpell": BlockSpell
+        "BlockSpell": BlockSpell,
+        "KLetter":KLetter,
+        "RLetter":RLetter,
+        "OLetter":OLetter,
+        "ZLetter":ZLetter      
     }
 
     for entity_type, (i, j) in saved_level:
@@ -230,29 +239,22 @@ def restore_level(grid: CellGrid):
 
 
 
-from level.level_data_random import level_data_random
+object_counts = {
+    "P": 1,
+    "#": 0,
+    # "X": 50,
+    "1": 100,
+    "+": 200,
+    "T": 50,
+    "L": 2,
+    "6": 0,
+    "D": 0,
+    "K": 0,
+    "W": 20
+}
 
-def random_level(grid: CellGrid, level_num: int):
-    level_key = f"level_{level_num}"
+def random_level(grid: CellGrid, level_num, object_counts):
 
-    if level_key not in level_data_random:
-        print(f"Warning: No random object data for level {level_num}")
-        return
-
-    data = level_data_random[level_key]
-    object_counts = data["object_counts"]
-
-    # Place Player first
-    player_pos = data.get("player_pos")
-    if player_pos:
-        x, y = player_pos
-        from entities.player import Player  # Import if not already
-        player = Player()
-        grid.put((x, y), player)
-        if game_instance:
-            game_instance.player = player
-
-    # Place other objects randomly
     for obj_char, count in object_counts.items():
         entity_class = tile_mapping.get(obj_char)
 
@@ -260,20 +262,12 @@ def random_level(grid: CellGrid, level_num: int):
             print(f"Warning: No entity mapped for '{obj_char}'")
             continue
 
+        # Place entities using random empty tiles
         for _ in range(count):
-            try:
-                x, y = grid.get_random_empty_tiles()
-                if entity_class is Gem:
-                    entity = entity_class(game_instance.gem_color)
-                elif entity_class is Nugget:
-                    entity = entity_class(game_instance.art_color)
-                else:
-                    entity = entity_class()
-                grid.put((x, y), entity)
-            except ValueError:
-                print("Warning: No empty tiles left to place entity!")
-                break
+            x, y = grid.get_random_empty_tiles()
 
-
+            # Create the correct entity and place it
+            entity = entity_class() if entity_class != Gem else entity_class(game_instance.gem_color)
+            grid.put((x, y), entity)
 
 
