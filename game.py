@@ -50,7 +50,7 @@ class Game:
             return
 
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-        pygame.display.set_caption("Kroz")
+        pygame.display.set_caption("Return to Kroz")
         self.screen.fill(LIGHTGRAY)
         pygame.time.set_timer(BLINK_EVENT, 333)
         pygame.time.set_timer(FLASH_EVENT, 1_000 // 30)
