@@ -109,10 +109,6 @@ class Game:
                     else:
                         self.sm.handle_event(event)
                 else:
-                    # handle Save/Restore
-                    if isinstance(self.sm.current_state, GameScreen):
-                        self.sm.current_state.handle_event(event)
-                    else:
                         self.sm.handle_event(event)
 
 
