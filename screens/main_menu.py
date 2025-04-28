@@ -82,5 +82,6 @@ class MainMenuScreen(State):
             }
 
             if event.key in transition_map:
-                self.sound_effects.intr_descent()
+                if transition_map[event.key] == "game":
+                    self.sound_effects.intr_descent()
                 self.sm.transition(transition_map[event.key])
