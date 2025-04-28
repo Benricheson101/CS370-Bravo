@@ -6,8 +6,9 @@ from entities.owall1 import OWall1
 class OSpell1(Cell):
     def __init__(self) -> None:
         super().__init__()
-        self.load_dos_char(127)
         self.col(11,7)
+        self.load_dos_char(127)
+        
 
     def on_collision(self, cell: Cell) -> bool:
         if isinstance(cell, Player):
