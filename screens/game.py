@@ -103,8 +103,7 @@ class Scoreboard(CellGrid):
 
             strval = str(val)
 
-            if ypos == 2 and val > 0:
-                strval += "0"
+            
 
             # TODO: whip power
             # elif ypos == 11:
