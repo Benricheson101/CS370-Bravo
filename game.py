@@ -109,7 +109,8 @@ class Game:
                     else:
                         self.sm.handle_event(event)
                 else:
-                    self.sm.handle_event(event)
+                        self.sm.handle_event(event)
+
 
             self.sm.update()
             self.sm.render(self.screen)
