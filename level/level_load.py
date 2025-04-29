@@ -274,22 +274,29 @@ def restore_level(grid: CellGrid):
 
 
 
-object_counts = {
-    "P": 1,
-    "#": 0,
-    # "X": 50,
-    "1": 100,
-    "+": 200,
-    "T": 50,
-    "L": 2,
-    "6": 0,
-    "D": 0,
-    "K": 0,
-    "W": 20
-}
+from level.level_data_random import level_data_random
 
-def random_level(grid: CellGrid, level_num, object_counts):
+def random_level(grid: CellGrid, level_num: int):
+    level_key = f"level_{level_num}"
 
+    if level_key not in level_data_random:
+        print(f"Warning: No random object data for level {level_num}")
+        return
+
+    data = level_data_random[level_key]
+    object_counts = data["object_counts"]
+
+    # Place Player first
+    player_pos = data.get("player_pos")
+    if player_pos:
+        x, y = player_pos
+        from entities.player import Player  # Import if not already
+        player = Player()
+        grid.put((x, y), player)
+        if game_instance:
+            game_instance.player = player
+
+    # Place other objects randomly
     for obj_char, count in object_counts.items():
         entity_class = tile_mapping.get(obj_char)
 
@@ -297,12 +304,18 @@ def random_level(grid: CellGrid, level_num, object_counts):
             print(f"Warning: No entity mapped for '{obj_char}'")
             continue
 
-        # Place entities using random empty tiles
         for _ in range(count):
-            x, y = grid.get_random_empty_tiles()
-
-            # Create the correct entity and place it
-            entity = entity_class() if entity_class != Gem else entity_class(game_instance.gem_color)
-            grid.put((x, y), entity)
+            try:
+                x, y = grid.get_random_empty_tiles()
+                if entity_class is Gem:
+                    entity = entity_class(game_instance.gem_color)
+                elif entity_class is Nugget:
+                    entity = entity_class(game_instance.art_color)
+                else:
+                    entity = entity_class()
+                grid.put((x, y), entity)
+            except ValueError:
+                print("Warning: No empty tiles left to place entity!")
+                break
 
 
