@@ -23,6 +23,7 @@ class Char(Cell):
         self.char = ord(char)
         self.flash = flash
         self.blink = blink
+        self.should_pause = False
 
         self.image.fill(bg)
         self.load_dos_char(self.char)

@@ -25,6 +25,8 @@ class Cell(WeakSprite):
     fg: Tuple[Color, Color]
     bg: Tuple[Color, Color]
 
+    should_pause: bool
+
     def __init__(self, width = GRID_CELL_WIDTH, height = GRID_CELL_HEIGHT) -> None:
         super().__init__()
 
@@ -40,6 +42,7 @@ class Cell(WeakSprite):
         self.grid: Optional["CellGrid"] = None
         self.walkable = True
         self.blink = False
+        self.should_pause = True
 
         self.bg = (TRANSPARENT, TRANSPARENT)
         self.fg = (TRANSPARENT, TRANSPARENT)

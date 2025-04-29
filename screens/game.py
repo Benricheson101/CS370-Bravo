@@ -32,12 +32,20 @@ class GameScreen(State):
         self.current_level = 1
 
         self.load_current_level()
-        
+
         self.grid._flip_blink()
 
+        self.pause_reason = None
+
+    def enter(self, **kwargs):
+        self.pause(True)
+        self.pause_reason = "enter"
+        self.grid.flash(16,25,'Press any key to begin this level.');
+
+
     def update(self, **kwargs):
-        self.grid.update(**kwargs)
-        self.scoreboard.update(**kwargs)
+        self.grid.update(paused=self.paused, **kwargs)
+        self.scoreboard.update(paused=self.paused, **kwargs)
 
     def render(self, screen: Surface):
         self.grid.render(screen)
@@ -45,10 +53,24 @@ class GameScreen(State):
 
     def handle_event(self, event: pygame.event.Event):
         if event.type == pygame.KEYDOWN:
+            if self.paused:
+                if event.key == pygame.K_y and self.pause_reason == "quit":
+                    self.sm.transition("shareware") # TODO: should go to exit sequence (shareware delay=False => quit)
+                    return
+
+                self.grid.restore_border()
+                self.pause(False)
+                self.pause_reason = None
+
             if event.key == pygame.K_s:
                 save_level(self.grid)
             elif event.key == pygame.K_r:
                 restore_level(self.grid)
+            elif event.key == pygame.K_ESCAPE:
+                if not self.paused:
+                    self.pause_reason = "quit"
+                    self.grid.flash(16,25,'Are you sure you want to quit (Y/N)?')
+                    self.pause(True)
 
     def load_current_level(self):
             # Check for even-numbered levels (randomly generated)
@@ -86,7 +108,7 @@ class Scoreboard(CellGrid):
         self.gotoxy(4,24);self.col(15,15);self.write('S');self.col(7,7);self.write('ave');
         self.gotoxy(4,25);self.col(15,15);self.write('R');self.col(7,7);self.write('estore');
 
-    def update(self):
+    def update(self, **kwargs):
         super().update()
 
         map = {
@@ -110,7 +132,7 @@ class Scoreboard(CellGrid):
 
             strval = str(val)
 
-            
+
 
             # TODO: whip power
             # elif ypos == 11:

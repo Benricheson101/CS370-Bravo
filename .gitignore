@@ -3,3 +3,6 @@ pygame_collision2.py
 __pycache__/
 venv/
 .DS_STORE
+*.pkl
+/build/
+/*dist

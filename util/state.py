@@ -1,29 +1,6 @@
-# class StateMachine:
-#     def __init__(self) -> None:
-#         self.current_state = None
-#         self.next_state = None
-#
-#     def transition(self, state):
-#         self.next_state = state
-#
-#     def update(self) -> None:
-#         if self.next_state is not None:
-#             self.current_state = self.next_state
-#             self.next_state = None
-#
-# # class "Game"StateWrapper:
-# #     def __init__(self):
-# #         self.done = False
-# #         self.next = None
-#
-# class "Game"State:
-#     sm: StateMachine
-#
-#     def __init__(self, sm: StateMachine) -> None:
-#         self.sm = sm
-
 from typing import TYPE_CHECKING, Optional
 
+from pygame import KEYDOWN
 from pygame.event import Event
 
 from constants import BLACK, BLINK_EVENT, FLASH_EVENT, SCREEN_GRID_COLS, SCREEN_GRID_ROWS, SCREEN_SIZE
@@ -35,6 +12,7 @@ if TYPE_CHECKING:
 class State:
     sm: "StateMachine"
     grid: CellGrid
+    paused: bool
 
     def __init__(self, sm: "StateMachine") -> None:
         self.sm = sm
@@ -43,11 +21,15 @@ class State:
             fill=BLACK,
             game=sm.game,
         )
+        self.paused = False
 
     def enter(self, **kwargs): pass
     def exit(self): pass
 
     def _handle_event(self, event: Event):
+        # if event.type == KEYDOWN and self._pause_until_keypress == True:
+        #     self.pause(False)
+
         if event.type == FLASH_EVENT:
             self.grid._flip_flash()
         elif event.type == BLINK_EVENT:
@@ -58,10 +40,18 @@ class State:
     def handle_event(self, event: Event): pass
 
     def update(self, **kwargs):
-        self.grid.update(**kwargs)
+        self.grid.update(paused=self.paused, **kwargs)
 
     def render(self, screen):
         self.grid.render(screen)
+
+    def pause(self, paused: Optional[bool]):
+        self.paused = not self.pause if paused is None else paused
+        self._pause_until_keypress = False
+
+    # def pause_until_keypress(self):
+    #     self.pause(True)
+    #     self._pause_until_keypress = True
 
 class StateMachine:
     current_state: Optional[State]

@@ -117,8 +117,8 @@ class CellGrid:
 
         sprite.rect.topleft = (int(cell_x), int(cell_y))
 
-        # if self.at(pos) is not None:
-        #     self.remove(pos)
+        if self.at(pos) is not None:
+            self.remove(pos)
 
         if _add_to_grid:
             self.grid[row][col] = sprite
@@ -187,7 +187,7 @@ class CellGrid:
         parent.blit(self.surface, self.rect)
 
 
-    def update(self):
+    def update(self, **kwargs):
         if self.cur_type != CursorType.Invisible.value:
             # HACK: superimpose the cursor instead of replacing a grid space with it
             if self.cursor.visible:
@@ -200,8 +200,16 @@ class CellGrid:
                 self.group.remove(self.cursor)
                 self.cursor.visible = False
 
-        self.group.update(new_fg=COLORS[self.flash_counter])
-        
+        # HACK: same as group.update() but skipping some
+        for sprite in self.group.sprites():
+            if "paused" in kwargs \
+                and kwargs["paused"] == True \
+                and isinstance(sprite, Cell) \
+                and sprite.should_pause:
+                    continue
+
+            sprite.update(new_fg=COLORS[self.flash_counter], **kwargs)
+
         self.fx_group.update(new_fg=COLORS[self.flash_counter])
 
     def _flip_blink(self):
@@ -369,7 +377,7 @@ class CellGrid:
         for i in range(self.rows):
             self.put((self.cols - 1, i), Border(bc, bb))
             self.put((0, i), Border(bc, bb))
-            
+
     def restore_border(self):
         """
         { Restores the bottom line of the border }
@@ -379,5 +387,3 @@ class CellGrid:
 
         for x in range(1, self.cols - 1):
             self.put((x, self.rows - 1), Border(bc, bb))
-
-
