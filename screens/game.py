@@ -55,7 +55,7 @@ class GameScreen(State):
         if event.type == pygame.KEYDOWN:
             if self.paused:
                 if event.key == pygame.K_y and self.pause_reason == "quit":
-                    self.sm.transition("shareware") # TODO: should go to exit sequence (shareware delay=False => quit)
+                    self.sm.transition("shareware", wait=False)
                     return
 
                 self.grid.restore_border()

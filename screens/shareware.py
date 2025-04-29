@@ -14,9 +14,10 @@ class SharewareScreen(State):
         super().__init__(sm)
 
         self.sound_effects = SoundEffects()
-        
+
         self.grid.fill = BLUE
         self.wait = False
+        self.quit = False
 
         self.grid.bak(1,0);self.grid.clrscr();self.grid.cur(3);self.grid.col(15,15);
         self.grid.gotoxy(24,1);
@@ -63,8 +64,9 @@ class SharewareScreen(State):
 
     def enter(self, **kwargs):
         self.wait = kwargs["wait"] if "wait" in kwargs else False
-        if self.wait:
-            pygame.time.set_timer(SHAREWARE_WAIT, 3333, loops=1)
+        self.quit = not self.wait
+        # if self.wait:
+        pygame.time.set_timer(SHAREWARE_WAIT, 3333 if self.wait else 1, loops=1)
 
     def handle_event(self, event: Event):
         if event.type == SHAREWARE_WAIT:
@@ -80,4 +82,7 @@ class SharewareScreen(State):
 
         elif event.type == pygame.KEYDOWN:
             if not self.wait:
-                self.sm.transition("main_menu")
+                if self.quit:
+                    self.sm.exit()
+                else:
+                    self.sm.transition("main_menu")

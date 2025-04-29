@@ -27,9 +27,6 @@ class State:
     def exit(self): pass
 
     def _handle_event(self, event: Event):
-        # if event.type == KEYDOWN and self._pause_until_keypress == True:
-        #     self.pause(False)
-
         if event.type == FLASH_EVENT:
             self.grid._flip_flash()
         elif event.type == BLINK_EVENT:
@@ -48,10 +45,6 @@ class State:
     def pause(self, paused: Optional[bool]):
         self.paused = not self.pause if paused is None else paused
         self._pause_until_keypress = False
-
-    # def pause_until_keypress(self):
-    #     self.pause(True)
-    #     self._pause_until_keypress = True
 
 class StateMachine:
     current_state: Optional[State]
@@ -94,6 +87,5 @@ class StateMachine:
 
         self.current_state.render(screen)
 
-# class StartupMenuState(State):
-#     def __init__(self, sm: StateMachine) -> None:
-#         super().__init__(sm)
+    def exit(self):
+        self.game.running = False
