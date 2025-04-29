@@ -7,7 +7,6 @@ from gameState import is_frozen
 from entities.tree import Tree
 from entities.forest import Forest
 import pygame
-from entities.clone import Clone
 
 from util.math import clamped_add 
 
@@ -71,10 +70,7 @@ class Enemy(Cell):
 
     def on_collision(self, cell: "Cell") -> bool:
         assert self.grid and self.grid.game
-        
-        if isinstance(cell, Clone):
-            return False  # Clone doesn't die to enemies
-        
+
         if isinstance(cell, Player):
             print("Player hit a monster! OUCHIE!")
             # from level.level_load import game_instance
@@ -85,6 +81,6 @@ class Enemy(Cell):
                 cell.dead()
             else:
                 return True
-            
+
         return False
 
