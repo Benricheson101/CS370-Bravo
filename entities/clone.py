@@ -2,6 +2,7 @@ from pygame import Surface, Color
 from constants import LIGHTGREEN
 from entities.player import Player
 from renderer.cell import Cell
+from random import randint
 
 class Clone(Player):
     def __init__(self) -> None:
@@ -10,7 +11,10 @@ class Clone(Player):
         self.clone = True
 
         # Redefine the appearance
-        self.fg = (Color(0, 255, 0), Color(0, 255, 0))  # green in color & monochrome
+        rand1 = randint(0,255) 
+        rand2 = randint(0,255)
+        rand3 = randint(0,255)
+        self.fg = (Color(rand1, rand2, rand3), Color(rand1, rand2, rand3))  # green in color & monochrome
         self.bg = (Color(0, 0, 0, 0), Color(0, 0, 0, 0))  # transparent background
 
         # Recreate the visual appearance

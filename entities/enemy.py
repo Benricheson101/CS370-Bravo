@@ -73,7 +73,7 @@ class Enemy(Cell):
         assert self.grid and self.grid.game
         
         if isinstance(cell, Clone):
-            return False  # Clone doesn't die to enemies
+            return True  # Clone doesn't die to enemies
         
         if isinstance(cell, Player):
             print("Player hit a monster! OUCHIE!")
