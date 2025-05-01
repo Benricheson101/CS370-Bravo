@@ -21,7 +21,8 @@ class Spell_Zap(Cell):
     has_paused_message = False
     def __init__(self) -> None:
         super().__init__()
-        self.load_dos_char(80, YELLOW)
+        self.col(12,7)
+        self.load_dos_char(30)
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
