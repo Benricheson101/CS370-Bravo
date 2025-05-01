@@ -57,19 +57,42 @@ class GameScreen(State):
                 if event.key == pygame.K_y and self.pause_reason == "quit":
                     self.sm.transition("shareware", wait=False)
                     return
+                elif event.key == pygame.K_y and self.pause_reason == "save":
+                    save_level(self.grid)
+                elif event.key == pygame.K_y and self.pause_reason == "restore":
+                    import os
+                    if os.path.exists("level/level.pkl"):
+                        restore_level(self.grid)
+                    else:
+                        self.grid.flash(15,25,'A SAVE FILE does not exist on this disk.')
+                        return
+                elif self.pause_reason == "death":
+                    self.sm.transition("shareware", wait=False)
+                    
 
                 self.grid.restore_border()
                 self.pause(False)
                 self.pause_reason = None
 
-            if event.key == pygame.K_s:
-                save_level(self.grid)
-            elif event.key == pygame.K_r:
-                restore_level(self.grid)
-            elif event.key == pygame.K_ESCAPE:
+            if event.key == pygame.K_p:
+                if not self.paused:
+                    self.pause_reason = "pause"
+                    self.grid.flash(19,25,'Press any key to resume game.')
+                    self.pause(True)
+            elif event.key == pygame.K_ESCAPE or event.key == pygame.K_q:
                 if not self.paused:
                     self.pause_reason = "quit"
                     self.grid.flash(16,25,'Are you sure you want to quit (Y/N)?')
+                    self.pause(True)
+            elif event.key == pygame.K_s:
+                if not self.paused:
+                    self.pause_reason = "save"
+                    self.grid.flash(16,25,'Are you sure you want to SAVE (Y/N)?')
+                    self.pause(True)
+            elif event.key == pygame.K_r:
+                if not self.paused:
+                    self.pause_reason = "restore"
+                    self.grid.flash(16,25,'Are you sure you want to RESTORE (Y/N)?')
                     self.pause(True)
 
     def load_current_level(self):
