@@ -4,6 +4,7 @@ from entities.player import Player
 from renderer.cell import Cell
 
 class Power(Cell):
+    has_paused_message = False
     def __init__(self) -> None:
         super().__init__()
         self.col(15, 7)
@@ -11,8 +12,10 @@ class Power(Cell):
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-            print('An increase Whip Power Ring!')
             from level.level_load import game_instance
+            if not Power.has_paused_message:
+                game_instance.sm.current_state.pause_flash(22,25,'An increase Whip Power Ring!')
+                Power.has_paused_message = True
             if game_instance:
                 game_instance.whip_power += 1
                 return True

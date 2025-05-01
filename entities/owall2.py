@@ -1,4 +1,4 @@
 from entities.owall1 import OWall1
 
-class OWall3(OWall1):
+class OWall2(OWall1):
     pass

@@ -4,6 +4,7 @@ from Sound import SoundEffects
 
 
 class Wall(Cell):
+    has_paused_message = False
     sound_effects = SoundEffects()  # Initialize the sound effects
     def __init__(self, color: int = 6) -> None:
         super().__init__()
@@ -15,9 +16,11 @@ class Wall(Cell):
     def on_collision(self, cell: Cell) -> bool:
         # prevent moving into the same space
         if isinstance(cell, Player):
-            print('A Solid Wall blocks your way.')
             self.sound_effects.play_in_thread(self.sound_effects.BlockSound, True)
             from level.level_load import game_instance
+            if not Wall.has_paused_message:
+                game_instance.sm.current_state.pause_flash(20,25,'A Solid Wall blocks your way.')
+                Wall.has_paused_message = True
             if game_instance:
                 if game_instance.score > 20:
                     game_instance.score -= 20

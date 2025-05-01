@@ -18,13 +18,17 @@ from entities.enemy_medium import Enemy_Medium
 from entities.enemy_hard import Enemy_Hard
 
 class Spell_Zap(Cell):
+    has_paused_message = False
     def __init__(self) -> None:
         super().__init__()
         self.load_dos_char(80, YELLOW)
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-            print("Zap Spell activated!")
+            from level.level_load import game_instance
+            if not Spell_Zap.has_paused_message:
+                game_instance.sm.current_state.pause_flash(25,25,'A Creature Zap Spell!')
+                Spell_Zap.has_paused_message = True
 
             for y in range(self.grid.rows):
                 for x in range(self.grid.cols):

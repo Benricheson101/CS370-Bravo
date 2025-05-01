@@ -2,6 +2,7 @@ from entities.player import Player
 from renderer.cell import Cell
 
 class River(Cell):
+    has_paused_message = False
     def __init__(self) -> None:
         super().__init__()
         self.bak(1, 7)
@@ -10,7 +11,10 @@ class River(Cell):
 
     def on_collision(self, cell: Cell) -> bool:
         if isinstance(cell, Player):
-            print('You cannot travel through Water.')
+            from level.level_load import game_instance
+            if not River.has_paused_message:
+                game_instance.sm.current_state.pause_flash(18,25,'You cannot travel through Water.')
+                River.has_paused_message = True
         return False
 
 
