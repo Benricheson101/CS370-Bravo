@@ -63,6 +63,13 @@ class MBlock(Enemy):
                 MBlock.has_paused_message = True
             if game_instance.score > 20:
                 game_instance.score -= 20
+        if isinstance(cell, Enemy): # Enemy dies when it moves into Block
+            if cell.grid:
+                cell.grid.remove((cell.x, cell.y))  # Remove Enemy
+            if self.grid:
+                self.grid.remove((self.x, self.y))  # Remove Block
+            return False
+        return False
                 
             
 
