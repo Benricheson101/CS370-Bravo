@@ -236,12 +236,12 @@ class Player(Cell):
         if hasattr(cell, "is_enemy") and cell.is_enemy():
             self.grid.remove((x, y))
             game_instance.score += 10
-            print(f"Enemy at ({x}, {y}) whipped!")
+            # print(f"Enemy at ({x}, {y}) whipped!")
 
         elif hasattr(cell, "is_breakable_wall") and cell.is_breakable_wall():
             if random() < power / 7:
                 self.grid.remove((x, y))
-                print(f"Wall at ({x}, {y}) destroyed!")
+                # print(f"Wall at ({x}, {y}) destroyed!")
 
 
 
@@ -249,6 +249,7 @@ class Player(Cell):
         self.play_sound_in_thread(self.sound_effects.BlockSound)
         assert self.grid and self.grid.game
 
+        from entities.mblock import MBlock
         from entities.enemy import Enemy
         if isinstance(cell, Enemy):
             self.grid.game.gem_count -= 0 if self.grid.game.gem_count <= 0 else 1
@@ -256,6 +257,9 @@ class Player(Cell):
 
             if self.grid.game.gem_count <= 0:
                 self.dead()
+        
+        elif isinstance(cell, MBlock):
+            return False
 
         return False
 

@@ -33,7 +33,6 @@ class Block(Cell):
         self.sound_effects.play_in_thread(self.sound_effects.BlockSound, True)
         
         if isinstance(cell, Enemy): # Enemy dies when it moves into Block
-            print("Enemy and Block destroyed!")
             if cell.grid:
                 cell.grid.remove((cell.x, cell.y))  # Remove Enemy
             if self.grid:
