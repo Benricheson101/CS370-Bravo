@@ -4,6 +4,7 @@ from entities.player import Player
 from renderer.cell import Cell
 
 class Nugget(Cell):
+    has_paused_message = False
     def __init__(self, color: Color) -> None:
         super().__init__()
         self.col(color, 7)
@@ -11,8 +12,10 @@ class Nugget(Cell):
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-            print('You found a Gold Nugget...500 points!')
             from level.level_load import game_instance
+            if not Nugget.has_paused_message:
+                game_instance.sm.current_state.pause_flash(15,25,'You found a Gold Nugget...500 points!')
+                Nugget.has_paused_message = True
             if game_instance:
                 game_instance.score += 500
                 return True

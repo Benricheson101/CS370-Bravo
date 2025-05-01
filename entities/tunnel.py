@@ -7,6 +7,7 @@ from renderer.cell_grid import CellGrid
 SAFE_IDS = {0, 32, 55, 56, 57}  # IDs considered safe to teleport onto
 
 class Tunnel(Cell):
+    has_paused_message = False
     found_tunnel_once = False  # track discovery
 
     def __init__(self):
@@ -73,7 +74,10 @@ class Tunnel(Cell):
             self.grid.move_to((dest_x, dest_y), cell)
 
             if not Tunnel.found_tunnel_once:
-                print("You passed through a secret Tunnel!")
+                from level.level_load import game_instance
+                if not Tunnel.has_paused_message:
+                    game_instance.sm.current_state.pause_flash(16,25,'You passed through a secret Tunnel!')
+                    Tunnel.has_paused_message = True
                 Tunnel.found_tunnel_once = True
 
             return False

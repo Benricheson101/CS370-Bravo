@@ -66,8 +66,14 @@ class GameScreen(State):
                     else:
                         self.grid.flash(15,25,'A SAVE FILE does not exist on this disk.')
                         return
-                elif self.pause_reason == "death":
+                # player interaction events
+                elif self.pause_reason == "death" or self.pause_reason == "crown":
                     self.sm.transition("shareware", wait=False)
+                elif self.pause_reason == "info":
+                    self.grid.restore_border() 
+                 
+                 
+                    
                     
 
                 self.grid.restore_border()

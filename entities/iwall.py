@@ -12,4 +12,11 @@ class IWall(Wall):
         if isinstance(cell, Player) and self.is_invisible:
             self.load_dos_char(219)  # Reveal wall on collision
             self.is_invisible = False
+            from level.level_load import game_instance
+            if not Wall.has_paused_message:
+                game_instance.sm.current_state.pause_flash(20,25,'A Solid Wall blocks your way.')
+                Wall.has_paused_message = True
+            if game_instance:
+                if game_instance.score > 20:
+                    game_instance.score -= 20
         return False

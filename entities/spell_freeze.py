@@ -14,14 +14,18 @@ from gameState import freeze_enemies_for
 
 
 class Spell_Freeze(Cell):
+    has_paused_message = False
     def __init__(self):
         super().__init__()
         self.load_dos_char(102, LIGHTBLUE)
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-            print("Freeze Scroll!")
             freeze_enemies_for(8000)
+            from level.level_load import game_instance
+            if not Spell_Freeze.has_paused_message:
+                game_instance.sm.current_state.pause_flash(13,25,'You have activated a Freeze Creature spell!')
+                Spell_Freeze.has_paused_message = True
             return True
         
         return False

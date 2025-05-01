@@ -16,6 +16,7 @@ def show_gems(grid: CellGrid):
 
 
 class ShowGems(Cell):
+    has_paused_message = False
     def __init__(self) -> None:
         super().__init__()
         self.grid: Optional[CellGrid] = None # for show_gems function
@@ -23,7 +24,10 @@ class ShowGems(Cell):
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player) and self.grid:
-            print('Yah Hoo! You discovered a hidden Reveal Gems Scroll!')
             show_gems(self.grid)
+            from level.level_load import game_instance
+            if not ShowGems.has_paused_message:
+                game_instance.sm.current_state.pause_flash(8,25,'Yah Hoo! You discovered a hidden Reveal Gems Scroll!')
+                ShowGems.has_paused_message = True
             return True
         return False

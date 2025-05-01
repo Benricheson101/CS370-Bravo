@@ -19,13 +19,18 @@ from entities.player import Player
 
 
 class Lava(Cell):
+    has_paused_message = False
     def __init__(self):
         super().__init__()
         self.load_dos_char(178, RED)
 
     def on_collision(self, cell: Cell) -> bool:
         if isinstance(cell, Player):
-            self.grid.game.gem_count -= 0 if self.grid.game.gem_count <= 0 else 1
+            from level.level_load import game_instance
+            if not Lava.has_paused_message:
+                game_instance.sm.current_state.pause_flash(8,25,'Oooooooooooooooooooh!  Lava hurts!  (Lose 10 Gems.)')
+                Lava.has_paused_message = True
+            self.grid.game.gem_count -= 0 if self.grid.game.gem_count <= 0 else 10
             if self.grid.game.gem_count <= 0:
                 cell.dead()
             else:

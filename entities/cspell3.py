@@ -1,21 +1,7 @@
-from renderer.cell import Cell
-from entities.player import Player
-from renderer.cell_grid import CellGrid
+from entities.cspell1 import CSpell1  # Inherit from CSpell1
 from entities.cwall3 import CWall3
 
-class CSpell3(Cell):
-    def __init__(self) -> None:
-        super().__init__()
-        self.load_dos_char(0)
-
-    def on_collision(self, cell: Cell) -> bool:
-        if isinstance(cell, Player):
-            self.reveal_cwalls()
-        return True
-
-    def on_added_to_grid(self, grid: CellGrid):
-        self.grid = grid
-
+class CSpell3(CSpell1):
     def reveal_cwalls(self):
         for y in range(self.grid.rows):
             for x in range(self.grid.cols):

@@ -3,6 +3,7 @@ from entities.player import Player
 from renderer.cell import Cell
 
 class Invisible(Cell):
+    has_paused_message = False
     def __init__(self) -> None:
         super().__init__()
         self.col(2, 7)
@@ -10,7 +11,10 @@ class Invisible(Cell):
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-            print('Oh no, a temporary Blindness Potion!')
+            from level.level_load import game_instance
+            if not Invisible.has_paused_message:
+                game_instance.sm.current_state.pause_flash(16,25,'Oh no, a temporary Blindness Potion!')
+                Invisible.has_paused_message = True
             cell.make_invisible(3000)
         
             return True

@@ -7,6 +7,7 @@ class Forest(Cell):
     """
     A forest. Blocks movement and deducts score if collided with.
     """
+    has_paused_message = False
     #sound_effects = SoundEffects()  # Initialize the sound effects
     def __init__(self) -> None:
         super().__init__()
@@ -22,9 +23,11 @@ class Forest(Cell):
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-            print('A Forrest blocks your way.')
             #self.sound_effects.play_in_thread(self.sound_effects.BlockSound, True)
             from level.level_load import game_instance
+            if not Forest.has_paused_message:
+                game_instance.sm.current_state.pause_flash(14,25,'You cannot travel through forest terrain.')
+                Forest.has_paused_message = True
             if game_instance:
                 if game_instance.score > 20:
                     game_instance.score -= 20

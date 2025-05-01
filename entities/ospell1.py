@@ -4,6 +4,7 @@ from renderer.cell_grid import CellGrid
 from entities.owall1 import OWall1
 
 class OSpell1(Cell):
+    has_paused_message = False
     def __init__(self) -> None:
         super().__init__()
         self.col(11,7)
@@ -13,6 +14,10 @@ class OSpell1(Cell):
     def on_collision(self, cell: Cell) -> bool:
         if isinstance(cell, Player):
             self.destroy_owalls()
+            from level.level_load import game_instance
+            if not OSpell1.has_paused_message:
+                game_instance.sm.current_state.pause_flash(16,25,'Magic has been released in this chamber!')
+                OSpell1.has_paused_message = True
         return True
 
     def on_added_to_grid(self, grid: CellGrid):
