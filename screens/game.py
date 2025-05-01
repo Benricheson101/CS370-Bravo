@@ -57,16 +57,26 @@ class GameScreen(State):
                 if event.key == pygame.K_y and self.pause_reason == "quit":
                     self.sm.transition("shareware", wait=False)
                     return
+                elif event.key == pygame.K_y and self.pause_reason == "save":
+                    save_level(self.grid)
+                elif event.key == pygame.K_y and self.pause_reason == "restore":
+                    restore_level(self.grid)
 
                 self.grid.restore_border()
                 self.pause(False)
                 self.pause_reason = None
 
             if event.key == pygame.K_s:
-                save_level(self.grid)
+                if not self.paused:
+                    self.pause_reason = "save"
+                    self.grid.flash(16,25,'Are you sure you want to SAVE (Y/N)?')
+                    self.pause(True)
             elif event.key == pygame.K_r:
-                restore_level(self.grid)
-            elif event.key == pygame.K_ESCAPE:
+                if not self.paused:
+                    self.pause_reason = "restore"
+                    self.grid.flash(16,25,'Are you sure you want to RESTORE (Y/N)?')
+                    self.pause(True)
+            elif event.key == pygame.K_ESCAPE or event.key == pygame.K_q:
                 if not self.paused:
                     self.pause_reason = "quit"
                     self.grid.flash(16,25,'Are you sure you want to quit (Y/N)?')
