@@ -60,7 +60,12 @@ class GameScreen(State):
                 elif event.key == pygame.K_y and self.pause_reason == "save":
                     save_level(self.grid)
                 elif event.key == pygame.K_y and self.pause_reason == "restore":
-                    restore_level(self.grid)
+                    import os
+                    if os.path.exists("level/level.pkl"):
+                        restore_level(self.grid)
+                    else:
+                        self.grid.flash(15,25,'A SAVE FILE does not exist on this disk.')
+                        return
 
                 self.grid.restore_border()
                 self.pause(False)
