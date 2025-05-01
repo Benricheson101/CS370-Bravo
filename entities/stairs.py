@@ -31,7 +31,7 @@ class Stairs(Cell):
             # Load the next level using game's method
             game_screen.load_current_level()
 
-            print("To the next level!")
+            game_instance.sm.current_state.enter()
             return False
 
         return False
