@@ -58,7 +58,7 @@ class Player(Cell):
         grid.col(bb, 7)
         grid.print(27, 1, 'YOU HAVE DIED!!')
         sm.current_state.pause(True)
-        grid.flash(27, 25, 'Press any key to continue.')
+        grid.flash(22, 25, 'Press any key to continue.')
         sm.current_state.pause_reason = "death"
         self.is_dead = True
 
