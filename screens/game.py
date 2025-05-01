@@ -66,7 +66,17 @@ class GameScreen(State):
                 self.pause(False)
                 self.pause_reason = None
 
-            if event.key == pygame.K_s:
+            if event.key == pygame.K_p:
+                if not self.paused:
+                    self.pause_reason = "pause"
+                    self.grid.flash(19,25,'Press any key to resume game.')
+                    self.pause(True)
+            elif event.key == pygame.K_ESCAPE or event.key == pygame.K_q:
+                if not self.paused:
+                    self.pause_reason = "quit"
+                    self.grid.flash(16,25,'Are you sure you want to quit (Y/N)?')
+                    self.pause(True)
+            elif event.key == pygame.K_s:
                 if not self.paused:
                     self.pause_reason = "save"
                     self.grid.flash(16,25,'Are you sure you want to SAVE (Y/N)?')
@@ -75,11 +85,6 @@ class GameScreen(State):
                 if not self.paused:
                     self.pause_reason = "restore"
                     self.grid.flash(16,25,'Are you sure you want to RESTORE (Y/N)?')
-                    self.pause(True)
-            elif event.key == pygame.K_ESCAPE or event.key == pygame.K_q:
-                if not self.paused:
-                    self.pause_reason = "quit"
-                    self.grid.flash(16,25,'Are you sure you want to quit (Y/N)?')
                     self.pause(True)
 
     def load_current_level(self):
