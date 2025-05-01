@@ -236,12 +236,12 @@ class Player(Cell):
         if hasattr(cell, "is_enemy") and cell.is_enemy():
             self.grid.remove((x, y))
             game_instance.score += 10
-            print(f"Enemy at ({x}, {y}) whipped!")
+            # print(f"Enemy at ({x}, {y}) whipped!")
 
         elif hasattr(cell, "is_breakable_wall") and cell.is_breakable_wall():
             if random() < power / 7:
                 self.grid.remove((x, y))
-                print(f"Wall at ({x}, {y}) destroyed!")
+                # print(f"Wall at ({x}, {y}) destroyed!")
 
 
 

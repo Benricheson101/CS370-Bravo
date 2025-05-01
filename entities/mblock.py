@@ -21,35 +21,38 @@ class MBlock(Enemy):
 
         player = self.grid.game.player
         current_time = pygame.time.get_ticks()
-
         if current_time - self.last_move_time < self.move_time:
             return
-
-        self.last_move_time = current_time
 
         from gameState import is_frozen
         if is_frozen():
             return
 
-        player_pos = pygame.Vector2(player.x, player.y)
-        my_pos = pygame.Vector2(self.x, self.y)
-        direction = player_pos - my_pos
+        self.last_move_time = current_time
 
-        # Don't move if this move would place us on top of the player
-        direction_length = direction.length()
-        if direction_length == 0:
-            return  # Already on the player (should never happen)
+        dx = player.x - self.x
+        dy = player.y - self.y
 
-        # Calculate next tile if we move in this direction
-        move_vector = direction.normalize() * self.speed
-        target_x = round(self.x + move_vector.x)
-        target_y = round(self.y + move_vector.y)
+        # Clamp movement to at most 1 step
+        dx = max(-1, min(1, dx))
+        dy = max(-1, min(1, dy))
 
-        # Cancel move if that tile *is* the player
-        if (target_x, target_y) == (player.x, player.y):
+        target_pos = (self.x + dx, self.y + dy)
+
+        # Don't move into the player
+        if target_pos == (player.x, player.y):
             return
 
-        self.move(move_vector)
+        # Don't move if outside grid
+        if not (0 <= target_pos[0] < self.grid.cols and 0 <= target_pos[1] < self.grid.rows):
+            return
+
+        target_cell = self.grid.at(target_pos)
+        if isinstance(target_cell, MBlock):  # Don't walk into other MBlocks
+            return
+
+        self.grid.move_to(target_pos, self)
+
 
     def on_collision(self, cell):
         from level.level_load import game_instance
