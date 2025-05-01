@@ -72,7 +72,6 @@ class Enemy(Cell):
         assert self.grid and self.grid.game
 
         if isinstance(cell, Player):
-            print("Player hit a monster! OUCHIE!")
             # from level.level_load import game_instance
 
             # if game_instance.gem_count > 0:
