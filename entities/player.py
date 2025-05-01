@@ -8,6 +8,7 @@ from random import random
 from entities.char import Char
 from pygame.color import Color
 from random import randint
+from util.state import State, StateMachine
 
 from util.math import clamped_add
 
@@ -46,19 +47,21 @@ class Player(Cell):
         self.is_invisible = True
 
     def dead(self):
-        self.image = pygame.Surface((self.width, self.height), pygame.SRCALPHA)  # Reset image
-        # self.load_dos_char(42)  # asterisk character
-        self.grid.gotoxy(self.x + 1, self.y +1)
-        grid = self.grid
+        from level.level_load import game_instance
+        sm = game_instance.sm
+        grid = sm.current_state.grid
+        self.image = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
         bb = randint(0, 7) + 8
-        self.grid.write('*', True)
-        grid.col(16,16)
+        grid.gotoxy(self.x + 1, self.y + 1)
+        grid.write('*', True)
+        grid.col(16, 16)
         grid.col(bb, 7)
-        grid.print(27,1,'YOU HAVE DIED!!')
-        # grid.flash(27, 1, 'YOU HAVE DIED!!')
-        # grid.restore_border()
-        # self.col()
+        grid.print(27, 1, 'YOU HAVE DIED!!')
+        sm.current_state.pause(True)
+        grid.flash(27, 25, 'Press any key to continue.')
+        sm.current_state.pause_reason = "death"
         self.is_dead = True
+
 
     def update(self, **kwargs) -> None:
         if self.grid is None:
