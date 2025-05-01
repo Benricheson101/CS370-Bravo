@@ -249,6 +249,7 @@ class Player(Cell):
         self.play_sound_in_thread(self.sound_effects.BlockSound)
         assert self.grid and self.grid.game
 
+        from entities.mblock import MBlock
         from entities.enemy import Enemy
         if isinstance(cell, Enemy):
             self.grid.game.gem_count -= 0 if self.grid.game.gem_count <= 0 else 1
@@ -256,6 +257,9 @@ class Player(Cell):
 
             if self.grid.game.gem_count <= 0:
                 self.dead()
+        
+        elif isinstance(cell, MBlock):
+            return False
 
         return False
 

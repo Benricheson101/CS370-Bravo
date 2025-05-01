@@ -43,6 +43,7 @@ from entities.gblock import GBlock
 from entities.zblock import ZBlock
 from entities.blockspell import BlockSpell
 from entities.kroz_letter import KLetter, RLetter, OLetter, ZLetter
+from entities.mblock import MBlock
 
 
 
@@ -120,7 +121,8 @@ tile_mapping = {
     "<": KLetter,
     "[": RLetter,
     "|": OLetter,
-    '"': ZLetter
+    '"': ZLetter,
+    "M": MBlock
     }
 
 def char_to_tile(char: str, game: "Game") -> Optional["Cell"]:
@@ -250,7 +252,8 @@ def restore_level(grid: CellGrid):
         "KLetter":KLetter,
         "RLetter":RLetter,
         "OLetter":OLetter,
-        "ZLetter":ZLetter      
+        "ZLetter":ZLetter,
+        "MBlock": MBlock  
     }
 
     for entity_type, (i, j) in saved_level:
