@@ -25,10 +25,7 @@ class Block(Cell):
             from level.level_load import game_instance
 
             if not Block.has_paused_message:
-                sm = game_instance.sm
-                sm.current_state.pause(True)
-                self.grid.flash(18, 25, 'A Crumbled Wall blocks your way.')
-                sm.current_state.pause_reason = "block"
+                game_instance.sm.current_state.pause_flash(18, 25, 'A Crumbled Wall blocks your way.')
                 Block.has_paused_message = True
             if game_instance:
                 if game_instance.score > 20:

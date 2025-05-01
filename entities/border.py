@@ -16,9 +16,8 @@ class Border(Cell):
         if isinstance(cell, Player):
             from level.level_load import game_instance
             if not Border.has_paused_message:
-                sm = game_instance.sm
-                sm.current_state.pause(True)
-                self.grid.flash(16,25,'An electrified Wall blocks your way.')
-                sm.current_state.pause_reason = "border"
+                game_instance.sm.current_state.pause_flash(16,25,'An electrified Wall blocks your way.')
                 Border.has_paused_message = True
+                
+
         return False

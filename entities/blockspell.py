@@ -14,10 +14,7 @@ class BlockSpell(Cell):
             self.destroy_owalls()
             from level.level_load import game_instance
             if not BlockSpell.has_paused_message:
-                sm = game_instance.sm
-                sm.current_state.pause(True)
-                self.grid.flash(19,25,'You''ve triggered a secret area.')
-                sm.current_state.pause_reason = "blockspell"
+                game_instance.sm.current_state.pause_flash(19,25,'You''ve triggered a secret area.')
                 BlockSpell.has_paused_message = True
         return True
 

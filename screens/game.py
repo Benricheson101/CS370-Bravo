@@ -13,9 +13,6 @@ if TYPE_CHECKING:
     from game import Game
 
 class GameScreen(State):
-    RESTORE_BORDER_REASONS = {
-        "block", "blockspell", "border"
-    }
     def __init__(self, sm: StateMachine) -> None:
         super().__init__(sm)
 
@@ -70,9 +67,9 @@ class GameScreen(State):
                         self.grid.flash(15,25,'A SAVE FILE does not exist on this disk.')
                         return
                 # player interaction events
-                elif self.pause_reason == "death":
+                elif self.pause_reason == "death" or self.pause_reason == "crown":
                     self.sm.transition("shareware", wait=False)
-                elif self.pause_reason in self.RESTORE_BORDER_REASONS:
+                elif self.pause_reason == "info":
                     self.grid.restore_border() 
                  
                  

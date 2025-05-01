@@ -45,6 +45,16 @@ class State:
     def pause(self, paused: Optional[bool]):
         self.paused = not self.pause if paused is None else paused
         self._pause_until_keypress = False
+        
+    def pause_flash(self, x: int, y: int, msg: str):
+        """
+        Pauses the game and flashes a message at (x, y).
+        Restores the border when resumed.
+        """
+        self.grid.flash(x, y, msg)
+        self.pause(True)
+        self.pause_reason = "info"
+
 
 class StateMachine:
     current_state: Optional[State]
