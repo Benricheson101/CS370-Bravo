@@ -25,9 +25,9 @@ class Lava(Cell):
 
     def on_collision(self, cell: Cell) -> bool:
         if isinstance(cell, Player):
-            from level.level_load import game_instance
-            if game_instance.gem_count > 0:
-                if game_instance:  
-                    game_instance.gem_count -= 1
+            self.grid.game.gem_count -= 0 if self.grid.game.gem_count <= 0 else 1
+            if self.grid.game.gem_count <= 0:
+                cell.dead()
+            else:
                 return True
         return False
