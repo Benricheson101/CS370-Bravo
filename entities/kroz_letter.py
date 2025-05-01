@@ -11,7 +11,6 @@ class KLetter(Cell):
         
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-            print("Player hit a Kroz Letter!")
         
             #self.sound_effects.play_in_thread(self.sound_effects.GrabSound, self.fast_pc)
         
@@ -31,7 +30,6 @@ class RLetter(Cell):
         
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-            print("Player hit a Kroz Letter!")
         
             #self.sound_effects.play_in_thread(self.sound_effects.GrabSound, self.fast_pc)
         
@@ -50,7 +48,6 @@ class OLetter(Cell):
         
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-            print("Player hit a Kroz Letter!")
         
             #self.sound_effects.play_in_thread(self.sound_effects.GrabSound, self.fast_pc)
         
@@ -69,7 +66,6 @@ class ZLetter(Cell):
         
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-            print("Player hit a Kroz Letter!")
         
             #self.sound_effects.play_in_thread(self.sound_effects.GrabSound, self.fast_pc)
         
