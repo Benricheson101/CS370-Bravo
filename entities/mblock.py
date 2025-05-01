@@ -35,12 +35,21 @@ class MBlock(Enemy):
         my_pos = pygame.Vector2(self.x, self.y)
         direction = player_pos - my_pos
 
-        # Don't move if adjacent to player
-        if direction.length_squared() <= 1:
+        # Don't move if this move would place us on top of the player
+        direction_length = direction.length()
+        if direction_length == 0:
+            return  # Already on the player (should never happen)
+
+        # Calculate next tile if we move in this direction
+        move_vector = direction.normalize() * self.speed
+        target_x = round(self.x + move_vector.x)
+        target_y = round(self.y + move_vector.y)
+
+        # Cancel move if that tile *is* the player
+        if (target_x, target_y) == (player.x, player.y):
             return
 
-        direction = direction.normalize()
-        self.move(direction * self.speed)
+        self.move(move_vector)
 
     def on_collision(self, cell):
         from level.level_load import game_instance
@@ -52,7 +61,7 @@ class MBlock(Enemy):
             if game_instance.score > 20:
                 game_instance.score -= 20
                 
-            return False
+            
 
         self.sound_effects.play_in_thread(self.sound_effects.BlockSound, True)
 
