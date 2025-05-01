@@ -7,8 +7,8 @@ class Teleport_Tile(Cell):
     has_paused_message = False
     def __init__(self) -> None:
         super().__init__()
-        self.col(13,7)
-        self.load_dos_char(25)
+        self.col(7,7)
+        self.load_dos_char(249)
 
     def on_collision(self, cell: "Cell") -> bool:
         assert self.grid
