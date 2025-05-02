@@ -15,6 +15,8 @@ class Whip(Cell):
         super().__init__()
         self.col(15, 7)
         self.load_dos_char(244)
+        
+    sound_effects = SoundEffects()
     
     def on_collision(self, cell: "Cell") -> bool:
         

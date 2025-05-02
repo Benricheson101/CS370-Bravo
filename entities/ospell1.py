@@ -2,6 +2,7 @@ from renderer.cell import Cell
 from entities.player import Player
 from renderer.cell_grid import CellGrid
 from entities.owall1 import OWall1
+from Sound import SoundEffects
 
 class OSpell1(Cell):
     has_paused_message = False
@@ -10,9 +11,11 @@ class OSpell1(Cell):
         self.col(11,7)
         self.load_dos_char(127)
         
-
+    sound_effects = SoundEffects()
+        
     def on_collision(self, cell: Cell) -> bool:
         if isinstance(cell, Player):
+            self.sound_effects.GrabSound()
             self.destroy_owalls()
             from level.level_load import game_instance
             if not OSpell1.has_paused_message:

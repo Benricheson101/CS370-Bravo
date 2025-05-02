@@ -4,6 +4,7 @@ from constants import (
 )
 from renderer.cell import Cell
 from entities.player import Player
+from Sound import SoundEffects
 
 class Door(Cell):
     has_paused_message = False
@@ -12,9 +13,12 @@ class Door(Cell):
         self.bak(5,7)
         self.col(3,0)
         self.load_dos_char(236)
+        
+    sound_effects = SoundEffects()
 
     def on_collision(self, cell: Cell) -> bool:
         if isinstance(cell, Player):
+            self.sound_effects.BlockSound()
             from level.level_load import game_instance
             if game_instance:
                 if game_instance.key_count > 0:

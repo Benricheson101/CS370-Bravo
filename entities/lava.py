@@ -16,6 +16,7 @@ be obtained as well.
 from renderer.cell import Cell
 from constants import RED
 from entities.player import Player
+from Sound import SoundEffects
 
 
 class Lava(Cell):
@@ -23,9 +24,12 @@ class Lava(Cell):
     def __init__(self):
         super().__init__()
         self.load_dos_char(178, RED)
+        
+    sound_effects = SoundEffects()
 
     def on_collision(self, cell: Cell) -> bool:
         if isinstance(cell, Player):
+            self.sound_effects.BlockSound()
             from level.level_load import game_instance
             if not Lava.has_paused_message:
                 game_instance.sm.current_state.pause_flash(8,25,'Oooooooooooooooooooh!  Lava hurts!  (Lose 10 Gems.)')

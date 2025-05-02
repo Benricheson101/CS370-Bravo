@@ -11,8 +11,11 @@ class Crown(Cell):
         self.col(15, 15)
         self.load_dos_char(5)
 
+    sound_effects = SoundEffects()
+
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
+            self.sound_effects.intr_descent()
             print('The Crown is finally yours--25,000 points!')
             from level.level_load import game_instance
             if not Crown.has_paused_message:

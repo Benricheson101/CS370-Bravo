@@ -1,6 +1,7 @@
 from constants import LIGHTRED
 from entities.player import Player
 from renderer.cell import Cell
+from Sound import SoundEffects
 
 
 
@@ -10,9 +11,12 @@ class Key(Cell):
         super().__init__()
         self.col(12,15)
         self.load_dos_char(140)
+        
+    sound_effects = SoundEffects()
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
+            self.sound_effects.GrabSound()
             print('Use Keys to unlock doors.')
             from level.level_load import game_instance
             if not Key.has_paused_message:

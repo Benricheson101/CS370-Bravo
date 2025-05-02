@@ -3,6 +3,7 @@ from typing import Optional
 from entities.player import Player
 from renderer.cell import Cell
 from renderer.cell_grid import CellGrid
+from Sound import SoundEffects
 
 SAFE_IDS = {0, 32, 55, 56, 57}  # IDs considered safe to teleport onto
 
@@ -15,9 +16,12 @@ class Tunnel(Cell):
         self.grid: Optional[CellGrid] = None
         self.col(15, 7)
         self.load_dos_char(239)
+        
+    sound_effects = SoundEffects()
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
+            self.sound_effects.intr_low()
             if not self.grid:
                 return False
 

@@ -2,15 +2,19 @@ from renderer.cell import Cell
 from entities.player import Player
 from renderer.cell_grid import CellGrid
 from entities.cwall1 import CWall1
+from Sound import SoundEffects
 
 class CSpell1(Cell):
     has_paused_message = False
     def __init__(self) -> None:
         super().__init__()
         self.load_dos_char(0)
+        
+    sound_effects = SoundEffects()
 
     def on_collision(self, cell: Cell) -> bool:
         if isinstance(cell, Player):
+            self.sound_effects.GrabSound()
             self.reveal_cwalls()
             from level.level_load import game_instance
             if not CSpell1.has_paused_message:
