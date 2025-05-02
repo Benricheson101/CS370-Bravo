@@ -7,7 +7,7 @@ level_data = {
         '       66*T*T*66       1       +  1 ##1111111111111111111111##1 ',
         '    +  66T*T*T66 +                  ##----------------------##  ',
         '  1    666666666         +          ##XXXXX#############  XX## +',
-        '                    1           1   ##88888888888888K.##  XZ##  ',
+        '                    1           1   ##888888888~8888K.##  XZ##  ',
         '       1                            ####################  XX##+ ',
         '                  +                        1    77ô##)))))))##  ',
         '##### 1    RRRRR            1      1            777##W##1)))## 1',
@@ -257,7 +257,7 @@ level_data = {
         "-RU-XXXX3333-TKR-R-R*R+3-2-2-1-1-RCR-RR<þþþþþþþþþ|RR...RR-*2RRKR",
         "-RRRRRRRRRRRRRRR-R-R-R+3-2-2-1-1-R R-RRRRRRR-RRRRRRR   RR-RRRRRR",
         "-----------------R-R--+3-2-2-1-1-  R-RRMMMMMMMMM       RR-----RR",
-        "-RRRRRRRRRRRRRRRR-R--+3-2-2-1-1-  R-RRRRRRRRRRRRRRRR RRRRRRR-RR",
+        "-RRRRRRRRRRRRRRRR-R--+3-2-2-1-1-  R-RRRRRRRRRRRRRRRR RRRRRRR~RR",
         "-RR3333333333333RR-R-R+3-2-2-1-1-R RM              RR        -RR",
         "-RR5555555555555RR-RKR+3-2-2-1-1-R-RRRRRRRRRRRRR R-RRRRRRRRRR-RR",
         "---+--+--+--+--ò---RRRRRRRRRRRRRRR-M             R------------RR"

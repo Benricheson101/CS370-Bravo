@@ -346,7 +346,7 @@ class CellGrid:
                     fg=self.fg[0],
                     bg=self.bg[0],
                     flash=flash,
-                    blink=self.blink
+                    blink= False if flash else self.blink
                 )
             ) # TODO: monochrome mode
 

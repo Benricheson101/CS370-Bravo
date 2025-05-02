@@ -54,10 +54,11 @@ class Player(Cell):
         bb = randint(0, 7) + 8
         grid.gotoxy(self.x + 1, self.y + 1)
         grid.write('*', True)
+        grid.bak(bb, 7)
         grid.col(16, 16)
-        grid.col(bb, 7)
         grid.print(27, 1, 'YOU HAVE DIED!!')
         sm.current_state.pause(True)
+        grid.bak(0, 0)
         grid.flash(22, 25, 'Press any key to continue.')
         sm.current_state.pause_reason = "death"
         self.is_dead = True
