@@ -16,7 +16,7 @@ class Key(Cell):
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-            self.sound_effects.GrabSound()
+            self.sound_effects.GrabSound(FastPC=True)
             print('Use Keys to unlock doors.')
             from level.level_load import game_instance
             if not Key.has_paused_message:

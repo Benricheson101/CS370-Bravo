@@ -13,7 +13,7 @@ class IBlock(Block):
 
     def on_collision(self, cell: Cell) -> bool:
         if isinstance(cell, Player) and self.is_invisible:
-            self.sound_effects.BlockSound()
+            self.sound_effects.BlockSound(FastPC=True)
             self.load_dos_char(178)  # Reveal wall on collision
             self.is_invisible = False
             from level.level_load import game_instance

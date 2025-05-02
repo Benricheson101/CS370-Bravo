@@ -53,7 +53,7 @@ class SoundEffects:
                     self.delay(delay_length)
                     self.nosound()  # Stop previous sound before playing new one
         except Exception as e:
-            print(f"Error in play method: {e}")
+            #print(f"Error in play method: {e}")
             self.nosound()
             
     def buzz_burst(self, freq, duration=0.005):
@@ -78,7 +78,7 @@ class SoundEffects:
             self.delay(100)       # Wait for 100ms
             self.nosound()        # Stop the sound
         except Exception as e:
-            print(f"Error in low_beep method: {e}")
+            #print(f"Error in low_beep method: {e}")
             self.nosound()
             
     def intr_middle(self):
@@ -88,7 +88,7 @@ class SoundEffects:
             self.delay(100)       # Wait for 100ms
             self.nosound()        # Stop the sound
         except Exception as e:
-            print(f"Error in low_beep method: {e}")
+            #print(f"Error in low_beep method: {e}")
             self.nosound()
             
     def intr_high(self):
@@ -98,7 +98,7 @@ class SoundEffects:
             self.delay(100)       # Wait for 100ms
             self.nosound()        # Stop the sound
         except Exception as e:
-            print(f"Error in low_beep method: {e}")
+            #print(f"Error in low_beep method: {e}")
             self.nosound()
             
     def intr_continue(self):
@@ -118,7 +118,7 @@ class SoundEffects:
                     self.delay(1)  
             self.nosound()  # Stop all sounds at the end
         except Exception as e:
-            print(f"Error in descent_sound method: {e}")
+            #print(f"Error in descent_sound method: {e}")
             self.nosound()
     
     ####################In Game Sounds###########################################       
@@ -140,7 +140,7 @@ class SoundEffects:
             
             self.nosound()
         except Exception as e:
-            print(f"FootStep error: {e}")
+            #print(f"FootStep error: {e}")
             self.nosound()
             
     def GrabSound(self, FastPC):
@@ -153,7 +153,7 @@ class SoundEffects:
                 self.delay(3)
                 self.nosound()
         except Exception as e:
-            print(f"Error in GrabSound method: {e}")
+            #print(f"Error in GrabSound method: {e}")
             self.nosound()
             
     def BlockSound(self, FastPC):
@@ -164,10 +164,10 @@ class SoundEffects:
                 self.delay(1 + int(FastPC) * 2)
                 self.nosound()
         except Exception as e:
-            print(f"Error in BlockSound method: {e}")
+            #print(f"Error in BlockSound method: {e}")
             self.nosound()
             
-    def NoneSound(self):
+    def NoneSound(self, FastPC):
         """Generate 'none' sound effect."""
         try:
             for x in range(1, 5):
@@ -180,7 +180,7 @@ class SoundEffects:
             self.nosound()
             self.delay(5)
         except Exception as e:
-            print(f"Error in NoneSound method: {e}")
+            #print(f"Error in NoneSound method: {e}")
             self.nosound()
             
     def chest_opening_sound(self):
@@ -213,12 +213,12 @@ class SoundEffects:
             
             self.nosound()
         except Exception as e:
-            print(f"Error in Static method: {e}")
+            #print(f"Error in Static method: {e}")
             self.nosound()
 
     def play_in_thread(self, sound_method, *args):
         """Plays any sound method in a separate thread."""
-        print(f"Starting thread for {sound_method.__name__}")
+        #print(f"Starting thread for {sound_method.__name__}")
         thread = threading.Thread(target=sound_method, args=args)
         thread.daemon = True
         thread.start()

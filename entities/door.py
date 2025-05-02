@@ -18,7 +18,7 @@ class Door(Cell):
 
     def on_collision(self, cell: Cell) -> bool:
         if isinstance(cell, Player):
-            self.sound_effects.BlockSound()
+            self.sound_effects.BlockSound(FastPC=True)
             from level.level_load import game_instance
             if game_instance:
                 if game_instance.key_count > 0:

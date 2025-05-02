@@ -26,7 +26,7 @@ class ShowGems(Cell):
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player) and self.grid:
             show_gems(self.grid)
-            self.sound_effects.GrabSound()
+            self.sound_effects.GrabSound(FastPC=True)
             from level.level_load import game_instance
             if not ShowGems.has_paused_message:
                 game_instance.sm.current_state.pause_flash(8,25,'Yah Hoo! You discovered a hidden Reveal Gems Scroll!')
