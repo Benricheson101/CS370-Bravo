@@ -141,7 +141,7 @@ class Scoreboard(CellGrid):
         super().update()
 
         map = {
-            2: self.game.score * 10,
+            2: self.game.score,
             5: self.game.current_level,
             8: self.game.gem_count,
             11: self.game.whip_count,

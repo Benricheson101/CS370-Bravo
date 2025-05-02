@@ -6,3 +6,4 @@ venv/
 *.pkl
 /build/
 /*dist
+/highscore.json
