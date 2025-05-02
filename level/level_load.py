@@ -240,7 +240,7 @@ def restore_level(grid: CellGrid):
         "Forest": Forest,
         "Tree": Tree,
         "Power": Power,
-         "Tunnel": Tunnel,
+        "Tunnel": Tunnel,
         "Crown": Crown,
         "OWall1": OWall1,
         "OWall2": OWall2,
