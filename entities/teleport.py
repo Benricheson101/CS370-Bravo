@@ -1,6 +1,7 @@
 from constants import LIGHTMAGENTA
 from entities.player import Player
 from renderer.cell import Cell
+from Sound import SoundEffects
 
 
 class Teleport(Cell):

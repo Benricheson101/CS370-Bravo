@@ -2,6 +2,7 @@ from pygame import Color
 from constants import WHITE
 from entities.player import Player
 from renderer.cell import Cell
+from Sound import SoundEffects
 
 class Crown(Cell):
     has_paused_message = False

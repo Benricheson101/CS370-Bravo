@@ -16,6 +16,7 @@ from renderer.cell import Cell
 from entities.enemy import Enemy
 from entities.enemy_medium import Enemy_Medium
 from entities.enemy_hard import Enemy_Hard
+from Sound import SoundEffects
 
 class Spell_Zap(Cell):
     has_paused_message = False
