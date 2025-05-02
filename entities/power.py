@@ -2,6 +2,7 @@ from pygame import Color
 from constants import WHITE
 from entities.player import Player
 from renderer.cell import Cell
+from Sound import SoundEffects
 
 class Power(Cell):
     has_paused_message = False
@@ -9,9 +10,12 @@ class Power(Cell):
         super().__init__()
         self.col(15, 7)
         self.load_dos_char(9)
+        
+    sound_effects = SoundEffects()
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
+            self.sound_effects.GrabSound()
             from level.level_load import game_instance
             if not Power.has_paused_message:
                 game_instance.sm.current_state.pause_flash(22,25,'An increase Whip Power Ring!')

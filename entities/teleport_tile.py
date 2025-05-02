@@ -1,6 +1,7 @@
 from constants import LIGHTMAGENTA
 from entities.player import Player
 from renderer.cell import Cell
+from Sound import SoundEffects
 
 
 class Teleport_Tile(Cell):
@@ -9,10 +10,13 @@ class Teleport_Tile(Cell):
         super().__init__()
         self.col(7,7)
         self.load_dos_char(249)
+        
+    sound_effects = SoundEffects()
 
     def on_collision(self, cell: "Cell") -> bool:
         assert self.grid
         if isinstance(cell, Player):
+            self.sound_effects.GrabSound()
             from level.level_load import game_instance
             if not Teleport_Tile.has_paused_message:
                 game_instance.sm.current_state.pause_flash(19,25,'You activated a Teleport trap!')

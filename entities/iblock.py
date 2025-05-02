@@ -1,15 +1,19 @@
 from entities.block import Block
 from renderer.cell import Cell
 from entities.player import Player
+from Sound import SoundEffects
 
 class IBlock(Block):
     def __init__(self) -> None:
         super().__init__()
         self.image.fill((0, 0, 0, 0))   # for some reason dos_character(0) didn't work here
         self.is_invisible = True  # Track invisibility state
+        
+    sound_effects = SoundEffects()
 
     def on_collision(self, cell: Cell) -> bool:
         if isinstance(cell, Player) and self.is_invisible:
+            self.sound_effects.BlockSound()
             self.load_dos_char(178)  # Reveal wall on collision
             self.is_invisible = False
             from level.level_load import game_instance

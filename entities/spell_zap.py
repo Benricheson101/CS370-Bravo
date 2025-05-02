@@ -24,10 +24,12 @@ class Spell_Zap(Cell):
         super().__init__()
         self.col(12,7)
         self.load_dos_char(30)
+        
+    sound_effects = SoundEffects()
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-            self.sound_effects.grabsoudn()
+            self.sound_effects.GrabSound()
             from level.level_load import game_instance
             if not Spell_Zap.has_paused_message:
                 game_instance.sm.current_state.pause_flash(25,25,'A Creature Zap Spell!')

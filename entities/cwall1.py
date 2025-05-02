@@ -2,6 +2,7 @@ from entities.wall import Wall
 from renderer.cell import Cell
 from entities.player import Player
 from constants import COLORS
+from Sound import SoundEffects
 
 class CWall1(Wall):
     def __init__(self, color: int = 6) -> None:
@@ -9,6 +10,8 @@ class CWall1(Wall):
         self.color = color
         self.image.fill((0, 0, 0, 0))
         self.is_invisible = True
+        
+    sound_effects = SoundEffects()
 
     def reveal(self):
         self.is_invisible = False
@@ -19,4 +22,5 @@ class CWall1(Wall):
             self.visible = True
 
     def on_collision(self, cell: Cell) -> bool:
+        self.sound_effects.BlockSound()
         return self.is_invisible  # passable when invisible

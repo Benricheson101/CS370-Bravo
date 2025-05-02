@@ -2,15 +2,19 @@ from renderer.cell import Cell
 from entities.player import Player
 from renderer.cell_grid import CellGrid
 from entities.zblock import ZBlock
+from Sound import SoundEffects
 
 class BlockSpell(Cell):
     has_paused_message = False
     def __init__(self) -> None:
         super().__init__()
         self.load_dos_char(0)
+        
+    sound_effects = SoundEffects()
 
     def on_collision(self, cell: Cell) -> bool:
         if isinstance(cell, Player):
+            self.sound_effects.GrabSound()
             self.destroy_owalls()
             from level.level_load import game_instance
             if not BlockSpell.has_paused_message:

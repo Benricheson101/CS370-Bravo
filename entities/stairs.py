@@ -1,5 +1,6 @@
 from entities.player import Player
 from renderer.cell import Cell
+from Sound import SoundEffects
 
 class Stairs(Cell):
     has_paused_message = False
@@ -8,9 +9,12 @@ class Stairs(Cell):
         self.bak(7, 7)
         self.col(16, 16)
         self.load_dos_char(240)
+        
+    sound_effects = SoundEffects()
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
+            self.sound_effects.intr_middlet()
             from level.level_load import game_instance
             if not Stairs.has_paused_message:
                 game_instance.sm.current_state.pause_flash(14,25,'Stairs take you to the next lower level.')
@@ -32,6 +36,7 @@ class Stairs(Cell):
             game_screen.load_current_level()
 
             game_instance.sm.current_state.enter()
+            #sound
             return False
 
         return False
