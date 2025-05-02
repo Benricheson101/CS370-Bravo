@@ -55,6 +55,19 @@ class SoundEffects:
         except Exception as e:
             print(f"Error in play method: {e}")
             self.nosound()
+            
+    def buzz_burst(self, freq, duration=0.005):
+        """Emulate harsh PC speaker buzz at a given frequency and duration."""
+        sample_rate = 44100
+        t = np.linspace(0, duration, int(sample_rate * duration), False)
+        wave = 0.5 * np.sign(np.sin(2 * np.pi * freq * t))  # square wave
+        audio_data = (wave * 32767).astype(np.int16)
+        stereo_audio = np.column_stack((audio_data, audio_data))
+
+        sound = pygame.sndarray.make_sound(stereo_audio)
+        sound.play()
+        pygame.time.delay(int(duration * 1000))  # Ensures buzz is audible
+        sound.stop()
     
     ###################Title and Intro Sounds###################################
     
@@ -169,6 +182,13 @@ class SoundEffects:
         except Exception as e:
             print(f"Error in NoneSound method: {e}")
             self.nosound()
+            
+    def chest_opening_sound(self):
+        """Play the Pascal-style chest sound."""
+        for xb in range(3, 43):
+            for yb in range(3, 43):
+                freq = xb * yb
+                self.buzz_burst(freq, 0.003) 
             
             
     def Static(self):

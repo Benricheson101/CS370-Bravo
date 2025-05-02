@@ -18,7 +18,7 @@ class Whip(Cell):
     def on_collision(self, cell: "Cell") -> bool:
         
         if isinstance(cell, Player):
-            # self.sound_effects.play_in_thread(self.sound_effects.GrabSound, self.fast_pc)
+            self.sound_effects.play_in_thread(self.sound_effects.GrabSound, self.fast_pc)
             from level.level_load import game_instance
             if not Whip.has_paused_message:
                 game_instance.sm.current_state.pause_flash(26,25,'You found a Whip.')
