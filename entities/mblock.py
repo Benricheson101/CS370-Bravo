@@ -69,10 +69,7 @@ class MBlock(Enemy):
             if self.grid:
                 self.grid.remove((self.x, self.y))  # Remove Block
             return False
-        return False
                 
-            
-
         self.sound_effects.play_in_thread(self.sound_effects.BlockSound, True)
 
         # Whip and enemy logic (destroy self)
