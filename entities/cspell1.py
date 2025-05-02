@@ -14,7 +14,7 @@ class CSpell1(Cell):
 
     def on_collision(self, cell: Cell) -> bool:
         if isinstance(cell, Player):
-            self.sound_effects.GrabSound()
+            self.sound_effects.GrabSound(FastPC=True)
             self.reveal_cwalls()
             from level.level_load import game_instance
             if not CSpell1.has_paused_message:

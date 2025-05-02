@@ -14,13 +14,12 @@ class Block(Cell):
         super().__init__()
         self.col(6,7)
         self.load_dos_char(178)
-        #SOUND
         self.fast_pc = False
         
     def is_breakable_wall(self): return True
 
     def on_collision(self, cell: "Cell") -> bool:
-        
+        self.sound_effects.BlockSound(FastPC=True)
         if isinstance(cell, Player):
             from level.level_load import game_instance
 

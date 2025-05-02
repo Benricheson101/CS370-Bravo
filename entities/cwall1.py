@@ -22,5 +22,5 @@ class CWall1(Wall):
             self.visible = True
 
     def on_collision(self, cell: Cell) -> bool:
-        self.sound_effects.BlockSound()
+        self.sound_effects.BlockSound(FastPC=True)
         return self.is_invisible  # passable when invisible

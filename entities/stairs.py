@@ -14,7 +14,7 @@ class Stairs(Cell):
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-            self.sound_effects.intr_middlet()
+            self.sound_effects.intr_middle()
             from level.level_load import game_instance
             if not Stairs.has_paused_message:
                 game_instance.sm.current_state.pause_flash(14,25,'Stairs take you to the next lower level.')

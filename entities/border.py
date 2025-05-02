@@ -17,7 +17,7 @@ class Border(Cell):
     def on_collision(self, cell: "Cell") -> bool:
         from entities.player import Player
         if isinstance(cell, Player):
-            self.sound_effects.BlockSound()
+            self.sound_effects.NoneSound(FastPC=True)
             from level.level_load import game_instance
             if not Border.has_paused_message:
                 game_instance.sm.current_state.pause_flash(16,25,'An electrified Wall blocks your way.')

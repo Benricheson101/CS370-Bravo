@@ -14,7 +14,7 @@ class BlockSpell(Cell):
 
     def on_collision(self, cell: Cell) -> bool:
         if isinstance(cell, Player):
-            self.sound_effects.GrabSound()
+            self.sound_effects.GrabSound(FastPC=True)
             self.destroy_owalls()
             from level.level_load import game_instance
             if not BlockSpell.has_paused_message:

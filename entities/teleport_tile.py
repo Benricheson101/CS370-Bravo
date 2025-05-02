@@ -16,7 +16,7 @@ class Teleport_Tile(Cell):
     def on_collision(self, cell: "Cell") -> bool:
         assert self.grid
         if isinstance(cell, Player):
-            self.sound_effects.GrabSound()
+            self.sound_effects.GrabSound(FastPC=True)
             from level.level_load import game_instance
             if not Teleport_Tile.has_paused_message:
                 game_instance.sm.current_state.pause_flash(19,25,'You activated a Teleport trap!')

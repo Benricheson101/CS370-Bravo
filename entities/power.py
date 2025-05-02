@@ -15,7 +15,7 @@ class Power(Cell):
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-            self.sound_effects.GrabSound()
+            self.sound_effects.GrabSound(FastPC=True)
             from level.level_load import game_instance
             if not Power.has_paused_message:
                 game_instance.sm.current_state.pause_flash(22,25,'An increase Whip Power Ring!')

@@ -14,7 +14,7 @@ class KLetter(Cell):
         
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-            self.sound_effects.GrabSound()
+            self.sound_effects.GrabSound(FastPC=True)
             from level.level_load import game_instance
             if game_instance:
                 game_instance.score += 2000
@@ -29,11 +29,11 @@ class RLetter(Cell):
         self.col(14, 7)
         self.load_dos_char(82)
         
+    sound_effects = SoundEffects()
+        
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-        
-            #self.sound_effects.play_in_thread(self.sound_effects.GrabSound, self.fast_pc)
-        
+            self.sound_effects.GrabSound(FastPC=True)
             from level.level_load import game_instance
             if game_instance:
                 game_instance.score += 2000
@@ -47,11 +47,11 @@ class OLetter(Cell):
         self.col(14, 7)
         self.load_dos_char(79)
         
+    sound_effects = SoundEffects()
+        
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-        
-            #self.sound_effects.play_in_thread(self.sound_effects.GrabSound, self.fast_pc)
-        
+            self.sound_effects.GrabSound(FastPC=True)
             from level.level_load import game_instance
             if game_instance:
                 game_instance.score += 2000
@@ -65,11 +65,11 @@ class ZLetter(Cell):
         self.col(14, 7)
         self.load_dos_char(90)
         
+    sound_effects = SoundEffects()
+        
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player):
-        
-            #self.sound_effects.play_in_thread(self.sound_effects.GrabSound, self.fast_pc)
-        
+            self.sound_effects.GrabSound(FastPC=True)
             from level.level_load import game_instance
             if game_instance:
                 game_instance.score += 2000
