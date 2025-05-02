@@ -329,6 +329,7 @@ class CellGrid:
         self.cur_pos = (0, self.cur_pos[1] + 1)
 
     def write(self, msg: str, flash: bool = False):
+        msg = str(msg)
         start = self.cur_pos[0]
         end = self.cur_pos[0] + len(msg)
 

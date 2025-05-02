@@ -17,6 +17,7 @@ from constants import (
 from level.level_load import set_game_instance
 from screens.difficulty import DifficultyScreen
 from screens.game import GameScreen
+from screens.highscore import HighScoreScreen
 from screens.instructions import InstructionsPage1, InstructionsPage2
 from screens.main_menu import MainMenuScreen
 from screens.marketing import MarketingScreen
@@ -54,7 +55,7 @@ class Game:
         self.screen.fill(LIGHTGRAY)
         pygame.time.set_timer(BLINK_EVENT, 333)
         pygame.time.set_timer(FLASH_EVENT, 1_000 // 30)
-        
+
         # Load DOS sprite image ahead of time
         dos_sprites()
 
@@ -63,26 +64,22 @@ class Game:
         self.clock = pygame.time.Clock()
 
         # Score/Item tracking
-        self.score = 0
-        self.key_count = 0
-        self.gem_count = 0
-        self.whip_count = 0
-        self.teleport_count = 0 # needs to be fixed
-        self.whip_power = 2 # Initial power
 
         self.gem_color, self.art_color = new_gem_color()
 
         self.difficulty = 8
-        self.current_level = 21
+        self.current_level = 1
         self.color = True
         self.fastpc = True
 
         set_game_instance(self)
 
         self.sm = StateMachine(self)
+        self.reset_game()
+
         self.sm.add_state("main_menu", MainMenuScreen(self.sm))
         self.sm.add_state("difficulty", DifficultyScreen(self.sm))
-        self.sm.add_state("game", GameScreen(self.sm))
+        # self.sm.add_state("game", GameScreen(self.sm))
         self.sm.add_state("instructions_1", InstructionsPage1(self.sm))
         self.sm.add_state("instructions_2", InstructionsPage2(self.sm))
         self.sm.add_state("marketing", MarketingScreen(self.sm))
@@ -90,8 +87,22 @@ class Game:
         self.sm.add_state("original_kroz_trilogy", OriginalKrozTrilogyScreen(self.sm))
         self.sm.add_state("color_menu", ColorMenu(self.sm))
         self.sm.add_state("shareware", SharewareScreen(self.sm))
+        self.sm.add_state("highscore", HighScoreScreen(self.sm))
         # set initial scene. since the menus are really slow and annoying to get through, set env KROZ_SKIP_MENUS=1 to skip straight to the game
         self.sm.transition("game" if environ.get("KROZ_SKIP_MENUS") else "color_menu")
+
+    def reset_game(self):
+        self.score = 0
+        self.key_count = 0
+        self.gem_count = 0
+        self.whip_count = 0
+        self.teleport_count = 0 # needs to be fixed
+        self.whip_power = 2
+        self.current_level = 1
+
+        if "game" in self.sm.states:
+            del self.sm.states["game"]
+        self.sm.add_state("game", GameScreen(self.sm))
 
     def run(self):
         while self.running:

@@ -68,13 +68,13 @@ class GameScreen(State):
                         return
                 # player interaction events
                 elif self.pause_reason == "death" or self.pause_reason == "crown":
-                    self.sm.transition("shareware", wait=False)
+                    self.sm.transition("highscore", play_again=self.pause_reason != "crown")
                 elif self.pause_reason == "info":
-                    self.grid.restore_border() 
-                 
-                 
-                    
-                    
+                    self.grid.restore_border()
+
+
+
+
 
                 self.grid.restore_border()
                 self.pause(False)
@@ -141,7 +141,7 @@ class Scoreboard(CellGrid):
         super().update()
 
         map = {
-            2: self.game.score,
+            2: self.game.score * 10,
             5: self.game.current_level,
             8: self.game.gem_count,
             11: self.game.whip_count,
