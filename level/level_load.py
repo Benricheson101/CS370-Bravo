@@ -46,6 +46,7 @@ from entities.kroz_letter import KLetter, RLetter, OLetter, ZLetter
 from entities.mblock import MBlock
 from entities.teleport_tile import Teleport_Tile
 from entities.chest import Chest
+from entities.clone_tile import CloneTile
 
 
 
@@ -126,7 +127,9 @@ tile_mapping = {
     '"': ZLetter,
     "M": MBlock,
     ".": Teleport_Tile,
-    "C": Chest
+    "C": Chest,
+    "A": Crown,
+    "~": CloneTile
     }
 
 def char_to_tile(char: str, game: "Game") -> Optional["Cell"]:
@@ -259,7 +262,10 @@ def restore_level(grid: CellGrid):
         "ZLetter":ZLetter,
         "MBlock": MBlock,
         "Teleport_Tile": Teleport_Tile,
-        "Chest": Chest
+        "Chest": Chest,
+        "Crown": Crown,
+        "Power": Power,
+        "CloneTile": CloneTile
     }
 
     for entity_type, (i, j) in saved_level:
