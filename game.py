@@ -77,9 +77,21 @@ class Game:
         self.sm = StateMachine(self)
         self.reset_game()
 
+        if environ.get("KROZ_SKIP_MENUS"):
+            self.score = 50
+            self.gem_count = 5
+            self.difficulty = 8
+            self.whip_count = 5
+            self.sm.transition("game")
+        else:
+            self.sm.transition("color_menu")
+
+    def load_states(self, clear: bool = False):
+        if clear:
+            self.sm.states.clear()
         self.sm.add_state("main_menu", MainMenuScreen(self.sm))
         self.sm.add_state("difficulty", DifficultyScreen(self.sm))
-        # self.sm.add_state("game", GameScreen(self.sm))
+        self.sm.add_state("game", GameScreen(self.sm))
         self.sm.add_state("instructions_1", InstructionsPage1(self.sm))
         self.sm.add_state("instructions_2", InstructionsPage2(self.sm))
         self.sm.add_state("marketing", MarketingScreen(self.sm))
@@ -88,8 +100,6 @@ class Game:
         self.sm.add_state("color_menu", ColorMenu(self.sm))
         self.sm.add_state("shareware", SharewareScreen(self.sm))
         self.sm.add_state("highscore", HighScoreScreen(self.sm))
-        # set initial scene. since the menus are really slow and annoying to get through, set env KROZ_SKIP_MENUS=1 to skip straight to the game
-        self.sm.transition("game" if environ.get("KROZ_SKIP_MENUS") else "color_menu")
 
     def reset_game(self):
         self.score = 0
@@ -99,10 +109,7 @@ class Game:
         self.teleport_count = 0 # needs to be fixed
         self.whip_power = 2
         self.current_level = 1
-
-        if "game" in self.sm.states:
-            del self.sm.states["game"]
-        self.sm.add_state("game", GameScreen(self.sm))
+        self.load_states(True)
 
     def run(self):
         while self.running:
