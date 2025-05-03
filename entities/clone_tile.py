@@ -9,6 +9,7 @@ def spawn_random_player(grid: CellGrid):
     grid.put((x, y), Clone())
 
 class CloneTile(Cell):
+    has_paused_message = False
     def __init__(self) -> None:
         super().__init__()
         self.col(2, 7)
@@ -16,8 +17,11 @@ class CloneTile(Cell):
 
     def on_collision(self, cell: "Cell") -> bool:
         if isinstance(cell, Player) and self.grid:
-            print('Wow, you just cloned yourself!')
             spawn_random_player(self.grid)
+            from level.level_load import game_instance
+            if not CloneTile.has_paused_message:
+                game_instance.sm.current_state.pause_flash(18,25,'Wow, you just cloned yourself!')
+                CloneTile.has_paused_message = True
         
             return True
         return False
