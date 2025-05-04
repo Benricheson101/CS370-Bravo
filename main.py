@@ -1,3 +1,5 @@
+import sys
+
 if __name__ == "__main__":
     import pygame
     import sys
@@ -18,4 +20,4 @@ if __name__ == "__main__":
     game.run()
 
     pygame.quit()
- 
+

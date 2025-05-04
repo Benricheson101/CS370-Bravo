@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING
 from pygame import Surface
 from constants import BLACK, BLUE, GAME_GRID_COLS, GAME_GRID_ROWS, GAME_GRID_WIDTH, GRID_CELL_WIDTH, SCOREBOARD_GRID_COLS, SCOREBOARD_GRID_ROWS
 from renderer.cell_grid import CellGrid
+from util.path import exe_rel
 from util.state import State, StateMachine
 
 import pygame
@@ -61,7 +62,7 @@ class GameScreen(State):
                     save_level(self.grid)
                 elif event.key == pygame.K_y and self.pause_reason == "restore":
                     import os
-                    if os.path.exists("level/level.pkl"):
+                    if os.path.exists(exe_rel("level.pkl")):
                         restore_level(self.grid)
                     else:
                         self.grid.flash(15,25,'A SAVE FILE does not exist on this disk.')

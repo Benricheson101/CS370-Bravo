@@ -47,6 +47,7 @@ from entities.mblock import MBlock
 from entities.teleport_tile import Teleport_Tile
 from entities.chest import Chest
 from entities.clone_tile import CloneTile
+from util.path import exe_rel
 
 
 
@@ -149,7 +150,7 @@ def char_to_tile(char: str, game: "Game") -> Optional["Cell"]:
         return Tile()
     elif char.isalnum() and char.islower():
         return Char(char.upper(), fg=WHITE, bg=BROWN)
-    
+
 
 def load_level(game: "Game", grid: CellGrid, level_num: int):
     for i, row in enumerate(level_data[f"level_{level_num}"]):
@@ -167,10 +168,10 @@ def save_level(grid: CellGrid):
             if entity is not None:
                 entity_type = entity.__class__.__name__
                 saved_level.append((entity_type, (i, j)))  # save positions
-                
+
                 if entity_type == "Player":
                     player_pos = (j, i) # save separately
-    
+
     save_data = {
         "level_data": saved_level,
         "player_pos": player_pos,
@@ -183,7 +184,7 @@ def save_level(grid: CellGrid):
         "whip_power": game_instance.whip_power,
         "difficulty": game_instance.difficulty
     }
-    with open("level/level.pkl", "wb") as f:
+    with open(exe_rel("level.pkl"), "wb") as f:
         pickle.dump(save_data, f)
 
 
@@ -200,9 +201,9 @@ def del_level(grid: CellGrid):
 
 def restore_level(grid: CellGrid):
     grid.clrscr()
-    with open("level/level.pkl", "rb") as f:
+    with open(exe_rel("level.pkl"), "rb") as f:
         save_data = pickle.load(f)
-        
+
     # Restore score and items
     game_instance.score = save_data.get("score", 0)
     game_instance.current_level = save_data.get("current_level", 1)
@@ -212,7 +213,7 @@ def restore_level(grid: CellGrid):
     game_instance.teleport_count = save_data.get("teleport_count", 0)
     game_instance.whip_power = save_data.get("whip_power", 2)
     game_instance.difficulty = save_data.get("difficulty", 8)
-    
+
     saved_level = save_data["level_data"]
     entity_classes = {
         "Player": Player,
@@ -231,9 +232,9 @@ def restore_level(grid: CellGrid):
         "Nugget": Nugget,
         "River": River,
         "ShowGems": ShowGems,
-        "Spell_Freeze": Spell_Freeze,    
-        "Spell_Zap": Spell_Zap,         
-        "Lava": Lava, 
+        "Spell_Freeze": Spell_Freeze,
+        "Spell_Zap": Spell_Zap,
+        "Lava": Lava,
         "IWall": IWall,
         "IBlock": IBlock,
         "CWall1": CWall1,
@@ -275,14 +276,14 @@ def restore_level(grid: CellGrid):
             else:
                 entity = entity_classes[entity_type]()
             grid.put((j, i), entity)  # no +1 now
-            
+
             if entity_type == "Player":
                     game_instance.player = entity
-                    
+
     player_pos = save_data.get("player_pos")
     if player_pos and game_instance.player:
         game_instance.player.x, game_instance.player.y = player_pos
-                
+
     grid.border()
     grid._flip_blink()
 

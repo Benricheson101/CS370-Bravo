@@ -8,6 +8,7 @@ from pygame.event import Event
 from constants import BLACK, GAME_GRID_COLS, GAME_GRID_ROWS
 from renderer.cell_grid import CellGrid
 from screens.game import Scoreboard
+from util.path import exe_rel
 from util.state import State, StateMachine
 
 # high scores are stored in return.hs using JSON: [{name: string; high_score: int; high_level: int}]
@@ -71,7 +72,7 @@ class HighScoreScreen(State):
 
                 self.is_typing = False
                 self.current["name"] = self.typed
-                with open("./highscore.json", "w") as f:
+                with open(exe_rel("./highscore.json"), "w") as f:
                     f.write(
                         json.dumps(
                             [s for s in self.high_scores if s["high_score" ]> 0]
@@ -110,7 +111,7 @@ class HighScoreScreen(State):
         print("play again:", self.play_again)
 
         try:
-            with open("./highscore.json", "r") as f:
+            with open(exe_rel("./highscore.json"), "r") as f:
                 high_scores = json.loads(f.read()) + BLANK_SCORES
         except FileNotFoundError as e:
             print("faied to open hs file", e)

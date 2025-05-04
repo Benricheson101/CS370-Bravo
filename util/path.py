@@ -13,7 +13,6 @@ def to_path(*file):
         return path.join(sys._MEIPASS, *file)
     return path.join(*file)
 
-def exe_path():
-    if is_bundle():
-        return os.path.dirname(sys.executable)
-    return os.path.dirname(__file__)
+def exe_rel(*file):
+    p = os.path.dirname(sys.executable) if is_bundle() else os.getcwd()
+    return os.path.join(p, *file)
