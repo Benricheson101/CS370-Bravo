@@ -41,6 +41,6 @@ def dos_sprites():
 
     if dos_font is None:
         print("initializing dos_font")
-        dos_font = SpriteSheet(to_path("./assets/spritesheet.png"), (9, 16))
+        dos_font = SpriteSheet(to_path("assets", "spritesheet.png"), (9, 16))
 
     return dos_font
