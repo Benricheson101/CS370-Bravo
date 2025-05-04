@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 import pygame
+import platform
 from os import environ
 from Sound import SoundEffects
 from pygame.color import Color
@@ -26,6 +27,7 @@ from screens.screen import ColorMenu
 from screens.shareware import SharewareScreen
 from screens.story import StoryScreen
 from util.color import new_gem_color
+from util.path import is_bundle
 from util.state import StateMachine
 
 import sys
@@ -139,6 +141,10 @@ class Game:
         pygame.quit()
 
     def change_scale(self, delta: int):
+        # Resizng doesn't work in Windows pygame bundle
+        if is_bundle() and platform.system() == "Windows":
+            return
+
         from constants import SCALE, recalculate_dimensions
 
         new_scale = SCALE + delta
