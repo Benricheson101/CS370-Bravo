@@ -1,6 +1,6 @@
 # Designed to mimic this structure below
 """DF[2]:=
-{  1  2  3  X  W  L  C  S  +  I  T  K  D  #  F  .  R  Q  /  \  B  V  =  A  U  Z  *  E  ;  :  `  -  @  %  ]  G  (  M  )}
+{  1  2  3  X  W  L  C  S  +  I  T  K  D  #  F  .  R  Q  /  \\  B  V  =  A  U  Z  *  E  ;  :  `  -  @  %  ]  G  (  M  )}
 '150 10   100  9  2  1  2  9     1             15                                9  1         100                     '+
 {  P  &  !  O  H  ?  >  N  <  [  |  "  4  5  6  7  8  9  ñ  ò  ó  ô  õ  ö  Y}
 '                                                                           ';"""

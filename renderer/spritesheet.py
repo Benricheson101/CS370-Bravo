@@ -3,6 +3,8 @@ import pygame
 from pygame.rect import Rect
 from pygame.surface import Surface
 
+from util.path import to_path
+
 class SpriteSheet:
     def __init__(self, filename, sprite_size: tuple[int, int]) -> None:
         self.sprite_size = sprite_size
@@ -39,6 +41,6 @@ def dos_sprites():
 
     if dos_font is None:
         print("initializing dos_font")
-        dos_font = SpriteSheet("./assets/spritesheet.png", (9, 16))
+        dos_font = SpriteSheet(to_path("./assets/spritesheet.png"), (9, 16))
 
     return dos_font
