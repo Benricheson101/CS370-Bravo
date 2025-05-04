@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [('O', None, 'OPTION'), ('O', None, 'OPTION')],
-    name='main',
+    name='Return to Kroz',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -35,11 +35,12 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon='./assets/Icon.ico'
 )
 app = BUNDLE(
     exe,
     name='Return to Kroz.app',
-    icon=None,
+    icon='./assets/AppIcon.icns',
     bundle_identifier='edu.sunypoly.richesb.kroz',
 )
 
