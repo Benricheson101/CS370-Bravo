@@ -27,7 +27,7 @@ To exit, run `deactivate` (same command on all platforms)
 
 ## Build Instructions
 > [!NOTE]
-> Must be in a virtual environment to use the `pyinstaller` command. See [Creating a Virtual Environment](#creating-a-virtual0environment) for info
+> Must be in a virtual environment to use the `pyinstaller` command. See [Creating a Virtual Environment](#creating-a-virtual-environment) for info
 ```sh
 $ pyinstaller main.spec --noconfirm
 ```
