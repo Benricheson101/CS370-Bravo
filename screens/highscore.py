@@ -24,8 +24,12 @@ from util.state import State, StateMachine
 BLANK_SCORES = [{"name": "-----", "high_score": 0, "high_level": 0} for _ in range(15)]
 
 DEFAULT_SCORES = [
+    {"name": "Anthony DeMatteo", "high_score": 26768, "high_level": 20},
+    {"name": "Evelyna Morgun", "high_score": 14845, "high_level": 17},
+    {"name": "Ben Richeson", "high_score": 12225, "high_level": 13},
     {"name": "Scott Miller", "high_score": 10963, "high_level": 11},
     {"name": "I. Jones", "high_score": 4281, "high_level": 5},
+    
 ] + BLANK_SCORES
 
 class HighScoreScreen(State):
