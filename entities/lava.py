@@ -23,7 +23,9 @@ class Lava(Cell):
     has_paused_message = False
     def __init__(self):
         super().__init__()
-        self.load_dos_char(178, RED)
+        self.bak(4,7)
+        self.col(12,16)
+        self.load_dos_char(178)
         
     sound_effects = SoundEffects()
 
